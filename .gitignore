@@ -1,0 +1,10 @@
+.idea/
+*.iml
+.gradle/
+build/
+.DS_Store
+classes/
+out/
+intellij-settings/
+**/*.actual
+**/generated/**
