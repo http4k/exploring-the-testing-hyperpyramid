@@ -10,8 +10,7 @@ import java.time.Clock
 
 abstract class Actor(name: String, http: HttpHandler, events: Events) {
     val http = ResetRequestTracing()
-        .then(AppOutgoingHttp(false, AppEvents(name, Clock.systemUTC(), events)))
-        .then(http)
+        .then(AppOutgoingHttp(false, AppEvents(name, Clock.systemUTC(), events), http))
 }
 
 

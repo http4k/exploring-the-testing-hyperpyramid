@@ -30,7 +30,7 @@ fun ApiGateway(
     http: HttpHandler = JavaHttpClient()
 ): HttpHandler {
     val appEvents = AppEvents("api-gateway", clock, events)
-    val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), appEvents).then(http)
+    val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), appEvents, http)
 
     fun ForwardTrafficToApp(app: String) = SetHostFrom(Uri.of("http://$app")).then(outgoingHttp)
 

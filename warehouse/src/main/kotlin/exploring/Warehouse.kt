@@ -15,7 +15,6 @@ import org.http4k.client.JavaHttpClient
 import org.http4k.cloudnative.env.Environment
 import org.http4k.cloudnative.env.Environment.Companion.ENV
 import org.http4k.core.HttpHandler
-import org.http4k.core.then
 import org.http4k.events.Events
 import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.routes
@@ -29,7 +28,7 @@ fun Warehouse(
     http: HttpHandler = JavaHttpClient()
 ): RoutingHttpHandler {
     val appEvents = AppEvents("warehouse", clock, events)
-    val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), appEvents).then(http)
+    val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), appEvents, http)
 
     val hub = WarehouseHub(
         Inventory.DynamoDb(env, outgoingHttp),
