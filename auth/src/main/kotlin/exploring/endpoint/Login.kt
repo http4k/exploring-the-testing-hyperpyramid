@@ -1,4 +1,4 @@
-package exploring
+package exploring.endpoint
 
 import org.http4k.core.Request
 import org.http4k.core.Response

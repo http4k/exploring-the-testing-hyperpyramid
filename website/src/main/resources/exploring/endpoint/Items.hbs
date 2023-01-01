@@ -1,0 +1,20 @@
+<body>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Quantity</th>
+        <th>Order</th>
+    </tr>
+    {{#each inventory}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{stock}}</td>
+            <td>
+                <form action="/order/{{id}}">
+                    <button>Submit</button>
+                </form>
+            </td>
+        </tr>
+    {{/each}}
+</table>
+</body>

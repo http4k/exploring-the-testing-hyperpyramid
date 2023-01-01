@@ -1,4 +1,4 @@
-package exploring
+package exploring.app
 
 import org.http4k.events.EventFilters
 import org.http4k.events.Events

@@ -27,3 +27,7 @@ http4k-connect-amazon-s3 = { module = "org.http4k:http4k-connect-amazon-s3" }
 http4k-connect-amazon-dynamodb = { module = "org.http4k:http4k-connect-amazon-dynamodb" }
 
 http4k-connect-amazon-sqs = { module = "org.http4k:http4k-connect-amazon-sqs" }
+
+http4k-connect-amazon-sns-fake = { group = "org.http4k", name = "http4k-connect-amazon-sns-fake", version.ref = "http4k-connect" }
+
+http4k-connect-amazon-sns = { group = "org.http4k", name = "http4k-connect-amazon-sns", version.ref = "http4k-connect" }

@@ -1,18 +1,18 @@
 package exploring
 
 import org.http4k.connect.amazon.dynamodb.FakeDynamoDb
+import org.http4k.connect.amazon.sns.FakeSNS
 import org.http4k.connect.amazon.sqs.FakeSQS
 import org.http4k.core.Filter
-import org.http4k.core.Method.GET
 import org.http4k.core.Request
 import org.http4k.routing.RoutingHttpHandler
-import org.http4k.routing.bind
-import org.http4k.routing.routes
+import org.http4k.routing.reverseProxyRouting
 
 class FakeAws : RoutingHttpHandler {
-    private val http = routes(
-        "dynamo" bind GET to FakeDynamoDb(),
-        "sqs" bind GET to FakeSQS()
+    private val http = reverseProxyRouting(
+        "dynamodb" to FakeDynamoDb(),
+        "sqs" to FakeSQS(),
+        "sns" to FakeSNS()
     )
 
     override fun invoke(p1: Request) = http(p1)

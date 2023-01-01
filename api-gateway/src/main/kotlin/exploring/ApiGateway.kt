@@ -1,13 +1,19 @@
 package exploring
 
+import exploring.ApiGatewaySettings.DEV_MODE
+import exploring.app.AppEvents
+import exploring.app.AppIncomingHttp
+import exploring.app.AppOutgoingHttp
 import org.http4k.client.JavaHttpClient
 import org.http4k.cloudnative.env.Environment
 import org.http4k.cloudnative.env.Environment.Companion.ENV
 import org.http4k.core.HttpHandler
+import org.http4k.core.Request
 import org.http4k.core.Uri
 import org.http4k.core.then
 import org.http4k.events.Events
 import org.http4k.filter.ClientFilters.SetHostFrom
+import org.http4k.routing.asRouter
 import org.http4k.routing.bind
 import org.http4k.routing.routes
 import java.time.Clock
@@ -24,14 +30,15 @@ fun ApiGateway(
     http: HttpHandler = JavaHttpClient()
 ): HttpHandler {
     val appEvents = AppEvents("api-gateway", clock, events)
-    val outgoingHttp = OutgoingHttp(http, appEvents)
+    val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), http, appEvents)
 
     fun ForwardTrafficToApp(app: String) = SetHostFrom(Uri.of("http://$app")).then(outgoingHttp)
 
-    return IncomingHttp(
+    return AppIncomingHttp(
+        DEV_MODE(env),
         appEvents, routes(
-            "/v1/login" bind ForwardTrafficToApp("auth"),
-            "/v1/reserve" bind ForwardTrafficToApp("reservations")
+            "/login" bind ForwardTrafficToApp("auth"),
+            { _: Request -> true }.asRouter() bind ForwardTrafficToApp("website"),
         )
     )
 }

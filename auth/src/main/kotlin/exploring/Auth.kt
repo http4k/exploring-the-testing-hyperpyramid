@@ -1,5 +1,10 @@
 package exploring
 
+import exploring.AuthSettings.DEV_MODE
+import exploring.app.AppEvents
+import exploring.app.AppIncomingHttp
+import exploring.app.AppOutgoingHttp
+import exploring.endpoint.Login
 import org.http4k.client.JavaHttpClient
 import org.http4k.cloudnative.env.Environment
 import org.http4k.cloudnative.env.Environment.Companion.ENV
@@ -17,9 +22,10 @@ fun Auth(
     http: HttpHandler = JavaHttpClient()
 ): RoutingHttpHandler {
     val appEvents = AppEvents("warehouse", clock, events)
-    val outgoingHttp = OutgoingHttp(http, appEvents)
+    val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), http, appEvents)
 
-    return IncomingHttp(
+    return AppIncomingHttp(
+        DEV_MODE(env),
         appEvents, routes(
             Login()
         )

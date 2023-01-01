@@ -15,4 +15,5 @@ dependencies {
     testFixturesApi(libs.http4k.connect.amazon.s3.fake)
     testFixturesApi(libs.http4k.connect.amazon.dynamodb.fake)
     testFixturesApi(libs.http4k.connect.amazon.sqs.fake)
+    testFixturesApi(libs.http4k.connect.amazon.sns.fake)
 }
