@@ -5,7 +5,6 @@ import exploring.WarehouseSettings.INVENTORY_DB_TABLE
 import exploring.WebsiteSettings.NOTIFICATION_TOPIC_ARN
 import exploring.adapter.DynamoDb
 import exploring.adapter.InventorySchema.hash
-import exploring.adapter.InventorySchema.sort
 import exploring.dto.InventoryItem
 import exploring.dto.ItemId
 import exploring.port.Inventory
@@ -30,8 +29,8 @@ import org.http4k.core.Uri
 fun setupCloudResources(env: Environment, theInternet: HttpHandler) {
     DynamoDb.Http(env, theInternet).createTable(
         INVENTORY_DB_TABLE(env),
-        KeySchema.compound(hash.name, sort.name),
-        listOf(hash.asAttributeDefinition(), sort.asAttributeDefinition())
+        KeySchema.compound(hash.name),
+        listOf(hash.asAttributeDefinition())
     )
     Inventory.DynamoDb(env, theInternet).apply {
         store(InventoryItem(ItemId.of("1"), "Banana", 5))
