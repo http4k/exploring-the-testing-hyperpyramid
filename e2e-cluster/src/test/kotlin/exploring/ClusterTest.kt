@@ -6,9 +6,12 @@ import org.http4k.events.then
 import org.junit.jupiter.api.Test
 
 class ClusterTest : TracingTest() {
-    private val cluster = Cluster(events.then(::println), FakeAws())
+    val events1 = events.then(::println)
+    private val cluster = Cluster(
+        events1, FakeAws()
+    )
 
-    private val user = WebsiteUser(events, cluster, Uri.of("http://api-gateway"))
+    private val user = WebsiteUser(events1, cluster, Uri.of("http://api-gateway"))
 
     @Test
     fun `can load stock list`() {

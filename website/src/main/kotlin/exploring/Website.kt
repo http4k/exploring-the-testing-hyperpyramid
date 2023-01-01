@@ -15,6 +15,7 @@ import org.http4k.client.JavaHttpClient
 import org.http4k.cloudnative.env.Environment
 import org.http4k.cloudnative.env.Environment.Companion.ENV
 import org.http4k.core.HttpHandler
+import org.http4k.core.then
 import org.http4k.events.Events
 import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.routes
@@ -29,7 +30,7 @@ fun Website(
     http: HttpHandler = JavaHttpClient()
 ): RoutingHttpHandler {
     val appEvents = AppEvents("website", clock, events)
-    val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), appEvents, http)
+    val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), appEvents).then(http)
 
     val templateRenderer = HtmlTemplates(DEV_MODE(env))
     val hub = WebsiteHub(Warehouse.Http(outgoingHttp), Notifications.SNS(env, outgoingHttp))
