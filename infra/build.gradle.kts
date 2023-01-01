@@ -8,8 +8,8 @@ dependencies {
     api(Http4k.core)
     api(Http4k.format.moshi)
 
-    testApi(Testing.junit.jupiter.api)
-    testApi(Testing.junit.jupiter.engine)
+    testFixturesApi(Testing.junit.jupiter.api)
+    testFixturesApi(Testing.junit.jupiter.engine)
 
     testFixturesApi(Http4k.incubator)
     testFixturesApi(libs.http4k.connect.amazon.s3.fake)

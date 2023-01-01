@@ -23,8 +23,8 @@ import java.time.Clock
 
 fun Cluster(
     events: Events = ::println,
-    clock: Clock = Clock.systemUTC(),
-    theInternet: RoutingHttpHandler
+    theInternet: RoutingHttpHandler,
+    clock: Clock = Clock.systemUTC()
 ): HttpHandler {
 
     val env = Environment.defaults(
