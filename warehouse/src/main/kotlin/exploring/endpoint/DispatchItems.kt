@@ -7,7 +7,7 @@ import exploring.port.DispatchResult.NoStock
 import exploring.port.DispatchResult.NotFound
 import exploring.port.DispatchResult.Sent
 import exploring.port.WarehouseHub
-import org.http4k.connect.amazon.dynamodb.DynamoDbMoshi.auto
+import exploring.util.Json.auto
 import org.http4k.core.Body
 import org.http4k.core.Method.POST
 import org.http4k.core.Response
