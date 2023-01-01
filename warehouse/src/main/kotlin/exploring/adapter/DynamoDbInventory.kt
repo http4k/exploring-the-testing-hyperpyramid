@@ -26,7 +26,7 @@ fun Inventory.Companion.DynamoDb(env: Environment, http: HttpHandler) =
         override fun store(item: InventoryItem) = resultFrom { table += item }
 
         override fun adjust(id: ItemId, amount: Int) = resultFrom {
-            table[id, null]
+            table[id]
                 ?.let { it.copy(stock = it.stock - amount) }
                 ?.let {
                     when (it.stock) {
