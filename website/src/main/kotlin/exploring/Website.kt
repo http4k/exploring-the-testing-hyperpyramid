@@ -29,7 +29,7 @@ fun Website(
     http: HttpHandler = JavaHttpClient()
 ): RoutingHttpHandler {
     val appEvents = AppEvents("website", clock, events)
-    val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), http, appEvents)
+    val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), appEvents, http)
 
     val templateRenderer = HtmlTemplates(DEV_MODE(env))
     val hub = WebsiteHub(Warehouse.Http(outgoingHttp), Notifications.SNS(env, outgoingHttp))

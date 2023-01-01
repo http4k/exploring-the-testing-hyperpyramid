@@ -22,7 +22,7 @@ fun Auth(
     http: HttpHandler = JavaHttpClient()
 ): RoutingHttpHandler {
     val appEvents = AppEvents("warehouse", clock, events)
-    val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), http, appEvents)
+    val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), appEvents, http)
 
     return AppIncomingHttp(
         DEV_MODE(env),

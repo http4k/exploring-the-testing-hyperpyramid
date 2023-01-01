@@ -28,7 +28,7 @@ fun Warehouse(
     http: HttpHandler = JavaHttpClient()
 ): RoutingHttpHandler {
     val appEvents = AppEvents("warehouse", clock, events)
-    val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), http, appEvents)
+    val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), appEvents, http)
 
     val hub = WarehouseHub(
         Inventory.DynamoDb(env, outgoingHttp),
