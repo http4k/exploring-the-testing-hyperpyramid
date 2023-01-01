@@ -31,7 +31,7 @@ fun Website(
     val appEvents = AppEvents("website", clock, events)
     val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), appEvents, http)
 
-    val templateRenderer = HtmlTemplates(DEV_MODE(env))
+    val templateRenderer = HandlebarsTemplates().CachingClasspath()
     val hub = WebsiteHub(Warehouse.Http(outgoingHttp), Notifications.SNS(env, outgoingHttp))
 
     return AppIncomingHttp(
@@ -43,6 +43,3 @@ fun Website(
     )
 }
 
-private fun HtmlTemplates(devMode: Boolean) = HandlebarsTemplates().run {
-    if (devMode) HotReload("website/src/main/resources") else CachingClasspath()
-}

@@ -28,7 +28,7 @@ fun Cluster(
 ): HttpHandler {
 
     val env = Environment.defaults(
-        DEV_MODE of false,
+        DEV_MODE of true,
         AWS_REGION of EU_WEST_1,
         AWS_ACCESS_KEY_ID of AccessKeyId.of("access-key-id"),
         AWS_SECRET_ACCESS_KEY of SecretAccessKey.of("secret-access-key"),
