@@ -3,6 +3,8 @@ package exploring.adapter
 import dev.forkhandles.result4k.map
 import dev.forkhandles.result4k.resultFrom
 import exploring.WarehouseSettings.INVENTORY_DB_TABLE
+import exploring.adapter.InventorySchema.hash
+import exploring.adapter.InventorySchema.sort
 import exploring.dto.InventoryItem
 import exploring.dto.ItemId
 import exploring.port.Inventory
@@ -17,7 +19,7 @@ import org.http4k.core.HttpHandler
 fun Inventory.Companion.DynamoDb(env: Environment, http: HttpHandler) =
     object : Inventory {
         private val table = DynamoDb.Http(env, http)
-            .tableMapper<InventoryItem, ItemId, Any>(INVENTORY_DB_TABLE(env), Attribute.value(ItemId).required("id"))
+            .tableMapper<InventoryItem, ItemId, String>(INVENTORY_DB_TABLE(env), hash, sort)
 
         override fun items() = resultFrom { table.primaryIndex().query() }.map { it.toList() }
 
@@ -34,4 +36,9 @@ fun Inventory.Companion.DynamoDb(env: Environment, http: HttpHandler) =
                 }
         }
     }
+
+object InventorySchema {
+    val hash = Attribute.value(ItemId).required("id")
+    val sort = Attribute.string().required("name")
+}
 
