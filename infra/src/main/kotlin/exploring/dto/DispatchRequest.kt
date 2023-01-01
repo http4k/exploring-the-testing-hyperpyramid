@@ -1,5 +1,3 @@
 package exploring.dto
 
-import java.util.UUID
-
-data class DispatchRequest(val id: UUID, val amount: Int)
+data class DispatchRequest(val id: ItemId, val amount: Int)

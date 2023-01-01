@@ -7,3 +7,4 @@ import org.http4k.lens.of
 abstract class Settings {
     val DEV_MODE by EnvironmentKey.boolean().of().required()
 }
+

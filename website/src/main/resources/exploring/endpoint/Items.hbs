@@ -10,8 +10,8 @@
             <td>{{name}}</td>
             <td>{{stock}}</td>
             <td>
-                <form action="/order/{{id}}">
-                    <button>Submit</button>
+                <form method="POST" id="ITEM{{id}}" action="/order/{{id}}">
+                    <button>Buy</button>
                 </form>
             </td>
         </tr>

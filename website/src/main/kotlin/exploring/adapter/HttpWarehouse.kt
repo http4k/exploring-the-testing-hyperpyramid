@@ -6,7 +6,9 @@ import dev.forkhandles.result4k.Success
 import dev.forkhandles.result4k.resultFrom
 import exploring.dto.DispatchRequest
 import exploring.dto.InventoryItem
+import exploring.dto.ItemId
 import exploring.port.Warehouse
+import exploring.util.Json.auto
 import org.http4k.core.Body
 import org.http4k.core.HttpHandler
 import org.http4k.core.Method.GET
@@ -16,7 +18,6 @@ import org.http4k.core.Uri
 import org.http4k.core.then
 import org.http4k.core.with
 import org.http4k.filter.ClientFilters.SetHostFrom
-import org.http4k.format.Moshi.auto
 import java.util.UUID
 
 fun Warehouse.Companion.Http(rawHttp: HttpHandler) = object : Warehouse {
@@ -30,7 +31,7 @@ fun Warehouse.Companion.Http(rawHttp: HttpHandler) = object : Warehouse {
         }
     }
 
-    override fun dispatch(id: UUID): Result4k<UUID, Exception> {
+    override fun dispatch(id: ItemId): Result4k<UUID, Exception> {
         val resp = http(
             Request(POST, "/v1/dispatch")
                 .with(Body.auto<DispatchRequest>().toLens() of DispatchRequest(id, 1))

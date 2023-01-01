@@ -1,5 +1,3 @@
 package exploring.dto
 
-import java.util.UUID
-
-data class InventoryItem(val id: UUID, val name: String, val stock: Int)
+data class InventoryItem(val id: ItemId, val name: String, val stock: Int)

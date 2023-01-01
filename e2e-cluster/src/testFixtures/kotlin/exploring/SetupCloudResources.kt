@@ -5,6 +5,7 @@ import exploring.WarehouseSettings.INVENTORY_DB_TABLE
 import exploring.WebsiteSettings.NOTIFICATION_TOPIC_ARN
 import exploring.adapter.DynamoDb
 import exploring.dto.InventoryItem
+import exploring.dto.ItemId
 import exploring.port.Inventory
 import org.http4k.cloudnative.env.Environment
 import org.http4k.connect.amazon.dynamodb.DynamoDb
@@ -20,15 +21,14 @@ import org.http4k.connect.amazon.sqs.createQueue
 import org.http4k.connect.amazon.sqs.model.QueueName
 import org.http4k.core.HttpHandler
 import org.http4k.core.Uri
-import java.util.UUID
 
 fun setupCloudResources(env: Environment, theInternet: HttpHandler) {
     DynamoDb.Http(env, theInternet).createTable(INVENTORY_DB_TABLE(env), emptyList(), emptyList())
     Inventory.DynamoDb(env, theInternet).apply {
-        store(InventoryItem(UUID(0, 0), "Banana", 5))
-        store(InventoryItem(UUID(0, 1), "Bottom", 1))
-        store(InventoryItem(UUID(0, 2), "Minion Toys", 100))
-        store(InventoryItem(UUID(0, 3), "Guitar", 12))
+        store(InventoryItem(ItemId.of("1"), "Banana", 5))
+        store(InventoryItem(ItemId.of("2"), "Bottom", 1))
+        store(InventoryItem(ItemId.of("3"), "Minion Toys", 100))
+        store(InventoryItem(ItemId.of("4"), "Guitar", 12))
     }
 
     SQS.Http(env, theInternet).createQueue(
