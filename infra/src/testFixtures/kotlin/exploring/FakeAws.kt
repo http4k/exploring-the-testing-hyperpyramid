@@ -1,6 +1,5 @@
 package exploring
 
-import org.http4k.connect.amazon.dynamodb.FakeDynamoDb
 import org.http4k.connect.amazon.sns.FakeSNS
 import org.http4k.connect.amazon.sqs.FakeSQS
 import org.http4k.core.Filter
@@ -10,7 +9,6 @@ import org.http4k.routing.reverseProxyRouting
 
 class FakeAws : RoutingHttpHandler {
     private val http = reverseProxyRouting(
-        "dynamodb" to FakeDynamoDb(),
         "sqs" to FakeSQS(),
         "sns" to FakeSNS()
     )

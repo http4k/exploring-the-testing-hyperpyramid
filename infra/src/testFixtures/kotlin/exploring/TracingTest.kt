@@ -16,13 +16,12 @@ import java.io.File
 abstract class TracingTest {
     @RegisterExtension
     val events = TracerBulletEvents(
-        listOf(HttpTracer(GetServiceName())),
+        listOf(::HttpTracer, ::DbTracer).map { it((ActorByService)) },
         listOf(PumlSequenceDiagram, PumlInteractionDiagram),
         TraceRenderPersistence.FileSystem(File(".generated"))
     )
 }
 
-class GetServiceName : ActorResolver {
+object ActorByService : ActorResolver {
     override fun invoke(it: MetadataEvent) = Actor(it.metadata["service"]!!.toString(), ActorType.System)
 }
-

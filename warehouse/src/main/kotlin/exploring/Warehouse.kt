@@ -1,7 +1,7 @@
 package exploring
 
 import exploring.WarehouseSettings.DEV_MODE
-import exploring.adapter.DynamoDb
+import exploring.adapter.Database
 import exploring.adapter.SQS
 import exploring.app.AppEvents
 import exploring.app.AppIncomingHttp
@@ -25,15 +25,14 @@ fun Warehouse(
     env: Environment = ENV,
     events: Events = ::println,
     clock: Clock = systemUTC(),
-    http: HttpHandler = JavaHttpClient()
+    http: HttpHandler = JavaHttpClient(),
+    inventory: Inventory = Inventory.Database(env)
 ): RoutingHttpHandler {
+
     val appEvents = AppEvents("warehouse", clock, events)
     val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), appEvents, http)
 
-    val hub = WarehouseHub(
-        Inventory.DynamoDb(env, outgoingHttp),
-        Dispatcher.SQS(env, outgoingHttp)
-    )
+    val hub = WarehouseHub(inventory, Dispatcher.SQS(env, outgoingHttp))
     return AppIncomingHttp(
         DEV_MODE(env),
         appEvents, routes(
@@ -42,3 +41,4 @@ fun Warehouse(
         )
     )
 }
+
