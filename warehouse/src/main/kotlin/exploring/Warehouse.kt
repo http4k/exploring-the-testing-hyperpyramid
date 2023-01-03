@@ -1,6 +1,8 @@
 package exploring
 
 import exploring.WarehouseSettings.DEV_MODE
+import exploring.WarehouseSettings.STORE_API_PASSWORD
+import exploring.WarehouseSettings.STORE_API_USER
 import exploring.WarehouseSettings.STORE_URL
 import exploring.adapter.Database
 import exploring.adapter.Http
@@ -15,6 +17,7 @@ import exploring.port.WarehouseHub
 import org.http4k.client.JavaHttpClient
 import org.http4k.cloudnative.env.Environment
 import org.http4k.cloudnative.env.Environment.Companion.ENV
+import org.http4k.core.Credentials
 import org.http4k.core.HttpHandler
 import org.http4k.events.Events
 import org.http4k.routing.RoutingHttpHandler
@@ -32,7 +35,12 @@ fun Warehouse(
     val appEvents = AppEvents("warehouse", clock, events)
     val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), appEvents, http)
 
-    val hub = WarehouseHub(inventory, DepartmentStore.Http(STORE_URL(env), outgoingHttp))
+    val hub = WarehouseHub(
+        inventory, DepartmentStore.Http(
+            Credentials(STORE_API_USER(env), STORE_API_PASSWORD(env)),
+            STORE_URL(env), outgoingHttp
+        )
+    )
 
     return AppIncomingHttp(
         DEV_MODE(env),

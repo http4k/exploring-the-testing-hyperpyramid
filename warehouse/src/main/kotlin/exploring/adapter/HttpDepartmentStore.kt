@@ -10,6 +10,7 @@ import exploring.dto.Phone
 import exploring.port.DepartmentStore
 import exploring.util.Json.auto
 import org.http4k.core.Body
+import org.http4k.core.Credentials
 import org.http4k.core.HttpHandler
 import org.http4k.core.Method.GET
 import org.http4k.core.Method.POST
@@ -18,10 +19,17 @@ import org.http4k.core.Status.Companion.NOT_FOUND
 import org.http4k.core.Uri
 import org.http4k.core.then
 import org.http4k.core.with
+import org.http4k.filter.ClientFilters.BasicAuth
 import org.http4k.filter.ClientFilters.SetHostFrom
 
-fun DepartmentStore.Companion.Http(base: Uri, http: HttpHandler): DepartmentStore {
-    val http = SetHostFrom(base).then(http)
+fun DepartmentStore.Companion.Http(
+    credentials: Credentials,
+    base: Uri,
+    http: HttpHandler
+): DepartmentStore {
+    val http = SetHostFrom(base)
+        .then(BasicAuth(credentials))
+        .then(http)
 
     return object : DepartmentStore {
         override fun collection(phone: Phone, item: ItemId): Result4k<OrderId, Exception> {
