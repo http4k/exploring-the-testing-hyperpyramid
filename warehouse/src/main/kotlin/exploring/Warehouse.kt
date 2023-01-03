@@ -1,6 +1,7 @@
 package exploring
 
 import exploring.WarehouseSettings.DEV_MODE
+import exploring.WarehouseSettings.STORE_URL
 import exploring.adapter.Database
 import exploring.adapter.Http
 import exploring.app.AppEvents
@@ -31,7 +32,7 @@ fun Warehouse(
     val appEvents = AppEvents("warehouse", clock, events)
     val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), appEvents, http)
 
-    val hub = WarehouseHub(inventory, DepartmentStore.Http(env, outgoingHttp))
+    val hub = WarehouseHub(inventory, DepartmentStore.Http(STORE_URL(env), outgoingHttp))
 
     return AppIncomingHttp(
         DEV_MODE(env),

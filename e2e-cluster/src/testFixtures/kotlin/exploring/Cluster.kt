@@ -4,7 +4,7 @@ import exploring.WarehouseSettings.DATABASE_DRIVER
 import exploring.WarehouseSettings.DATABASE_URL
 import exploring.WarehouseSettings.STORE_URL
 import exploring.WebsiteSettings.NOTIFICATION_TOPIC_ARN
-import exploring.adapter.Fake
+import exploring.adapter.InMemory
 import exploring.port.Inventory
 import org.http4k.cloudnative.env.Environment
 import org.http4k.connect.amazon.AWS_ACCESS_KEY_ID
@@ -43,7 +43,7 @@ fun Cluster(
 
     val internalHttp = reverseProxyRouting(
         "auth" to Auth(env, events, clock, networkAccess),
-        "warehouse" to Warehouse(env, events, clock, networkAccess, Inventory.Fake(events, clock)),
+        "warehouse" to Warehouse(env, events, clock, networkAccess, Inventory.InMemory(events, clock)),
         "website" to Website(env, events, clock, networkAccess)
     )
 

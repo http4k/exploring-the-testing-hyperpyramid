@@ -11,7 +11,7 @@ import org.http4k.events.Events
 import java.lang.reflect.Proxy.newProxyInstance
 import java.time.Clock
 
-fun Inventory.Companion.Fake(events: Events, clock: Clock): Inventory {
+fun Inventory.Companion.InMemory(events: Events, clock: Clock): Inventory {
     val target = Inventory.Storage(Storage.InMemory())
     target.apply {
         store(InventoryItem(ItemId.of("1"), "Banana", 5))
@@ -26,3 +26,4 @@ fun Inventory.Companion.Fake(events: Events, clock: Clock): Inventory {
         m.invoke(target, *args ?: arrayOf())
     } as Inventory
 }
+
