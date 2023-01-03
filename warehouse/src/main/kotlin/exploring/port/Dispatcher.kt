@@ -1,11 +1,11 @@
 package exploring.port
 
 import dev.forkhandles.result4k.Result4k
-import exploring.dto.DispatchRequest
-import java.util.UUID
+import exploring.dto.ItemPickup
+import exploring.dto.PickupId
 
 fun interface Dispatcher {
-    fun dispatch(dispatchRequest: DispatchRequest): Result4k<UUID, Exception>
+    fun dispatch(itemPickup: ItemPickup): Result4k<PickupId, Exception>
 
     companion object
 }

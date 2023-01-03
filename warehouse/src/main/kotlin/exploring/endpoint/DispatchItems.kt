@@ -2,7 +2,7 @@ package exploring.endpoint
 
 import dev.forkhandles.result4k.map
 import dev.forkhandles.result4k.orThrow
-import exploring.dto.DispatchRequest
+import exploring.dto.ItemPickup
 import exploring.port.DispatchResult.NoStock
 import exploring.port.DispatchResult.NotFound
 import exploring.port.DispatchResult.Sent
@@ -17,10 +17,10 @@ import org.http4k.core.Status.Companion.PRECONDITION_FAILED
 import org.http4k.routing.bind
 
 fun DispatchItems(hub: WarehouseHub) = "/v1/dispatch" bind POST to {
-    hub.dispatch(Body.auto<DispatchRequest>().toLens()(it))
+    hub.dispatch(Body.auto<ItemPickup>().toLens()(it))
         .map {
             when (it) {
-                is Sent -> Response(OK).body(it.trackingNumber.toString())
+                is Sent -> Response(OK).body(it.pickupId.toString())
                 NotFound -> Response(NOT_FOUND)
                 NoStock -> Response(PRECONDITION_FAILED)
             }

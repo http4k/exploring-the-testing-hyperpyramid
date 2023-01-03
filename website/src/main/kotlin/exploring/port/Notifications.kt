@@ -1,11 +1,11 @@
 package exploring.port
 
 import dev.forkhandles.result4k.Result4k
-import org.http4k.connect.amazon.sns.model.PhoneNumber
-import java.util.UUID
+import exploring.dto.Phone
+import exploring.dto.PickupId
 
 fun interface Notifications {
-    fun collectOrder(user: PhoneNumber, trackingId: UUID): Result4k<UUID, Exception>
+    fun collectOrder(phone: Phone, trackingId: PickupId): Result4k<Unit, Exception>
 
     companion object
 }

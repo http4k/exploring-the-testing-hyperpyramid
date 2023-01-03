@@ -4,11 +4,11 @@ import dev.forkhandles.result4k.Result4k
 import dev.forkhandles.result4k.Success
 import dev.forkhandles.result4k.flatMap
 import dev.forkhandles.result4k.map
-import exploring.dto.DispatchRequest
+import exploring.dto.ItemPickup
+import exploring.dto.PickupId
 import exploring.port.DispatchResult.NoStock
 import exploring.port.DispatchResult.NotFound
 import exploring.port.DispatchResult.Sent
-import java.util.UUID
 
 class WarehouseHub(
     private val inventory: Inventory,
@@ -16,18 +16,18 @@ class WarehouseHub(
 ) {
     fun items() = inventory.items()
 
-    fun dispatch(dispatchRequest: DispatchRequest): Result4k<DispatchResult, Exception> =
+    fun dispatch(itemPickup: ItemPickup): Result4k<DispatchResult, Exception> =
         inventory.items()
-            .map { it.firstOrNull { it.id == dispatchRequest.id } }
+            .map { it.firstOrNull { it.id == itemPickup.id } }
             .flatMap {
                 when {
                     it == null -> Success(NotFound)
-                    it.stock < dispatchRequest.amount -> Success(NoStock)
-                    else -> inventory.adjust(dispatchRequest.id, dispatchRequest.amount)
+                    it.stock < itemPickup.amount -> Success(NoStock)
+                    else -> inventory.adjust(itemPickup.id, itemPickup.amount)
                         .flatMap {
                             when (it) {
                                 null -> Success(NotFound)
-                                else -> dispatch.dispatch(dispatchRequest).map { Sent(it) }
+                                else -> dispatch.dispatch(itemPickup).map { Sent(it) }
                             }
                         }
                 }
@@ -35,7 +35,7 @@ class WarehouseHub(
 }
 
 sealed interface DispatchResult {
-    data class Sent(val trackingNumber: UUID) : DispatchResult
+    data class Sent(val pickupId: PickupId) : DispatchResult
     object NoStock : DispatchResult
     object NotFound : DispatchResult
 }
