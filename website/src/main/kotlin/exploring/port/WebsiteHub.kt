@@ -1,6 +1,7 @@
 package exploring.port
 
 import dev.forkhandles.result4k.flatMap
+import dev.forkhandles.result4k.map
 import exploring.dto.ItemId
 import exploring.dto.Phone
 
@@ -8,5 +9,8 @@ class WebsiteHub(private val warehouse: Warehouse, private val notifications: No
     fun items() = warehouse.items()
 
     fun order(phone: Phone, item: ItemId) = warehouse.dispatch(phone, item)
-        .flatMap { notifications.collectOrder(phone, it) }
+        .flatMap { orderId ->
+            notifications.collectOrder(phone, orderId)
+                .map { orderId }
+        }
 }

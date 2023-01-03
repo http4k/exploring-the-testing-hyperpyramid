@@ -20,7 +20,7 @@ fun DispatchItems(hub: WarehouseHub) = "/v1/dispatch" bind POST to {
     hub.dispatch(Body.auto<ItemPickup>().toLens()(it))
         .map {
             when (it) {
-                is Sent -> Response(OK).body(it.pickupId.toString())
+                is Sent -> Response(OK).body(it.orderId.toString())
                 NotFound -> Response(NOT_FOUND)
                 NoStock -> Response(PRECONDITION_FAILED)
             }

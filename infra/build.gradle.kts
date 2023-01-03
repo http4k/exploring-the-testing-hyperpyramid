@@ -14,8 +14,6 @@ dependencies {
     testFixturesApi(Testing.junit.jupiter.engine)
 
     testFixturesApi(Http4k.incubator)
-    testFixturesApi(libs.http4k.connect.amazon.s3.fake)
-    testFixturesApi(libs.http4k.connect.amazon.dynamodb.fake)
-    testFixturesApi(libs.http4k.connect.amazon.sqs.fake)
+    testFixturesApi(Http4k.testing.strikt)
     testFixturesApi(libs.http4k.connect.amazon.sns.fake)
 }

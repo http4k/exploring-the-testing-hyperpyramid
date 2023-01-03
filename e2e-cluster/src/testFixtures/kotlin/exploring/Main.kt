@@ -4,5 +4,5 @@ import org.http4k.server.SunHttp
 import org.http4k.server.asServer
 
 fun main() {
-    Cluster(theInternet = FakeAws()).asServer(SunHttp(8000)).start()
+    Cluster(theInternet = TheInternet()).asServer(SunHttp(8000)).start()
 }

@@ -1,16 +1,19 @@
 package exploring
 
 import org.http4k.connect.amazon.sns.FakeSNS
-import org.http4k.connect.amazon.sqs.FakeSQS
 import org.http4k.core.Filter
 import org.http4k.core.Request
 import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.reverseProxyRouting
 
-class FakeAws : RoutingHttpHandler {
+class TheInternet : RoutingHttpHandler {
+
+    val sns = FakeSNS()
+    val departmentStore = FakeDepartmentStore()
+
     private val http = reverseProxyRouting(
-        "sqs" to FakeSQS(),
-        "sns" to FakeSNS()
+        "sns" to sns,
+        "dept-store" to departmentStore
     )
 
     override fun invoke(p1: Request) = http(p1)
@@ -18,3 +21,4 @@ class FakeAws : RoutingHttpHandler {
     override fun withBasePath(new: String) = http.withBasePath(new)
     override fun withFilter(new: Filter) = http.withFilter(new)
 }
+

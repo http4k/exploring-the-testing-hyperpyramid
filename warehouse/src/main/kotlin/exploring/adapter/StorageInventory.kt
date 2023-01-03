@@ -7,7 +7,6 @@ import exploring.port.Inventory
 import org.http4k.connect.storage.Storage
 
 fun Inventory.Companion.Storage(storage: Storage<InventoryItem>) = object : Inventory {
-
     override fun items() = resultFrom {
         storage.keySet("").map { storage[it]!! }
     }

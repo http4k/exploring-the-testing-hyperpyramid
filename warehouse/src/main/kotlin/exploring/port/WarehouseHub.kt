@@ -5,14 +5,14 @@ import dev.forkhandles.result4k.Success
 import dev.forkhandles.result4k.flatMap
 import dev.forkhandles.result4k.map
 import exploring.dto.ItemPickup
-import exploring.dto.PickupId
+import exploring.dto.OrderId
 import exploring.port.DispatchResult.NoStock
 import exploring.port.DispatchResult.NotFound
 import exploring.port.DispatchResult.Sent
 
 class WarehouseHub(
     private val inventory: Inventory,
-    private val dispatch: Dispatcher
+    private val departmentStore: DepartmentStore
 ) {
     fun items() = inventory.items()
 
@@ -27,7 +27,8 @@ class WarehouseHub(
                         .flatMap {
                             when (it) {
                                 null -> Success(NotFound)
-                                else -> dispatch.dispatch(itemPickup).map { Sent(it) }
+                                else -> departmentStore.collection(itemPickup.phone, itemPickup.id)
+                                    .map { Sent(it) }
                             }
                         }
                 }
@@ -35,7 +36,7 @@ class WarehouseHub(
 }
 
 sealed interface DispatchResult {
-    data class Sent(val pickupId: PickupId) : DispatchResult
+    data class Sent(val orderId: OrderId) : DispatchResult
     object NoStock : DispatchResult
     object NotFound : DispatchResult
 }

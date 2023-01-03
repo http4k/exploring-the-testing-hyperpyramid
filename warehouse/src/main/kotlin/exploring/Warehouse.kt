@@ -2,13 +2,13 @@ package exploring
 
 import exploring.WarehouseSettings.DEV_MODE
 import exploring.adapter.Database
-import exploring.adapter.SQS
+import exploring.adapter.Http
 import exploring.app.AppEvents
 import exploring.app.AppIncomingHttp
 import exploring.app.AppOutgoingHttp
 import exploring.endpoint.DispatchItems
 import exploring.endpoint.ListItems
-import exploring.port.Dispatcher
+import exploring.port.DepartmentStore
 import exploring.port.Inventory
 import exploring.port.WarehouseHub
 import org.http4k.client.JavaHttpClient
@@ -28,11 +28,11 @@ fun Warehouse(
     http: HttpHandler = JavaHttpClient(),
     inventory: Inventory = Inventory.Database(env)
 ): RoutingHttpHandler {
-
     val appEvents = AppEvents("warehouse", clock, events)
     val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), appEvents, http)
 
-    val hub = WarehouseHub(inventory, Dispatcher.SQS(env, outgoingHttp))
+    val hub = WarehouseHub(inventory, DepartmentStore.Http(env, outgoingHttp))
+
     return AppIncomingHttp(
         DEV_MODE(env),
         appEvents, routes(

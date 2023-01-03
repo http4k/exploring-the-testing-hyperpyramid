@@ -1,6 +1,8 @@
 package exploring.actors
 
 import exploring.Actor
+import exploring.dto.ItemId
+import exploring.dto.OrderId
 import org.http4k.core.HttpHandler
 import org.http4k.core.Uri
 import org.http4k.core.then
@@ -23,10 +25,11 @@ class WebsiteUser(
     fun listItems() = with(browser) {
         navigate().to(Uri.of("/"))
         (findElements(By.tagName("form")) ?: emptyList())
-            .map { it.getAttribute("action").substringAfterLast('/').toLong() }
+            .map { ItemId.of(it.getAttribute("action").substringAfterLast('/')) }
     }
 
-    fun order(id: Long) = with(browser) {
+    fun order(id: ItemId): OrderId = with(browser) {
         findElement(By.id("ITEM$id"))?.submit()
+        return OrderId.of(findElement(By.id("orderId"))!!.text.toInt())
     }
 }

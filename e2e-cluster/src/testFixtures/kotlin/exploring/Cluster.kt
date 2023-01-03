@@ -2,7 +2,7 @@ package exploring
 
 import exploring.WarehouseSettings.DATABASE_DRIVER
 import exploring.WarehouseSettings.DATABASE_URL
-import exploring.WarehouseSettings.DISPATCH_QUEUE
+import exploring.WarehouseSettings.STORE_URL
 import exploring.WebsiteSettings.NOTIFICATION_TOPIC_ARN
 import exploring.adapter.Fake
 import exploring.port.Inventory
@@ -23,15 +23,15 @@ import org.http4k.routing.routes
 import java.time.Clock
 
 fun Cluster(
-    events: Events = ::println,
     theInternet: RoutingHttpHandler,
+    events: Events = ::println,
     clock: Clock = Clock.systemUTC()
 ): HttpHandler {
     val env = Environment.defaults(
         AWS_REGION of EU_WEST_1,
         AWS_ACCESS_KEY_ID of AccessKeyId.of("access-key-id"),
         AWS_SECRET_ACCESS_KEY of SecretAccessKey.of("secret-access-key"),
-        DISPATCH_QUEUE of Uri.of("http://aws/DISPATCH_QUEUE"),
+        STORE_URL of Uri.of("http://dept-store"),
         DATABASE_URL of "jdbc:h2:mem:warehouse;DB_CLOSE_DELAY=-1",
         DATABASE_DRIVER of "org.h2.Driver",
         NOTIFICATION_TOPIC_ARN of ARN.parse("arn:aws:sns:us-east-2:123456789012:MyExampleTopic"),

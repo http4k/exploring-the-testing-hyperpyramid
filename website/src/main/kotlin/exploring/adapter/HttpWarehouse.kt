@@ -7,8 +7,8 @@ import dev.forkhandles.result4k.resultFrom
 import exploring.dto.InventoryItem
 import exploring.dto.ItemId
 import exploring.dto.ItemPickup
+import exploring.dto.OrderId
 import exploring.dto.Phone
-import exploring.dto.PickupId
 import exploring.port.Warehouse
 import exploring.util.Json.auto
 import org.http4k.core.Body
@@ -32,13 +32,13 @@ fun Warehouse.Companion.Http(rawHttp: HttpHandler) = object : Warehouse {
         }
     }
 
-    override fun dispatch(phone: Phone, id: ItemId): Result4k<PickupId, Exception> {
+    override fun dispatch(phone: Phone, id: ItemId): Result4k<OrderId, Exception> {
         val resp = http(
             Request(POST, "/v1/dispatch")
                 .with(Body.auto<ItemPickup>().toLens() of ItemPickup(phone, id, 1))
         )
         return when {
-            resp.status.successful -> resultFrom { PickupId.parse(resp.bodyString()) }
+            resp.status.successful -> resultFrom { OrderId.parse(resp.bodyString()) }
             else -> Failure(Exception("oh no!"))
         }
     }
