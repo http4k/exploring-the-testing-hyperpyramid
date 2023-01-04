@@ -3,8 +3,6 @@ package exploring
 import exploring.ApiGatewaySettings.API_GATEWAY_URL
 import exploring.ApiGatewaySettings.DEBUG
 import exploring.ApiGatewaySettings.IMAGES_URL
-import exploring.ApiGatewaySettings.OAUTH_CLIENT_ID
-import exploring.ApiGatewaySettings.OAUTH_CLIENT_SECRET
 import exploring.ApiGatewaySettings.OAUTH_URL
 import exploring.ApiGatewaySettings.WEBSITE_URL
 import exploring.ImageSettings.IMAGE_BUCKET
@@ -19,15 +17,10 @@ import org.http4k.cloudnative.env.Environment.Companion.defaults
 import org.http4k.connect.amazon.AWS_ACCESS_KEY_ID
 import org.http4k.connect.amazon.AWS_REGION
 import org.http4k.connect.amazon.AWS_SECRET_ACCESS_KEY
-import org.http4k.connect.amazon.cognito.model.ClientId
-import org.http4k.connect.amazon.cognito.registerOAuthClient
 import org.http4k.connect.amazon.core.model.AccessKeyId
 import org.http4k.connect.amazon.core.model.Region.Companion.EU_WEST_1
 import org.http4k.connect.amazon.core.model.SecretAccessKey
-import org.http4k.connect.amazon.s3.createBucket
-import org.http4k.connect.amazon.s3.model.BucketKey
 import org.http4k.connect.amazon.s3.model.BucketName
-import org.http4k.connect.amazon.s3.putObject
 import org.http4k.core.Uri
 import org.http4k.events.then
 import org.junit.jupiter.api.Test
@@ -37,23 +30,6 @@ import strikt.assertions.isTrue
 
 class ClusterTest : TracingTest() {
     private val theInternet = TheInternet()
-
-    val oauthCredentials = theInternet.cognito.registerOAuthClient(ClientId.of("apiGateway"))
-
-    val bucketName = BucketName.of("images")
-
-    init {
-        theInternet.s3.apply {
-            s3Client().createBucket(bucketName, EU_WEST_1)
-            s3BucketClient(bucketName, EU_WEST_1).apply {
-                putObject(BucketKey.of("1"), "1".byteInputStream(), emptyList())
-                putObject(BucketKey.of("2"), "2".byteInputStream(), emptyList())
-                putObject(BucketKey.of("3"), "3".byteInputStream(), emptyList())
-                putObject(BucketKey.of("4"), "4".byteInputStream(), emptyList())
-            }
-            bucketName
-        }
-    }
 
     val commonEnv = defaults(
         DEBUG of false,
@@ -66,11 +42,9 @@ class ClusterTest : TracingTest() {
         IMAGES_URL of Uri.of("http://images"),
         WEBSITE_URL of Uri.of("http://website"),
         OAUTH_URL of Uri.of("http://cognito-idp.eu-west-1.amazonaws.com"),
-        OAUTH_CLIENT_ID of oauthCredentials.user,
-        OAUTH_CLIENT_SECRET of oauthCredentials.password,
     )
     val imagesEnv = defaults(
-        IMAGE_BUCKET of bucketName,
+        IMAGE_BUCKET of BucketName.of("images"),
     )
     val websiteEnv = defaults(
         NOTIFICATION_EMAIL_SENDER of Email.of("orders@http4k.org"),
