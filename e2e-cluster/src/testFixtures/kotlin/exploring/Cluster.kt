@@ -43,7 +43,7 @@ fun Cluster(
         AWS_SECRET_ACCESS_KEY of SecretAccessKey.of("secret-access-key"),
     )
     val apiGatewayEnv = Environment.defaults(
-        API_GATEWAY_URL of Uri.of("http://localhost:8000"),
+        API_GATEWAY_URL of Uri.of("http://api-gateway"),
         WEBSITE_URL of Uri.of("http://website"),
         OAUTH_URL of Uri.of("http://cognito"),
         OAUTH_CLIENT_ID of "apiGatewayClient",
@@ -66,11 +66,12 @@ fun Cluster(
     val networkAccess = NetworkAccess()
 
     val internalHttp = reverseProxyRouting(
+        "api-gateway" to ApiGateway(env, events, clock, networkAccess),
         "warehouse" to Warehouse(env, events, clock, networkAccess, Inventory.InMemory(events, clock)),
         "website" to Website(env, events, clock, networkAccess)
     )
 
     networkAccess.http = routes(theInternet, internalHttp)
 
-    return ApiGateway(env, events, clock, networkAccess)
+    return networkAccess
 }

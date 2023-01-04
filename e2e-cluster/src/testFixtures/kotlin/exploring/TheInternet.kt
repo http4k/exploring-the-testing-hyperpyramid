@@ -6,6 +6,7 @@ import org.http4k.connect.amazon.cognito.registerOAuthClient
 import org.http4k.connect.amazon.ses.FakeSES
 import org.http4k.core.Filter
 import org.http4k.core.Request
+import org.http4k.core.then
 import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.reverseProxyRouting
 
@@ -13,14 +14,18 @@ class TheInternet : RoutingHttpHandler {
 
     val ses = FakeSES()
     val cognito = FakeCognito().apply {
-        registerOAuthClient(ClientId.of("exploring"))
+        registerOAuthClient(ClientId.of("apiGatewayClient"))
     }
 
     val departmentStore = FakeDepartmentStore()
 
     private val http = reverseProxyRouting(
         "email" to ses,
-        "cognito" to cognito,
+        "cognito" to Filter { next ->
+            {
+                next(it.body(it.bodyString().replace("Email", "email")))
+            }
+        }.then(cognito),
         "dept-store" to departmentStore
     )
 

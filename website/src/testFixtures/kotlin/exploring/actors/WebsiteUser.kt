@@ -17,6 +17,12 @@ class WebsiteUser(
 
     private val browser = Http4kWebDriver(http)
 
+    fun login() = with(browser) {
+        navigate().to(baseUri)
+        findElement(By.id("email"))!!.sendKeys("joe@http4k.org")
+        findElement(By.tagName("form"))!!.submit()
+    }
+
     fun listItems() = with(browser) {
         navigate().to(baseUri)
         (findElements(By.tagName("form")) ?: emptyList())
