@@ -1,15 +1,18 @@
 package exploring
 
-import exploring.ApiGatewaySettings.DEV_MODE
+import exploring.ApiGatewaySettings.DEBUG
+import exploring.ApiGatewaySettings.WEBSITE_URL
 import exploring.app.AppEvents
 import exploring.app.AppIncomingHttp
 import exploring.app.AppOutgoingHttp
 import org.http4k.client.JavaHttpClient
 import org.http4k.cloudnative.env.Environment
 import org.http4k.cloudnative.env.Environment.Companion.ENV
+import org.http4k.core.Filter
 import org.http4k.core.HttpHandler
+import org.http4k.core.Method.GET
+import org.http4k.core.NoOp
 import org.http4k.core.Request
-import org.http4k.core.Uri
 import org.http4k.core.then
 import org.http4k.events.Events
 import org.http4k.filter.ClientFilters.SetHostFrom
@@ -30,15 +33,19 @@ fun ApiGateway(
     http: HttpHandler = JavaHttpClient()
 ): HttpHandler {
     val appEvents = AppEvents("api-gateway", clock, events)
-    val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), appEvents, http)
+    val outgoingHttp = AppOutgoingHttp(DEBUG(env), appEvents, http)
 
-    fun ForwardTrafficToApp(app: String) = SetHostFrom(Uri.of("http://$app")).then(outgoingHttp)
+    val oAuthProvider = ApiGatewayOAuthProvider(env, outgoingHttp)
 
     return AppIncomingHttp(
-        DEV_MODE(env),
+        DEBUG(env),
         appEvents, routes(
-            "/login" bind ForwardTrafficToApp("auth"),
-            { _: Request -> true }.asRouter() bind ForwardTrafficToApp("website"),
+            "/oauth" bind GET to oAuthProvider.callback,
+            { r: Request -> true }.asRouter() bind
+//                oAuthProvider.authFilter
+                Filter.NoOp
+                    .then(SetHostFrom(WEBSITE_URL(env)))
+                    .then(outgoingHttp),
         )
     )
 }

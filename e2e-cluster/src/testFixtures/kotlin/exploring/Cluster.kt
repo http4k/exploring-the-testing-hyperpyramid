@@ -1,7 +1,15 @@
 package exploring
 
+import exploring.ApiGatewaySettings.API_GATEWAY_URL
+import exploring.ApiGatewaySettings.DEBUG
+import exploring.ApiGatewaySettings.OAUTH_CLIENT_ID
+import exploring.ApiGatewaySettings.OAUTH_CLIENT_SECRET
+import exploring.ApiGatewaySettings.OAUTH_URL
+import exploring.ApiGatewaySettings.WEBSITE_URL
 import exploring.WarehouseSettings.DATABASE_DRIVER
 import exploring.WarehouseSettings.DATABASE_URL
+import exploring.WarehouseSettings.STORE_API_PASSWORD
+import exploring.WarehouseSettings.STORE_API_USER
 import exploring.WarehouseSettings.STORE_URL
 import exploring.WebsiteSettings.NOTIFICATION_TOPIC_ARN
 import exploring.adapter.InMemory
@@ -28,26 +36,34 @@ fun Cluster(
     clock: Clock = Clock.systemUTC()
 ): HttpHandler {
     val env = Environment.defaults(
+        DEBUG of false,
         AWS_REGION of EU_WEST_1,
         AWS_ACCESS_KEY_ID of AccessKeyId.of("access-key-id"),
         AWS_SECRET_ACCESS_KEY of SecretAccessKey.of("secret-access-key"),
-        STORE_URL of Uri.of("http://dept-store"),
+    ) overrides Environment.defaults(
+        API_GATEWAY_URL of Uri.of("http://localhost:8000"),
+        WEBSITE_URL of Uri.of("http://website"),
+        OAUTH_URL of Uri.of("http://cognito"),
+        OAUTH_CLIENT_ID of "apiGatewayClient",
+        OAUTH_CLIENT_SECRET of "apiGatewaySecret",
+    ) overrides Environment.defaults(
+        NOTIFICATION_TOPIC_ARN of ARN.parse("arn:aws:sns:us-east-2:123456789012:MyExampleTopic"),
+    ) overrides Environment.defaults(
         DATABASE_URL of "jdbc:h2:mem:warehouse;DB_CLOSE_DELAY=-1",
         DATABASE_DRIVER of "org.h2.Driver",
-        NOTIFICATION_TOPIC_ARN of ARN.parse("arn:aws:sns:us-east-2:123456789012:MyExampleTopic"),
+        STORE_URL of Uri.of("http://dept-store"),
+        STORE_API_USER of "user",
+        STORE_API_PASSWORD of "password"
     )
-
-    setupCloudResources(env, theInternet)
 
     val networkAccess = NetworkAccess()
 
     val internalHttp = reverseProxyRouting(
-        "auth" to Auth(env, events, clock, networkAccess),
         "warehouse" to Warehouse(env, events, clock, networkAccess, Inventory.InMemory(events, clock)),
         "website" to Website(env, events, clock, networkAccess)
     )
 
-    networkAccess.http = routes(internalHttp, theInternet)
+    networkAccess.http = routes(theInternet, internalHttp)
 
     return ApiGateway(env, events, clock, networkAccess)
 }

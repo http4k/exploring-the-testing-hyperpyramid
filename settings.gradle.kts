@@ -3,7 +3,6 @@ plugins {
 }
 
 include("api-gateway")
-include("auth")
 include("e2e-cluster")
 include("infra")
 include("warehouse")

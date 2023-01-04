@@ -3,8 +3,10 @@ description = "App2"
 dependencies {
     api(project(":infra"))
     implementation(Http4k.template.handlebars)
-    api(libs.http4k.connect.amazon.sns)
+    implementation(libs.http4k.connect.amazon.ses)
+
+    testFixturesApi(testFixtures(project(":infra")))
 
     testFixturesApi(Http4k.testing.webdriver)
-    testFixturesApi(testFixtures(project(":infra")))
+    testFixturesApi(libs.http4k.connect.amazon.ses.fake)
 }

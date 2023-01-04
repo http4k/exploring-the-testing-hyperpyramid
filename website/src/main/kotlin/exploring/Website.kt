@@ -1,8 +1,8 @@
 package exploring
 
-import exploring.WebsiteSettings.DEV_MODE
+import exploring.WebsiteSettings.DEBUG
 import exploring.adapter.Http
-import exploring.adapter.SNS
+import exploring.adapter.SES
 import exploring.app.AppEvents
 import exploring.app.AppIncomingHttp
 import exploring.app.AppOutgoingHttp
@@ -29,13 +29,13 @@ fun Website(
     http: HttpHandler = JavaHttpClient()
 ): RoutingHttpHandler {
     val appEvents = AppEvents("website", clock, events)
-    val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), appEvents, http)
+    val outgoingHttp = AppOutgoingHttp(DEBUG(env), appEvents, http)
 
     val templateRenderer = HandlebarsTemplates().CachingClasspath()
-    val hub = WebsiteHub(Warehouse.Http(outgoingHttp), Notifications.SNS(env, outgoingHttp))
+    val hub = WebsiteHub(Warehouse.Http(outgoingHttp), Notifications.SES(env, outgoingHttp))
 
     return AppIncomingHttp(
-        DEV_MODE(env),
+        DEBUG(env),
         appEvents, routes(
             PlaceOrder(hub, templateRenderer),
             ListAllItems(hub, templateRenderer)

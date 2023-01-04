@@ -1,6 +1,6 @@
 package exploring
 
-import exploring.WarehouseSettings.DEV_MODE
+import exploring.WarehouseSettings.DEBUG
 import exploring.WarehouseSettings.STORE_API_PASSWORD
 import exploring.WarehouseSettings.STORE_API_USER
 import exploring.WarehouseSettings.STORE_URL
@@ -33,7 +33,7 @@ fun Warehouse(
     inventory: Inventory = Inventory.Database(env)
 ): RoutingHttpHandler {
     val appEvents = AppEvents("warehouse", clock, events)
-    val outgoingHttp = AppOutgoingHttp(DEV_MODE(env), appEvents, http)
+    val outgoingHttp = AppOutgoingHttp(DEBUG(env), appEvents, http)
 
     val hub = WarehouseHub(
         inventory, DepartmentStore.Http(
@@ -43,7 +43,7 @@ fun Warehouse(
     )
 
     return AppIncomingHttp(
-        DEV_MODE(env),
+        DEBUG(env),
         appEvents, routes(
             ListItems(hub),
             DispatchItems(hub)

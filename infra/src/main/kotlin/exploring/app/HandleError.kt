@@ -7,6 +7,7 @@ import org.http4k.events.Events
 import org.http4k.filter.ServerFilters
 
 fun HandleError(events: Events) = ServerFilters.CatchAll {
+    it.printStackTrace()
     events(Error("uncaught!", it))
     Response(SERVICE_UNAVAILABLE)
 }

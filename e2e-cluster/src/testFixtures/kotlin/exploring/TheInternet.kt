@@ -1,6 +1,9 @@
 package exploring
 
-import org.http4k.connect.amazon.sns.FakeSNS
+import org.http4k.connect.amazon.cognito.FakeCognito
+import org.http4k.connect.amazon.cognito.model.ClientId
+import org.http4k.connect.amazon.cognito.registerOAuthClient
+import org.http4k.connect.amazon.ses.FakeSES
 import org.http4k.core.Filter
 import org.http4k.core.Request
 import org.http4k.routing.RoutingHttpHandler
@@ -8,11 +11,16 @@ import org.http4k.routing.reverseProxyRouting
 
 class TheInternet : RoutingHttpHandler {
 
-    val sns = FakeSNS()
+    val ses = FakeSES()
+    val cognito = FakeCognito().apply {
+        registerOAuthClient(ClientId.of("exploring"))
+    }
+
     val departmentStore = FakeDepartmentStore()
 
     private val http = reverseProxyRouting(
-        "sns" to sns,
+        "email" to ses,
+        "cognito" to cognito,
         "dept-store" to departmentStore
     )
 

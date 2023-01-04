@@ -5,25 +5,20 @@ import exploring.dto.ItemId
 import exploring.dto.OrderId
 import org.http4k.core.HttpHandler
 import org.http4k.core.Uri
-import org.http4k.core.then
 import org.http4k.events.Events
-import org.http4k.filter.ClientFilters.SetBaseUriFrom
 import org.http4k.webdriver.Http4kWebDriver
 import org.openqa.selenium.By
 
 class WebsiteUser(
     events: Events,
     rawHttp: HttpHandler,
-    baseUri: Uri
+    private val baseUri: Uri
 ) : Actor("Website User", rawHttp, events) {
 
-    private val browser = Http4kWebDriver(
-        SetBaseUriFrom(baseUri)
-            .then(http)
-    )
+    private val browser = Http4kWebDriver(http)
 
     fun listItems() = with(browser) {
-        navigate().to(Uri.of("/"))
+        navigate().to(baseUri)
         (findElements(By.tagName("form")) ?: emptyList())
             .map { ItemId.of(it.getAttribute("action").substringAfterLast('/')) }
     }

@@ -1,7 +1,6 @@
 description = "Infra"
 
 dependencies {
-    api(platform(Http4k.bom))
     api(platform(libs.http4k.connect.bom))
     api(platform(libs.forkhandles.bom))
 
@@ -15,5 +14,5 @@ dependencies {
 
     testFixturesApi(Http4k.incubator)
     testFixturesApi(Http4k.testing.strikt)
-    testFixturesApi(libs.http4k.connect.amazon.sns.fake)
+
 }
