@@ -98,7 +98,6 @@ class ClusterTest : TracingTest() {
             val catalogue = loginAndListItems()
 
             val itemId = catalogue.first()
-
             expectThat(canSeeImage(itemId)).isTrue()
 
             val orderId = order(itemId)
