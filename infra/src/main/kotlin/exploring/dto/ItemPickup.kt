@@ -1,3 +1,3 @@
 package exploring.dto
 
-data class ItemPickup(val phone: Phone, val id: ItemId, val amount: Int)
+data class ItemPickup(val user: Email, val id: ItemId, val amount: Int)

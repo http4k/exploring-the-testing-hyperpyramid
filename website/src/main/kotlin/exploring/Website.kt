@@ -33,7 +33,7 @@ fun Website(
     val outgoingHttp = AppOutgoingHttp(DEBUG(env), appEvents, http)
 
     val templateRenderer = HandlebarsTemplates().CachingClasspath()
-    val hub = WebsiteHub(Warehouse.Http(WAREHOUSE_URL(env), outgoingHttp), Notifications.SES(env, outgoingHttp))
+    val hub = WebsiteHub(appEvents, Warehouse.Http(WAREHOUSE_URL(env), outgoingHttp), Notifications.SES(env, outgoingHttp))
 
     return AppIncomingHttp(
         DEBUG(env),

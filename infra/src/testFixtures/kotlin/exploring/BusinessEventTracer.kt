@@ -1,0 +1,23 @@
+package exploring
+
+import exploring.app.BusinessEvent
+import org.http4k.tracing.Actor
+import org.http4k.tracing.ActorResolver
+import org.http4k.tracing.ActorType.Queue
+import org.http4k.tracing.FireAndForget
+import org.http4k.tracing.Tracer
+
+fun BusinessEventTracer(actorResolver: ActorResolver) = Tracer { parent, _, _ ->
+    parent
+        .takeIf { it.event is BusinessEvent }
+        ?.let {
+            FireAndForget(
+                actorResolver(it),
+                Actor("events", Queue),
+                (it.event as BusinessEvent).name,
+                emptyList()
+            )
+        }
+        ?.let { listOf(it) }
+        ?: emptyList()
+}

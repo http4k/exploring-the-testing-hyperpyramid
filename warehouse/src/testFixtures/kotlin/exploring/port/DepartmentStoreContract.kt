@@ -1,10 +1,10 @@
 package exploring.port
 
 import dev.forkhandles.result4k.orThrow
+import exploring.dto.Email
 import exploring.dto.ItemId
 import exploring.dto.Order
 import exploring.dto.OrderId
-import exploring.dto.Phone
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
@@ -15,11 +15,11 @@ interface DepartmentStoreContract {
 
     @Test
     fun `can store and get orders`() {
-        val phone = Phone.of("01234567890")
+        val email = Email.of("01234567890")
         val id = ItemId.of("123")
-        val orderId = departmentStore.collection(phone, id).orThrow()
+        val orderId = departmentStore.collection(email, id).orThrow()
 
-        expectThat(departmentStore.lookup(orderId).orThrow()).isEqualTo(Order(phone, listOf(id)))
+        expectThat(departmentStore.lookup(orderId).orThrow()).isEqualTo(Order(email, listOf(id)))
     }
 
     @Test

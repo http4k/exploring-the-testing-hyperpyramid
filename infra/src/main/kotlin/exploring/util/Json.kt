@@ -1,9 +1,9 @@
 package exploring.util
 
 import com.squareup.moshi.Moshi
+import exploring.dto.Email
 import exploring.dto.ItemId
 import exploring.dto.OrderId
-import exploring.dto.Phone
 import org.http4k.format.ConfigurableMoshi
 import org.http4k.format.EventAdapter
 import org.http4k.format.ListAdapter
@@ -22,7 +22,7 @@ object Json : ConfigurableMoshi(
         .asConfigurable()
         .withStandardMappings()
         .value(ItemId)
-        .value(Phone)
+        .value(Email)
         .value(OrderId)
         .done()
 )

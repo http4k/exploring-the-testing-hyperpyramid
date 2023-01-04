@@ -3,10 +3,10 @@ package exploring.adapter
 import dev.forkhandles.result4k.Failure
 import dev.forkhandles.result4k.Result4k
 import dev.forkhandles.result4k.Success
+import exploring.dto.Email
 import exploring.dto.ItemId
 import exploring.dto.Order
 import exploring.dto.OrderId
-import exploring.dto.Phone
 import exploring.port.DepartmentStore
 import exploring.util.Json.auto
 import org.http4k.core.Body
@@ -32,10 +32,10 @@ fun DepartmentStore.Companion.Http(
         .then(http)
 
     return object : DepartmentStore {
-        override fun collection(phone: Phone, item: ItemId): Result4k<OrderId, Exception> {
+        override fun collection(user: Email, item: ItemId): Result4k<OrderId, Exception> {
             val resp = http(
                 Request(POST, "/v1/order")
-                    .with(Body.auto<Order>().toLens() of Order(phone, listOf(item)))
+                    .with(Body.auto<Order>().toLens() of Order(user, listOf(item)))
             )
             return when {
                 resp.status.successful -> Success(OrderId.parse(resp.bodyString()))

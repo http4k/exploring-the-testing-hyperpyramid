@@ -3,7 +3,7 @@ package exploring
 import exploring.app.DbCall
 import org.http4k.tracing.Actor
 import org.http4k.tracing.ActorResolver
-import org.http4k.tracing.ActorType
+import org.http4k.tracing.ActorType.Database
 import org.http4k.tracing.BiDirectional
 import org.http4k.tracing.Tracer
 
@@ -13,7 +13,7 @@ fun DbTracer(actorResolver: ActorResolver) = Tracer { parent, _, _ ->
         ?.let {
             BiDirectional(
                 actorResolver(it),
-                Actor("db", ActorType.Database),
+                Actor("db", Database),
                 (it.event as DbCall).name,
                 emptyList()
             )

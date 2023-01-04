@@ -13,6 +13,7 @@ import org.http4k.tracing.renderer.MarkdownTraceStepCountsTable
 import org.http4k.tracing.renderer.MermaidInteractionDiagram
 import org.http4k.tracing.renderer.MermaidSequenceDiagram
 import org.http4k.tracing.renderer.PumlInteractionDiagram
+import org.http4k.tracing.renderer.PumlInteractionFlowDiagram
 import org.http4k.tracing.renderer.PumlSequenceDiagram
 import org.http4k.tracing.tracer.HttpTracer
 import org.junit.jupiter.api.extension.RegisterExtension
@@ -21,10 +22,11 @@ import java.io.File
 abstract class TracingTest {
     @RegisterExtension
     val events = TracerBulletEvents(
-        listOf(::HttpTracer, ::DbTracer).map { it((ActorByService)) },
+        listOf(::HttpTracer, ::DbTracer, ::BusinessEventTracer).map { it((ActorByService)) },
         listOf(
             PumlSequenceDiagram,
             PumlInteractionDiagram,
+            PumlInteractionFlowDiagram,
             MarkdownDocument(
                 MermaidSequenceDiagram,
                 MermaidInteractionDiagram,
