@@ -105,7 +105,7 @@ class ClusterTest : TracingTest() {
 
             val itemId = catalogue.first()
 
-//            expectThat(canSeeImage(itemId)).isTrue()
+            expectThat(canSeeImage(itemId)).isTrue()
 
             val orderId = order(itemId)
             expectThat(theInternet.departmentStore.orders[orderId]?.items).isEqualTo(listOf(itemId))
