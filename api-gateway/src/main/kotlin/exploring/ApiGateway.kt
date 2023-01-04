@@ -14,6 +14,7 @@ import org.http4k.core.Request
 import org.http4k.core.then
 import org.http4k.events.Events
 import org.http4k.filter.ClientFilters.SetHostFrom
+import org.http4k.filter.debug
 import org.http4k.routing.asRouter
 import org.http4k.routing.bind
 import org.http4k.routing.routes
@@ -33,15 +34,14 @@ fun ApiGateway(
     val appEvents = AppEvents("api-gateway", clock, events)
     val outgoingHttp = AppOutgoingHttp(DEBUG(env), appEvents, http)
 
-    val oAuthProvider = ApiGatewayOAuthProvider(env, outgoingHttp)
+    val oAuthProvider = ApiGatewayOAuthProvider(env, outgoingHttp.debug())
 
     return AppIncomingHttp(
         DEBUG(env),
         appEvents, routes(
-            "/oauth" bind GET to oAuthProvider.callback,
+            "/oauth/callback" bind GET to oAuthProvider.callback,
             { r: Request -> true }.asRouter() bind
                 oAuthProvider.authFilter
-//                Filter.NoOp
                     .then(SetHostFrom(WEBSITE_URL(env)))
                     .then(outgoingHttp),
         )
