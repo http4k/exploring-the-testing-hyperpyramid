@@ -37,30 +37,21 @@ class ClusterTest : TracingTest() {
         AWS_ACCESS_KEY_ID of AccessKeyId.of("access-key-id"),
         AWS_SECRET_ACCESS_KEY of SecretAccessKey.of("secret-access-key"),
     )
-    val apiGatewayEnv = defaults(
+
+    val clusterEnv = defaults(
         API_GATEWAY_URL of Uri.of("http://api-gateway"),
         IMAGES_URL of Uri.of("http://images"),
         WEBSITE_URL of Uri.of("http://website"),
-        OAUTH_URL of Uri.of("http://cognito-idp.eu-west-1.amazonaws.com"),
-    )
-    val imagesEnv = defaults(
+        OAUTH_URL of Uri.of("http://cognito-idp.$EU_WEST_1.amazonaws.com"),
         IMAGE_BUCKET of BucketName.of("images"),
-    )
-    val websiteEnv = defaults(
         NOTIFICATION_EMAIL_SENDER of Email.of("orders@http4k.org"),
         WAREHOUSE_URL of Uri.of("http://warehouse"),
-    )
-    val warehouseEnv = defaults(
         STORE_URL of Uri.of("http://dept-store"),
         STORE_API_USER of "user",
         STORE_API_PASSWORD of "password"
     )
 
-    val env = commonEnv overrides
-        apiGatewayEnv overrides
-        imagesEnv overrides
-        websiteEnv overrides
-        warehouseEnv
+    val env = commonEnv overrides clusterEnv
 
     private val cluster = Cluster(env, theInternet, events.then(::println))
 
