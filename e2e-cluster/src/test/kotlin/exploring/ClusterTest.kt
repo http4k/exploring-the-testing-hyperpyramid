@@ -99,9 +99,7 @@ class ClusterTest : TracingTest() {
     @Test
     fun `can load stock list and order item`() {
         with(user) {
-            login()
-
-            val catalogue = listItems()
+            val catalogue = loginAndListItems()
 
             val itemId = catalogue.first()
 

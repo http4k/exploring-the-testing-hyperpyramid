@@ -25,14 +25,10 @@ class Customer(
 
     private val browser = Http4kWebDriver(http)
 
-    fun login() = with(browser) {
+    fun loginAndListItems() = with(browser) {
         navigate().to(baseUri)
         findElement(By.id("email"))!!.sendKeys(email.value)
         findElement(By.tagName("form"))!!.submit()
-    }
-
-    fun listItems() = with(browser) {
-        navigate().to(baseUri)
         (findElements(By.tagName("form")) ?: emptyList())
             .map { ItemId.of(it.getAttribute("action").substringAfterLast('/')) }
     }
