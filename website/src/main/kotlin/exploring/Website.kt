@@ -1,6 +1,7 @@
 package exploring
 
 import exploring.WebsiteSettings.DEBUG
+import exploring.WebsiteSettings.WAREHOUSE_URL
 import exploring.adapter.Http
 import exploring.adapter.SES
 import exploring.app.AppEvents
@@ -32,7 +33,7 @@ fun Website(
     val outgoingHttp = AppOutgoingHttp(DEBUG(env), appEvents, http)
 
     val templateRenderer = HandlebarsTemplates().CachingClasspath()
-    val hub = WebsiteHub(Warehouse.Http(outgoingHttp), Notifications.SES(env, outgoingHttp))
+    val hub = WebsiteHub(Warehouse.Http(WAREHOUSE_URL(env), outgoingHttp), Notifications.SES(env, outgoingHttp))
 
     return AppIncomingHttp(
         DEBUG(env),

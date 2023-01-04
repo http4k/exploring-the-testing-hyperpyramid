@@ -21,8 +21,8 @@ import org.http4k.core.then
 import org.http4k.core.with
 import org.http4k.filter.ClientFilters.SetHostFrom
 
-fun Warehouse.Companion.Http(rawHttp: HttpHandler) = object : Warehouse {
-    private val http = SetHostFrom(Uri.of("http://warehouse")).then(rawHttp)
+fun Warehouse.Companion.Http(warehouseUri: Uri, rawHttp: HttpHandler) = object : Warehouse {
+    private val http = SetHostFrom(warehouseUri).then(rawHttp)
 
     override fun items(): Result4k<List<InventoryItem>, Exception> {
         val resp = http(Request(GET, "/v1/items"))

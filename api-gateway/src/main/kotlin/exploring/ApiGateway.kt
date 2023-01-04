@@ -8,10 +8,8 @@ import exploring.app.AppOutgoingHttp
 import org.http4k.client.JavaHttpClient
 import org.http4k.cloudnative.env.Environment
 import org.http4k.cloudnative.env.Environment.Companion.ENV
-import org.http4k.core.Filter
 import org.http4k.core.HttpHandler
 import org.http4k.core.Method.GET
-import org.http4k.core.NoOp
 import org.http4k.core.Request
 import org.http4k.core.then
 import org.http4k.events.Events
@@ -42,8 +40,8 @@ fun ApiGateway(
         appEvents, routes(
             "/oauth" bind GET to oAuthProvider.callback,
             { r: Request -> true }.asRouter() bind
-//                oAuthProvider.authFilter
-                Filter.NoOp
+                oAuthProvider.authFilter
+//                Filter.NoOp
                     .then(SetHostFrom(WEBSITE_URL(env)))
                     .then(outgoingHttp),
         )

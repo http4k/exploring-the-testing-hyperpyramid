@@ -36,9 +36,10 @@ fun Warehouse(
     val outgoingHttp = AppOutgoingHttp(DEBUG(env), appEvents, http)
 
     val hub = WarehouseHub(
-        inventory, DepartmentStore.Http(
-            Credentials(STORE_API_USER(env), STORE_API_PASSWORD(env)),
-            STORE_URL(env), outgoingHttp
+        inventory,
+        DepartmentStore.Http(
+            Credentials(STORE_API_USER(env), STORE_API_PASSWORD(env)), STORE_URL(env),
+            outgoingHttp
         )
     )
 
