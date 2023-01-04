@@ -12,7 +12,7 @@ import exploring.WarehouseSettings.STORE_API_USER
 import exploring.WarehouseSettings.STORE_URL
 import exploring.WebsiteSettings.NOTIFICATION_EMAIL_SENDER
 import exploring.WebsiteSettings.WAREHOUSE_URL
-import exploring.actors.WebsiteUser
+import exploring.actors.Customer
 import exploring.dto.Email
 import org.http4k.cloudnative.env.Environment.Companion.defaults
 import org.http4k.connect.amazon.AWS_ACCESS_KEY_ID
@@ -35,7 +35,7 @@ class ClusterTest : TracingTest() {
     val oauthCredentials = theInternet.cognito.registerOAuthClient(ClientId.of("apiGateway"))
 
     val commonEnv = defaults(
-        ApiGatewaySettings.DEBUG of true,
+        ApiGatewaySettings.DEBUG of false,
         AWS_REGION of Region.EU_WEST_1,
         AWS_ACCESS_KEY_ID of AccessKeyId.of("access-key-id"),
         AWS_SECRET_ACCESS_KEY of SecretAccessKey.of("secret-access-key"),
@@ -63,7 +63,7 @@ class ClusterTest : TracingTest() {
 
     private val cluster = Cluster(env, theInternet, events.then(::println))
 
-    private val user = WebsiteUser(events, cluster, Uri.of("http://api-gateway"))
+    private val user = Customer(events, cluster, Uri.of("http://api-gateway"), theInternet.emailInbox)
 
     @Test
     fun `can load stock list and order item`() {
@@ -74,6 +74,10 @@ class ClusterTest : TracingTest() {
             val itemId = catalogue.first()
             val orderId = order(itemId)
             expectThat(theInternet.departmentStore.orders[orderId]?.items).isEqualTo(listOf(itemId))
+
+            expectThat(user.emails()).isEqualTo(
+                listOf(NOTIFICATION_EMAIL_SENDER(env) to "Please collect your order using the code: 1")
+            )
         }
     }
 }

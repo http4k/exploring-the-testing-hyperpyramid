@@ -15,7 +15,7 @@ import org.http4k.template.ViewModel
 import org.http4k.template.renderToResponse
 
 fun PlaceOrder(hub: WebsiteHub, templates: TemplateRenderer) = "/order/{id}" bind POST to {
-    hub.order(Email.of("joe@foo.com"), Path.value(ItemId).of("id")(it))
+    hub.order(Email.of("joe@http4k.org"), Path.value(ItemId).of("id")(it))
         .map { templates.renderToResponse(OrderPlaced(it)) }
         .orThrow()
 }
