@@ -5,7 +5,11 @@ import exploring.dto.Email
 import exploring.dto.ItemId
 import exploring.dto.OrderId
 import org.http4k.core.HttpHandler
+import org.http4k.core.Method.GET
+import org.http4k.core.Request
+import org.http4k.core.Status.Companion.OK
 import org.http4k.core.Uri
+import org.http4k.core.extend
 import org.http4k.events.Events
 import org.http4k.webdriver.Http4kWebDriver
 import org.openqa.selenium.By
@@ -32,6 +36,8 @@ class Customer(
         (findElements(By.tagName("form")) ?: emptyList())
             .map { ItemId.of(it.getAttribute("action").substringAfterLast('/')) }
     }
+
+    fun canSeeImage(id: ItemId) = http(Request(GET, baseUri.extend(Uri.of("/img/$id")))).status == OK
 
     fun order(id: ItemId): OrderId = with(browser) {
         findElement(By.id("ITEM$id"))?.submit()

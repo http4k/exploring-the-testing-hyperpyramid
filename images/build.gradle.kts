@@ -1,8 +1,7 @@
 dependencies {
     api(project(":infra"))
-
-    api(Http4k.securityOauth)
+    api(libs.http4k.connect.amazon.s3)
 
     testFixturesApi(testFixtures(project(":infra")))
-    testFixturesApi(libs.http4k.connect.amazon.cognito.fake)
+    testFixturesApi(libs.http4k.connect.amazon.s3.fake)
 }

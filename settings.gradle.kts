@@ -4,6 +4,7 @@ plugins {
 
 include("api-gateway")
 include("e2e-cluster")
+include("images")
 include("infra")
 include("warehouse")
 include("website")

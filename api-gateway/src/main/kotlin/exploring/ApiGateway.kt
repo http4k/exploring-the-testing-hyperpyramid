@@ -1,6 +1,7 @@
 package exploring
 
 import exploring.ApiGatewaySettings.DEBUG
+import exploring.ApiGatewaySettings.IMAGES_URL
 import exploring.ApiGatewaySettings.WEBSITE_URL
 import exploring.app.AppEvents
 import exploring.app.AppIncomingHttp
@@ -39,13 +40,11 @@ fun ApiGateway(
         DEBUG(env),
         appEvents, routes(
             "/oauth/callback" bind GET to oAuthProvider.callback,
-            oAuthProvider.authFilter.then(
-                routes(
-                    { _: Request -> true }.asRouter() bind
-                        SetHostFrom(WEBSITE_URL(env))
-                            .then(outgoingHttp),
-                )
-            )
+            "/img/{.+}" bind SetHostFrom(IMAGES_URL(env)).then(outgoingHttp),
+            { _: Request -> true }.asRouter() bind
+                oAuthProvider.authFilter
+                    .then(SetHostFrom(WEBSITE_URL(env)))
+                    .then(outgoingHttp)
         )
     )
 }

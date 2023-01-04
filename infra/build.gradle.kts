@@ -1,5 +1,3 @@
-description = "Infra"
-
 dependencies {
     api(platform(libs.http4k.connect.bom))
     api(platform(libs.forkhandles.bom))

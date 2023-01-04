@@ -1,6 +1,7 @@
 package exploring
 
 import org.http4k.connect.amazon.cognito.FakeCognito
+import org.http4k.connect.amazon.s3.FakeS3
 import org.http4k.connect.amazon.ses.EmailMessage
 import org.http4k.connect.amazon.ses.FakeSES
 import org.http4k.connect.storage.InMemory
@@ -15,15 +16,17 @@ class TheInternet : RoutingHttpHandler {
     private val emails = Storage.InMemory<List<EmailMessage>>()
 
     val ses = FakeSES(emails)
+    val s3 = FakeS3()
     val cognito = FakeCognito()
     val departmentStore = FakeDepartmentStore()
 
     val emailInbox = SESEmails(emails)
 
     private val http = reverseProxyRouting(
-        "email" to ses,
         "cognito" to cognito,
-        "dept-store" to departmentStore
+        "dept-store" to departmentStore,
+        "email" to ses,
+        "s3" to s3
     )
 
     override fun invoke(p1: Request) = http(p1)

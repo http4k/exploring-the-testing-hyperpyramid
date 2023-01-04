@@ -20,6 +20,7 @@ fun Cluster(
 
     val internalNetworkAccess = reverseProxyRouting(
         "api-gateway" to ApiGateway(env, events, clock, networkAccess),
+        "images" to Images(env, events, clock, networkAccess),
         "warehouse" to Warehouse(env, events, clock, networkAccess, Inventory.InMemory(events, clock)),
         "website" to Website(env, events, clock, networkAccess)
     )

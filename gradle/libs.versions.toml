@@ -10,19 +10,19 @@ http4k-connect = "3.26.3.0"
 
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
-gradle-test-logger-plugin = "com.adarshr:gradle-test-logger-plugin:_"
+gradle-test-logger-plugin = "com.adarshr:gradle-test-logger-plugin:3.2.0"
 
 kotlin-scripting-compiler-embeddable = { group = "org.jetbrains.kotlin", name = "kotlin-scripting-compiler-embeddable", version.ref = "kotlin" }
 
 http4k-connect-bom = { group = "org.http4k", name = "http4k-connect-bom", version.ref = "http4k-connect" }
 
-http4k-connect-amazon-s3-fake = { module = "org.http4k:http4k-connect-amazon-s3-fake" }
+http4k-connect-amazon-s3-fake = { group = "org.http4k", name = "http4k-connect-amazon-s3-fake", version.ref = "http4k-connect" }
 
 http4k-connect-amazon-dynamodb-fake = { module = "org.http4k:http4k-connect-amazon-dynamodb-fake" }
 
 http4k-connect-amazon-sqs-fake = { module = "org.http4k:http4k-connect-amazon-sqs-fake" }
 
-http4k-connect-amazon-s3 = { module = "org.http4k:http4k-connect-amazon-s3" }
+http4k-connect-amazon-s3 = { group = "org.http4k", name = "http4k-connect-amazon-s3", version.ref = "http4k-connect" }
 
 http4k-connect-amazon-dynamodb = { module = "org.http4k:http4k-connect-amazon-dynamodb" }
 
@@ -32,17 +32,17 @@ http4k-connect-amazon-sns-fake = { group = "org.http4k", name = "http4k-connect-
 
 http4k-connect-amazon-sns = { group = "org.http4k", name = "http4k-connect-amazon-sns", version.ref = "http4k-connect" }
 
-forkhandles-bom = "dev.forkhandles:forkhandles-bom:_"
+forkhandles-bom = "dev.forkhandles:forkhandles-bom:2.3.0.0"
 
-values4k = "dev.forkhandles:values4k:_"
+values4k = "dev.forkhandles:values4k:2.3.0.0"
 
-h2 = "com.h2database:h2:_"
+h2 = "com.h2database:h2:2.1.214"
 
 hikari-cp = "hikari-cp:hikari-cp:3.0.1"
 
 http4k-connect-storage-jdbc = { group = "org.http4k", name = "http4k-connect-storage-jdbc", version.ref = "http4k-connect" }
 
-hikaricp = "com.zaxxer:HikariCP:_"
+hikaricp = "com.zaxxer:HikariCP:5.0.1"
 
 http4k-connect-amazon-ses = { group = "org.http4k", name = "http4k-connect-amazon-ses", version.ref = "http4k-connect" }
 
