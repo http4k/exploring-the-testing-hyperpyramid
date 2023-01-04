@@ -2,8 +2,10 @@ package exploring
 
 import exploring.ApiGatewaySettings.API_GATEWAY_URL
 import exploring.ApiGatewaySettings.DEBUG
+import exploring.ApiGatewaySettings.OAUTH_URL
 import exploring.actors.Customer
 import org.http4k.cloudnative.env.Environment.Companion.defaults
+import org.http4k.connect.amazon.core.model.Region.Companion.EU_WEST_1
 import org.http4k.core.Uri
 import org.http4k.events.then
 import org.junit.jupiter.api.Test
@@ -17,6 +19,7 @@ class ClusterTest : TracingTest() {
     private val env = defaults(
         DEBUG of false,
         API_GATEWAY_URL of Uri.of("http://api-gateway"),
+        OAUTH_URL of Uri.of("http://cognito-idp.$EU_WEST_1.amazonaws.com"),
     )
 
     private val cluster = Cluster(env, theInternet, events.then(::println))
