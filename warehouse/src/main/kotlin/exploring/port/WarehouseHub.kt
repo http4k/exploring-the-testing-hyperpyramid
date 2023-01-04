@@ -27,7 +27,7 @@ class WarehouseHub(
                         .flatMap {
                             when (it) {
                                 null -> Success(NotFound)
-                                else -> departmentStore.collection(itemPickup.user, itemPickup.id)
+                                else -> departmentStore.collection(itemPickup.customer, itemPickup.id)
                                     .map { Sent(it) }
                             }
                         }

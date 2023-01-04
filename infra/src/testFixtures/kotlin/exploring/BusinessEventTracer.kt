@@ -13,8 +13,8 @@ fun BusinessEventTracer(actorResolver: ActorResolver) = Tracer { parent, _, _ ->
         ?.let {
             FireAndForget(
                 actorResolver(it),
-                Actor("events", Queue),
-                (it.event as BusinessEvent).name,
+                Actor("event-stream", Queue),
+                (it.event as BusinessEvent).javaClass.simpleName,
                 emptyList()
             )
         }
