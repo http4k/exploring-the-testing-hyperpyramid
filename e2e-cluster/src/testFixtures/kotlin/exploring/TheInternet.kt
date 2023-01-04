@@ -18,10 +18,10 @@ class TheInternet : RoutingHttpHandler {
 
     private val emails = Storage.InMemory<List<EmailMessage>>()
 
-    val ses = FakeSES(emails)
-    val s3 = FakeS3()
     val cognito = FakeCognito()
     val departmentStore = FakeDepartmentStore()
+    val s3 = FakeS3()
+    val ses = FakeSES(emails)
 
     val emailInbox = SESEmails(emails)
 
