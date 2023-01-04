@@ -26,5 +26,5 @@ fun ApiGatewayOAuthProvider(
     outgoingHttp,
     API_GATEWAY_URL(env).extend(Uri.of("/oauth/callback")),
     emptyList(),
-    InsecureCookieBasedOAuthPersistence("exploring")
+    InsecureCookieBasedOAuthPersistence("")
 )
