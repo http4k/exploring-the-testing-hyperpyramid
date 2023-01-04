@@ -1,9 +1,12 @@
 package exploring
 
+import exploring.actors.Emails
+import exploring.dto.Email
 import org.http4k.connect.amazon.cognito.FakeCognito
 import org.http4k.connect.amazon.s3.FakeS3
 import org.http4k.connect.amazon.ses.EmailMessage
 import org.http4k.connect.amazon.ses.FakeSES
+import org.http4k.connect.amazon.ses.model.EmailAddress
 import org.http4k.connect.storage.InMemory
 import org.http4k.connect.storage.Storage
 import org.http4k.core.Filter
@@ -34,4 +37,11 @@ class TheInternet : RoutingHttpHandler {
     override fun withBasePath(new: String) = http.withBasePath(new)
     override fun withFilter(new: Filter) = http.withFilter(new)
 }
+
+private fun SESEmails(emails: Storage<List<EmailMessage>>) = Emails { email ->
+    emails.keySet()
+        .flatMap { emails[it]!!.filter { it.to.contains(EmailAddress.of(email.value)) } }
+        .map { Email.of(it.source.value) to ((it.message.html ?: it.message.text)?.value ?: error("!")) }
+}
+
 
