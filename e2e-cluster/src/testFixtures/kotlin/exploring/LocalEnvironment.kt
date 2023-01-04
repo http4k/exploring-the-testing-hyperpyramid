@@ -10,19 +10,19 @@ import org.http4k.core.then
 import org.http4k.server.SunHttp
 import org.http4k.server.asServer
 
-private val debug = true
+private const val DEBUG_FLAG = true
 
 fun main() {
     val theInternet = TheInternet()
 
     val env = Environment.defaults(
-        DEBUG of debug,
+        DEBUG of DEBUG_FLAG,
         API_GATEWAY_URL of Uri.of("http://localhost:10000"),
         OAUTH_URL of Uri.of("http://localhost:11000"),
     )
 
     Cluster(env, theInternet).asServer(SunHttp(10000)).start()
-    Debug(debug).then(theInternet.cognito).asServer(SunHttp(11000)).start()
+    Debug(DEBUG_FLAG).then(theInternet.cognito).asServer(SunHttp(11000)).start()
 
     println("Browse to ${API_GATEWAY_URL(env)}")
 }
