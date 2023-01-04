@@ -8,8 +8,6 @@ import exploring.ApiGatewaySettings.OAUTH_CLIENT_SECRET
 import exploring.ApiGatewaySettings.OAUTH_URL
 import exploring.ApiGatewaySettings.WEBSITE_URL
 import exploring.ImageSettings.IMAGE_BUCKET
-import exploring.WarehouseSettings.DATABASE_DRIVER
-import exploring.WarehouseSettings.DATABASE_URL
 import exploring.WarehouseSettings.STORE_API_PASSWORD
 import exploring.WarehouseSettings.STORE_API_USER
 import exploring.WarehouseSettings.STORE_URL
@@ -79,8 +77,6 @@ class ClusterTest : TracingTest() {
         WAREHOUSE_URL of Uri.of("http://warehouse"),
     )
     val warehouseEnv = defaults(
-        DATABASE_URL of "jdbc:h2:mem:warehouse;DB_CLOSE_DELAY=-1",
-        DATABASE_DRIVER of "org.h2.Driver",
         STORE_URL of Uri.of("http://dept-store"),
         STORE_API_USER of "user",
         STORE_API_PASSWORD of "password"
