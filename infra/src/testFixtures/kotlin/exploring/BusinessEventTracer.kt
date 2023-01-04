@@ -14,7 +14,7 @@ fun BusinessEventTracer(actorResolver: ActorResolver) = Tracer { parent, _, _ ->
             FireAndForget(
                 actorResolver(it),
                 Actor("event-stream", Queue),
-                (it.event as BusinessEvent).javaClass.simpleName,
+                (it.event as BusinessEvent).toString(),
                 emptyList()
             )
         }
