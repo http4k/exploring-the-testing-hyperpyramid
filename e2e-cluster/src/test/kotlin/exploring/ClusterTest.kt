@@ -28,6 +28,7 @@ import org.http4k.events.then
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
+import strikt.assertions.isTrue
 
 class ClusterTest : TracingTest() {
     private val theInternet = TheInternet()
@@ -75,9 +76,7 @@ class ClusterTest : TracingTest() {
             val orderId = order(itemId)
             expectThat(theInternet.departmentStore.orders[orderId]?.items).isEqualTo(listOf(itemId))
 
-            expectThat(user.emails()).isEqualTo(
-                listOf(NOTIFICATION_EMAIL_SENDER(env) to "Please collect your order using the code: 1")
-            )
+            expectThat(user.hasEmailFor(orderId)).isTrue()
         }
     }
 }

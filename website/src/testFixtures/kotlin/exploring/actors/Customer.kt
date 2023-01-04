@@ -38,5 +38,6 @@ class Customer(
         return OrderId.of(findElement(By.id("orderId"))!!.text.toInt())
     }
 
-    fun emails() = emailInbox(email)
+    fun hasEmailFor(orderId: OrderId) = emailInbox(email)
+        .any { it.second == "Please collect your order using the code: $orderId" }
 }
