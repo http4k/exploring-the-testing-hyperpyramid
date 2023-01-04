@@ -2,7 +2,6 @@ package exploring
 
 import dev.forkhandles.result4k.valueOrNull
 import exploring.ApiGatewaySettings.API_GATEWAY_URL
-import exploring.ApiGatewaySettings.DEBUG
 import exploring.ApiGatewaySettings.IMAGES_URL
 import exploring.ApiGatewaySettings.OAUTH_CLIENT_ID
 import exploring.ApiGatewaySettings.OAUTH_CLIENT_SECRET
@@ -54,7 +53,6 @@ fun Cluster(
     clock: Clock = Clock.systemUTC()
 ): HttpHandler {
     val baseEnv = customEnv overrides defaults(
-        DEBUG of false,
         AWS_REGION of EU_WEST_1,
         AWS_ACCESS_KEY_ID of AccessKeyId.of("access-key-id"),
         AWS_SECRET_ACCESS_KEY of SecretAccessKey.of("secret-access-key"),

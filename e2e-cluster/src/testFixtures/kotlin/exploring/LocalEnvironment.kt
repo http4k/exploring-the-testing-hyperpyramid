@@ -10,7 +10,7 @@ import org.http4k.core.then
 import org.http4k.server.SunHttp
 import org.http4k.server.asServer
 
-private const val DEBUG_FLAG = true
+private const val DEBUG_FLAG = false
 
 fun main() {
     val theInternet = TheInternet()
