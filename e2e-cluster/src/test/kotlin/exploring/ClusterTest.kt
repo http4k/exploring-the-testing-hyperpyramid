@@ -31,27 +31,22 @@ import strikt.assertions.isTrue
 class ClusterTest : TracingTest() {
     private val theInternet = TheInternet()
 
-    val commonEnv = defaults(
+    private val env = defaults(
         DEBUG of false,
         AWS_REGION of EU_WEST_1,
         AWS_ACCESS_KEY_ID of AccessKeyId.of("access-key-id"),
         AWS_SECRET_ACCESS_KEY of SecretAccessKey.of("secret-access-key"),
-    )
-
-    val clusterEnv = defaults(
         API_GATEWAY_URL of Uri.of("http://api-gateway"),
-        IMAGES_URL of Uri.of("http://images"),
-        WEBSITE_URL of Uri.of("http://website"),
-        OAUTH_URL of Uri.of("http://cognito-idp.$EU_WEST_1.amazonaws.com"),
         IMAGE_BUCKET of BucketName.of("images"),
+        IMAGES_URL of Uri.of("http://images"),
+        OAUTH_URL of Uri.of("http://cognito-idp.$EU_WEST_1.amazonaws.com"),
         NOTIFICATION_EMAIL_SENDER of Email.of("orders@http4k.org"),
-        WAREHOUSE_URL of Uri.of("http://warehouse"),
         STORE_URL of Uri.of("http://dept-store"),
         STORE_API_USER of "user",
-        STORE_API_PASSWORD of "password"
+        STORE_API_PASSWORD of "password",
+        WAREHOUSE_URL of Uri.of("http://warehouse"),
+        WEBSITE_URL of Uri.of("http://website"),
     )
-
-    val env = commonEnv overrides clusterEnv
 
     private val cluster = Cluster(env, theInternet, events.then(::println))
 
