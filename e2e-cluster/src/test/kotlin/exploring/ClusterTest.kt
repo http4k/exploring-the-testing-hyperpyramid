@@ -8,6 +8,7 @@ import org.http4k.cloudnative.env.Environment.Companion.defaults
 import org.http4k.connect.amazon.core.model.Region.Companion.EU_WEST_1
 import org.http4k.core.Uri
 import org.http4k.events.then
+import org.http4k.filter.debug
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
@@ -22,7 +23,7 @@ class ClusterTest : TracingTest() {
         OAUTH_URL of Uri.of("http://cognito-idp.$EU_WEST_1.amazonaws.com"),
     )
 
-    private val cluster = Cluster(env, theInternet, events.then(::println))
+    private val cluster = Cluster(env, theInternet.debug(), events.then(::println))
 
     private val user = Customer(events, cluster, API_GATEWAY_URL(env), theInternet.emailInbox)
 
