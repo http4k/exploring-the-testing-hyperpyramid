@@ -40,7 +40,7 @@ fun ApiGateway(
         DEBUG(env),
         appEvents, routes(
             "/oauth/callback" bind GET to oAuthProvider.callback,
-            { r: Request -> true }.asRouter() bind
+            { _: Request -> true }.asRouter() bind
                 oAuthProvider.authFilter
                     .then(SetHostFrom(WEBSITE_URL(env)))
                     .then(outgoingHttp),

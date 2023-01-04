@@ -25,11 +25,11 @@ import org.http4k.filter.ClientFilters.SetHostFrom
 fun DepartmentStore.Companion.Http(
     credentials: Credentials,
     base: Uri,
-    http: HttpHandler
+    rawHttp: HttpHandler
 ): DepartmentStore {
     val http = SetHostFrom(base)
         .then(BasicAuth(credentials))
-        .then(http)
+        .then(rawHttp)
 
     return object : DepartmentStore {
         override fun collection(user: Email, item: ItemId): Result4k<OrderId, Exception> {
