@@ -67,7 +67,7 @@ class ClusterTest : TracingTest() {
         API_GATEWAY_URL of Uri.of("http://api-gateway"),
         IMAGES_URL of Uri.of("http://images"),
         WEBSITE_URL of Uri.of("http://website"),
-        OAUTH_URL of Uri.of("http://cognito"),
+        OAUTH_URL of Uri.of("http://cognito-idp.eu-west-1.amazonaws.com"),
         OAUTH_CLIENT_ID of oauthCredentials.user,
         OAUTH_CLIENT_SECRET of oauthCredentials.password,
     )
