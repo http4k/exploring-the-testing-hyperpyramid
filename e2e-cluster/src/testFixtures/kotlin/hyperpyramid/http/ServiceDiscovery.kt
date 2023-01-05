@@ -2,7 +2,7 @@ package hyperpyramid.http
 
 import org.http4k.core.HttpHandler
 import org.http4k.core.Uri
-import org.http4k.server.SunHttp
+import org.http4k.server.Undertow
 import org.http4k.server.asServer
 
 /**
@@ -20,6 +20,6 @@ fun ServiceDiscovery(overrides: List<Pair<String, Uri>> = emptyList()) = Service
 }
 
 fun HttpHandler.start(serviceDiscovery: ServiceDiscovery, name: String) {
-    asServer(SunHttp(serviceDiscovery(name).port!!)).start()
+    asServer(Undertow(serviceDiscovery(name).port!!)).start()
     println(name + " started at " + serviceDiscovery(name))
 }

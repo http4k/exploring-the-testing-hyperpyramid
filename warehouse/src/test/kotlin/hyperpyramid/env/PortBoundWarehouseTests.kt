@@ -11,7 +11,7 @@ import org.http4k.client.JavaHttpClient
 import org.http4k.core.Uri
 import org.http4k.core.then
 import org.http4k.filter.ClientFilters.SetBaseUriFrom
-import org.http4k.server.SunHttp
+import org.http4k.server.Undertow
 import org.http4k.server.asServer
 import org.http4k.testing.ApprovalTest
 import org.junit.jupiter.api.AfterEach
@@ -29,7 +29,7 @@ class ServerWarehouseTests :
     }
 
     private val server by lazy {
-        Warehouse(WarehouseTestEnv, FakeDepartmentStore(), Inventory.InMemory()).asServer(SunHttp(0))
+        Warehouse(WarehouseTestEnv, FakeDepartmentStore(), Inventory.InMemory()).asServer(Undertow(0))
     }
 
     @BeforeEach

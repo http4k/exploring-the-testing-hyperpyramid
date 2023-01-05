@@ -1,9 +1,9 @@
 package hyperpyramid
 
-import org.http4k.server.SunHttp
+import org.http4k.server.Undertow
 import org.http4k.server.asServer
 
 fun main() {
-    Website().asServer(SunHttp(8000)).start()
+    Website().asServer(Undertow(8000)).start()
 }
 
