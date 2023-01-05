@@ -75,10 +75,10 @@ fun Cluster(
     val apiGateway = ApiGateway(env, events, clock, networkAccess)
     networkAccess.http = routes(
         reverseProxyRouting(
-            API_GATEWAY_URL(env).host to apiGateway,
-            IMAGES_URL(env).host to Images(env, events, clock, networkAccess),
-            WAREHOUSE_URL(env).host to Warehouse(env, events, clock, networkAccess, Inventory.InMemory(events, clock)),
-            WEBSITE_URL(env).host to Website(env, events, clock, networkAccess)
+            API_GATEWAY_URL(env).authority to apiGateway,
+            IMAGES_URL(env).authority to Images(env, events, clock, networkAccess),
+            WAREHOUSE_URL(env).authority to Warehouse(env, events, clock, networkAccess, Inventory.InMemory(events, clock)),
+            WEBSITE_URL(env).authority to Website(env, events, clock, networkAccess)
         ),
         { _: Request -> true }.asRouter() bind theInternet,
     )
