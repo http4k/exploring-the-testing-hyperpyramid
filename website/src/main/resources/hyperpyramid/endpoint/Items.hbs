@@ -2,12 +2,14 @@
 <table>
     <tr>
         <th>Name</th>
+        <th>Image</th>
         <th>Quantity</th>
         <th>Order</th>
     </tr>
     {{#each inventory}}
         <tr>
             <td>{{name}}</td>
+            <td><img width="100" src="/img/{{id}}"></td>
             <td>{{stock}}</td>
             <td>
                 <form method="POST" id="ITEM{{id}}" action="/order/{{id}}">

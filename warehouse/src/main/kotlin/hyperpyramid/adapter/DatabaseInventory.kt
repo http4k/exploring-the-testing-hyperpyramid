@@ -19,9 +19,7 @@ fun Inventory.Companion.Database(env: Environment): Inventory {
         jdbcUrl = DATABASE_URL(env)
     })
 
-    transaction(Database.connect(ds)) {
-        create(StorageTable("InventoryItem"))
-    }
+    transaction(Database.connect(ds)) { create(StorageTable("InventoryItem")) }
 
     return Inventory.Storage(Storage.Jdbc(ds))
 }

@@ -7,13 +7,9 @@ import hyperpyramid.port.Inventory
 import org.http4k.connect.storage.Storage
 
 fun Inventory.Companion.Storage(storage: Storage<InventoryItem>) = object : Inventory {
-    override fun items() = resultFrom {
-        storage.keySet("").map { storage[it]!! }
-    }
+    override fun items() = resultFrom { storage.keySet("").map { storage[it]!! } }
 
-    override fun store(item: InventoryItem) = resultFrom {
-        storage[item.id.value] = item
-    }
+    override fun store(item: InventoryItem) = resultFrom { storage[item.id.value] = item }
 
     override fun adjust(id: ItemId, amount: Int) = resultFrom {
         storage[id.value]

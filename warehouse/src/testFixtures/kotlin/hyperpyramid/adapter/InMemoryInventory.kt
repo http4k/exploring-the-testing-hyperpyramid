@@ -23,7 +23,7 @@ fun Inventory.Companion.InMemory(events: Events, clock: Clock): Inventory {
     return newProxyInstance(Inventory::class.java.classLoader, arrayOf(Inventory::class.java)) { _, m, args ->
         DbCall(m.name)
         AppEvents("warehouse", clock, events)(DbCall(m.name))
-        m.invoke(target, *args ?: arrayOf())
+        m(target, *args ?: arrayOf())
     } as Inventory
 }
 
