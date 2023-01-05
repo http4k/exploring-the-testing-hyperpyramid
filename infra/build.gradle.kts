@@ -1,7 +1,7 @@
 dependencies {
+    api(platform("org.http4k:http4k-bom:_"))
     api(platform(libs.http4k.connect.bom))
     api(platform(libs.forkhandles.bom))
-    api(platform(Http4k.bom))
 
     api(Http4k.cloudnative)
     api(Http4k.core)
@@ -13,4 +13,5 @@ dependencies {
 
     testFixturesApi(Http4k.incubator)
     testFixturesApi(Http4k.testing.strikt)
+    testFixturesApi(Http4k.testing.approval)
 }
