@@ -38,17 +38,19 @@ import org.http4k.connect.amazon.s3.model.BucketName
 import org.http4k.connect.amazon.s3.putObject
 import org.http4k.core.Credentials
 import org.http4k.core.HttpHandler
+import org.http4k.core.Request
 import org.http4k.core.Uri
 import org.http4k.core.with
 import org.http4k.events.Events
-import org.http4k.routing.RoutingHttpHandler
+import org.http4k.routing.asRouter
+import org.http4k.routing.bind
 import org.http4k.routing.reverseProxyRouting
 import org.http4k.routing.routes
 import java.time.Clock
 
 fun Cluster(
     customEnv: Environment,
-    theInternet: RoutingHttpHandler,
+    theInternet: HttpHandler,
     events: Events = ::println,
     clock: Clock = Clock.systemUTC()
 ): HttpHandler {
@@ -56,7 +58,7 @@ fun Cluster(
         AWS_REGION of EU_WEST_1,
         AWS_ACCESS_KEY_ID of AccessKeyId.of("access-key-id"),
         AWS_SECRET_ACCESS_KEY of SecretAccessKey.of("secret-access-key"),
-        IMAGE_BUCKET of BucketName.of("images"),
+        IMAGE_BUCKET of BucketName.of("image-cache"),
         IMAGES_URL of Uri.of("http://images"),
         NOTIFICATION_EMAIL_SENDER of Email.of("orders@http4k.org"),
         STORE_URL of Uri.of("http://dept-store"),
@@ -72,13 +74,13 @@ fun Cluster(
 
     val apiGateway = ApiGateway(env, events, clock, networkAccess)
     networkAccess.http = routes(
-        theInternet,
         reverseProxyRouting(
             API_GATEWAY_URL(env).host to apiGateway,
             IMAGES_URL(env).host to Images(env, events, clock, networkAccess),
             WAREHOUSE_URL(env).host to Warehouse(env, events, clock, networkAccess, Inventory.InMemory(events, clock)),
             WEBSITE_URL(env).host to Website(env, events, clock, networkAccess)
-        )
+        ),
+        { _: Request -> true }.asRouter() bind theInternet,
     )
 
     return networkAccess
