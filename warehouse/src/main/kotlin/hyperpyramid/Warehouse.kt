@@ -29,10 +29,10 @@ import java.time.Clock.systemUTC
 
 fun Warehouse(
     env: Environment = ENV,
-    events: Events = AutoMarshallingEvents(Json),
-    clock: Clock = systemUTC(),
     http: HttpHandler = JavaHttpClient(),
-    inventory: Inventory = Inventory.Database(env)
+    inventory: Inventory = Inventory.Database(env),
+    events: Events = AutoMarshallingEvents(Json),
+    clock: Clock = systemUTC()
 ): RoutingHttpHandler {
     val appEvents = AppEvents("warehouse", clock, events)
     val outgoingHttp = AppOutgoingHttp(DEBUG(env), appEvents, http)
