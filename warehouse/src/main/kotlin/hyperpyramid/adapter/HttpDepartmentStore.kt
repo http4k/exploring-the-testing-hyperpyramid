@@ -39,7 +39,7 @@ fun DepartmentStore.Companion.Http(
             )
             return when {
                 resp.status.successful -> Success(OrderId.parse(resp.bodyString()))
-                else -> Failure(Exception("oh no!"))
+                else -> Failure(Exception(resp.status.description))
             }
         }
 
@@ -49,7 +49,7 @@ fun DepartmentStore.Companion.Http(
             return when {
                 resp.status.successful -> Success(Body.auto<Order>().toLens()(resp))
                 resp.status == NOT_FOUND -> Success(null)
-                else -> Failure(Exception("oh no!"))
+                else -> Failure(Exception(resp.status.description))
             }
         }
     }

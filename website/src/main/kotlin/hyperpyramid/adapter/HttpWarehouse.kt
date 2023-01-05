@@ -28,7 +28,7 @@ fun Warehouse.Companion.Http(warehouseUri: Uri, rawHttp: HttpHandler) = object :
         val resp = http(Request(GET, "/v1/items"))
         return when {
             resp.status.successful -> Success(Body.auto<List<InventoryItem>>().toLens()(resp))
-            else -> Failure(Exception("oh no!"))
+            else -> Failure(Exception(resp.status.description))
         }
     }
 
@@ -39,7 +39,7 @@ fun Warehouse.Companion.Http(warehouseUri: Uri, rawHttp: HttpHandler) = object :
         )
         return when {
             resp.status.successful -> resultFrom { OrderId.parse(resp.bodyString()) }
-            else -> Failure(Exception("oh no!"))
+            else -> Failure(Exception(resp.status.description))
         }
     }
 }
