@@ -26,9 +26,9 @@ fun main() {
 
     val env = theInternet.setupCloudEnvironment()
 
-    val realHttp = RealHttpFor(services)
+    val http = ProxyCallToLiveServerFor(services)
 
-    Cluster(env, services, realHttp).apply {
+    Cluster(env, services, http).apply {
         apiGateway.start(services, "api-gateway")
         images.start(services, "images")
         warehouse.start(services, "warehouse")

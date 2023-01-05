@@ -20,7 +20,7 @@ class PortBoundClusterTest : LoadStockList {
 
     override val theInternet = TheInternet(services)
 
-    private val http = RealHttpFor(services)
+    private val http = ProxyCallToLiveServerFor(services)
 
     private val cluster = Cluster(theInternet.setupCloudEnvironment(), services, http)
 
