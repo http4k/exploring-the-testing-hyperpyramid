@@ -2,11 +2,12 @@ package exploring.env
 
 import exploring.Cluster
 import exploring.LoadStockList
-import exploring.LocalhostServiceDiscovery
 import exploring.TheInternet
 import exploring.actors.Customer
+import exploring.http.LocalhostServiceDiscovery
+import exploring.http.ProxyCallToLiveServerFor
+import exploring.http.start
 import exploring.setup.setupCloudEnvironment
-import exploring.start
 import org.junit.jupiter.api.BeforeEach
 import kotlin.random.Random.Default.nextInt
 

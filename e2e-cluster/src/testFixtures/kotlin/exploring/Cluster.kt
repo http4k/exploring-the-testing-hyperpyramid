@@ -1,7 +1,6 @@
 package exploring
 
 import exploring.ApiGatewaySettings.API_GATEWAY_URL
-import exploring.ApiGatewaySettings.DEBUG
 import exploring.ApiGatewaySettings.IMAGES_URL
 import exploring.ApiGatewaySettings.OAUTH_URL
 import exploring.ApiGatewaySettings.WEBSITE_URL
@@ -12,6 +11,8 @@ import exploring.WebsiteSettings.NOTIFICATION_EMAIL_SENDER
 import exploring.WebsiteSettings.WAREHOUSE_URL
 import exploring.adapter.InMemory
 import exploring.dto.Email
+import exploring.http.NetworkAccess
+import exploring.http.ServiceDiscovery
 import exploring.port.Inventory
 import org.http4k.cloudnative.env.Environment
 import org.http4k.cloudnative.env.Environment.Companion.defaults
@@ -34,12 +35,11 @@ class Cluster(
     customEnv: Environment,
     services: ServiceDiscovery,
     theInternet: HttpHandler,
-    events: Events = ::println,
+    events: Events = {},
     clock: Clock = Clock.systemUTC()
 ) : HttpHandler {
 
     private val env = customEnv overrides defaults(
-        DEBUG of true,
         AWS_REGION of EU_WEST_1,
         AWS_ACCESS_KEY_ID of AccessKeyId.of("access-key-id"),
         AWS_SECRET_ACCESS_KEY of SecretAccessKey.of("secret-access-key"),

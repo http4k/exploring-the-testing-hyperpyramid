@@ -1,10 +1,10 @@
 package exploring.env
 
 import exploring.Cluster
-import exploring.LocalhostServiceDiscovery
 import exploring.TheInternet
+import exploring.http.LocalhostServiceDiscovery
+import exploring.http.start
 import exploring.setup.setupCloudEnvironment
-import exploring.start
 
 /**
  * This starts up the minimum amount of servers: the ApiGateway and Cognito. Everything else

@@ -2,10 +2,10 @@ package exploring.env
 
 import exploring.Cluster
 import exploring.LoadStockList
-import exploring.ServiceDiscovery
 import exploring.TheInternet
 import exploring.TracingTest
 import exploring.actors.Customer
+import exploring.http.ServiceDiscovery
 import exploring.setup.setupCloudEnvironment
 
 class InMemoryClusterTest : TracingTest(), LoadStockList {

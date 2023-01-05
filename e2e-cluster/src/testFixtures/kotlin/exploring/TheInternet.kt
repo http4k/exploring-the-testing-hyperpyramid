@@ -2,6 +2,7 @@ package exploring
 
 import exploring.actors.Emails
 import exploring.dto.Email
+import exploring.http.ServiceDiscovery
 import org.http4k.connect.amazon.cognito.FakeCognito
 import org.http4k.connect.amazon.s3.FakeS3
 import org.http4k.connect.amazon.ses.EmailMessage

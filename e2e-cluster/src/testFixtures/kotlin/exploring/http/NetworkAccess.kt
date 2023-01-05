@@ -1,4 +1,4 @@
-package exploring
+package exploring.http
 
 import org.http4k.core.HttpHandler
 import org.http4k.core.Request

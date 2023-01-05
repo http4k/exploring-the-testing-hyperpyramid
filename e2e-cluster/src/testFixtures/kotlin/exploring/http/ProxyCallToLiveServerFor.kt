@@ -1,6 +1,5 @@
-package exploring.env
+package exploring.http
 
-import exploring.ServiceDiscovery
 import org.http4k.client.JavaHttpClient
 import org.http4k.core.then
 import org.http4k.filter.ClientFilters.SetBaseUriFrom

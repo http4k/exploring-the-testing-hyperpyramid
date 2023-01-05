@@ -1,10 +1,11 @@
 package exploring.env
 
 import exploring.Cluster
-import exploring.LocalhostServiceDiscovery
 import exploring.TheInternet
+import exploring.http.LocalhostServiceDiscovery
+import exploring.http.ProxyCallToLiveServerFor
+import exploring.http.start
 import exploring.setup.setupCloudEnvironment
-import exploring.start
 
 
 /**
