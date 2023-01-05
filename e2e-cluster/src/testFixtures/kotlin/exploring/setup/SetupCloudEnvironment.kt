@@ -6,8 +6,9 @@ import org.http4k.cloudnative.env.Environment
 /**
  * Apply all setup functions to the cloud environment.
  */
-fun TheInternet.setupCloudEnvironmentUsing(vararg fn: CloudSetup) =
+fun TheInternet.setupCloudEnvironment(vararg fn: CloudSetup) =
     listOf(
+        ::SetRegion,
         ::PopulateImageServer,
         ::SetupOAuthClient
     )

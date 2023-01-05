@@ -39,7 +39,7 @@ class Cluster(
 ) : HttpHandler {
 
     private val env = customEnv overrides defaults(
-        DEBUG of true,
+        DEBUG of false,
         AWS_REGION of EU_WEST_1,
         AWS_ACCESS_KEY_ID of AccessKeyId.of("access-key-id"),
         AWS_SECRET_ACCESS_KEY of SecretAccessKey.of("secret-access-key"),
