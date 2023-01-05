@@ -6,6 +6,7 @@ import hyperpyramid.ApiGatewaySettings.WEBSITE_URL
 import hyperpyramid.app.AppEvents
 import hyperpyramid.app.AppIncomingHttp
 import hyperpyramid.app.AppOutgoingHttp
+import hyperpyramid.util.Json
 import org.http4k.client.JavaHttpClient
 import org.http4k.cloudnative.env.Environment
 import org.http4k.cloudnative.env.Environment.Companion.ENV
@@ -13,6 +14,7 @@ import org.http4k.core.HttpHandler
 import org.http4k.core.Method.GET
 import org.http4k.core.Request
 import org.http4k.core.then
+import org.http4k.events.AutoMarshallingEvents
 import org.http4k.events.Events
 import org.http4k.filter.ClientFilters.SetHostFrom
 import org.http4k.routing.asRouter
@@ -27,7 +29,7 @@ import java.time.Clock.systemUTC
  */
 fun ApiGateway(
     env: Environment = ENV,
-    events: Events = ::println,
+    events: Events = AutoMarshallingEvents(Json),
     clock: Clock = systemUTC(),
     http: HttpHandler = JavaHttpClient()
 ): HttpHandler {

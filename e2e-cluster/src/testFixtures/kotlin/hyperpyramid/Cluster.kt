@@ -14,6 +14,7 @@ import hyperpyramid.dto.Email
 import hyperpyramid.http.NetworkAccess
 import hyperpyramid.http.ServiceDiscovery
 import hyperpyramid.port.Inventory
+import hyperpyramid.util.Json
 import org.http4k.cloudnative.env.Environment
 import org.http4k.cloudnative.env.Environment.Companion.defaults
 import org.http4k.connect.amazon.AWS_ACCESS_KEY_ID
@@ -24,6 +25,7 @@ import org.http4k.connect.amazon.core.model.Region.Companion.EU_WEST_1
 import org.http4k.connect.amazon.core.model.SecretAccessKey
 import org.http4k.core.HttpHandler
 import org.http4k.core.Request
+import org.http4k.events.AutoMarshallingEvents
 import org.http4k.events.Events
 import org.http4k.routing.asRouter
 import org.http4k.routing.bind
@@ -35,7 +37,7 @@ class Cluster(
     customEnv: Environment,
     services: ServiceDiscovery,
     theInternet: HttpHandler,
-    events: Events = {},
+    events: Events = AutoMarshallingEvents(Json),
     clock: Clock = Clock.systemUTC()
 ) : HttpHandler {
 

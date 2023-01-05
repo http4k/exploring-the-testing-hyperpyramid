@@ -14,11 +14,13 @@ import hyperpyramid.endpoint.ListItems
 import hyperpyramid.port.DepartmentStore
 import hyperpyramid.port.Inventory
 import hyperpyramid.port.WarehouseHub
+import hyperpyramid.util.Json
 import org.http4k.client.JavaHttpClient
 import org.http4k.cloudnative.env.Environment
 import org.http4k.cloudnative.env.Environment.Companion.ENV
 import org.http4k.core.Credentials
 import org.http4k.core.HttpHandler
+import org.http4k.events.AutoMarshallingEvents
 import org.http4k.events.Events
 import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.routes
@@ -27,7 +29,7 @@ import java.time.Clock.systemUTC
 
 fun Warehouse(
     env: Environment = ENV,
-    events: Events = ::println,
+    events: Events = AutoMarshallingEvents(Json),
     clock: Clock = systemUTC(),
     http: HttpHandler = JavaHttpClient(),
     inventory: Inventory = Inventory.Database(env)
