@@ -1,16 +1,18 @@
 package exploring
 
 import exploring.ApiGatewaySettings.API_GATEWAY_URL
-import exploring.ApiGatewaySettings.DEBUG
 import exploring.ApiGatewaySettings.OAUTH_URL
-import exploring.app.Debug
+import exploring.ImageSettings.IMAGE_BUCKET
+import exploring.setup.PopulateImageServer
+import exploring.setup.SetupOAuthConnection
+import exploring.setup.invoke
 import org.http4k.cloudnative.env.Environment
+import org.http4k.connect.amazon.AWS_REGION
+import org.http4k.connect.amazon.core.model.Region.Companion.EU_WEST_1
+import org.http4k.connect.amazon.s3.model.BucketName
 import org.http4k.core.Uri
-import org.http4k.core.then
 import org.http4k.server.SunHttp
 import org.http4k.server.asServer
-
-private const val DEBUG_FLAG = true
 
 fun main() {
     val theInternet = TheInternet(
@@ -22,13 +24,17 @@ fun main() {
         )
     )
 
-    Debug(DEBUG_FLAG).then(theInternet.cognito).asServer(SunHttp(11000)).start()
+    theInternet.cognito.asServer(SunHttp(11000)).start()
 
-    val env = Environment.defaults(
-        DEBUG of DEBUG_FLAG,
+    val baseEnv = Environment.defaults(
+        AWS_REGION of EU_WEST_1,
+        IMAGE_BUCKET of BucketName.of("image-cache"),
         API_GATEWAY_URL of Uri.of("http://localhost:10000"),
         OAUTH_URL of Uri.of("http://localhost:11000"),
     )
+
+
+    val env = listOf(::SetupOAuthConnection, ::PopulateImageServer).map { it(theInternet) }(baseEnv)
 
     Cluster(env, theInternet).asServer(SunHttp(10000)).start()
 

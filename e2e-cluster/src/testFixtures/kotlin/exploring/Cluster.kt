@@ -1,12 +1,8 @@
 package exploring
 
-import dev.forkhandles.result4k.valueOrNull
 import exploring.ApiGatewaySettings.API_GATEWAY_URL
 import exploring.ApiGatewaySettings.IMAGES_URL
-import exploring.ApiGatewaySettings.OAUTH_CLIENT_ID
-import exploring.ApiGatewaySettings.OAUTH_CLIENT_SECRET
 import exploring.ApiGatewaySettings.WEBSITE_URL
-import exploring.ImageSettings.IMAGE_BUCKET
 import exploring.WarehouseSettings.STORE_API_PASSWORD
 import exploring.WarehouseSettings.STORE_API_USER
 import exploring.WarehouseSettings.STORE_URL
@@ -20,28 +16,13 @@ import org.http4k.cloudnative.env.Environment.Companion.defaults
 import org.http4k.connect.amazon.AWS_ACCESS_KEY_ID
 import org.http4k.connect.amazon.AWS_REGION
 import org.http4k.connect.amazon.AWS_SECRET_ACCESS_KEY
-import org.http4k.connect.amazon.cognito.Cognito
-import org.http4k.connect.amazon.cognito.Http
-import org.http4k.connect.amazon.cognito.createUserPool
-import org.http4k.connect.amazon.cognito.createUserPoolClient
-import org.http4k.connect.amazon.cognito.model.ClientName
-import org.http4k.connect.amazon.cognito.model.PoolName
 import org.http4k.connect.amazon.core.model.AccessKeyId
 import org.http4k.connect.amazon.core.model.Region.Companion.EU_WEST_1
 import org.http4k.connect.amazon.core.model.SecretAccessKey
-import org.http4k.connect.amazon.s3.Http
-import org.http4k.connect.amazon.s3.S3
-import org.http4k.connect.amazon.s3.S3Bucket
-import org.http4k.connect.amazon.s3.createBucket
-import org.http4k.connect.amazon.s3.model.BucketKey
-import org.http4k.connect.amazon.s3.putObject
-import org.http4k.core.Credentials
 import org.http4k.core.HttpHandler
 import org.http4k.core.Request
 import org.http4k.core.Uri
-import org.http4k.core.with
 import org.http4k.events.Events
-import org.http4k.filter.debug
 import org.http4k.routing.asRouter
 import org.http4k.routing.bind
 import org.http4k.routing.reverseProxyRouting
@@ -81,29 +62,4 @@ fun Cluster(
     )
 
     return networkAccess
-}
-
-private fun populateCloudResources(baseEnv: Environment, http: HttpHandler): Environment {
-    // image bucket
-    S3.Http(baseEnv, http).createBucket(IMAGE_BUCKET(baseEnv), AWS_REGION(baseEnv))
-    S3Bucket.Http(IMAGE_BUCKET(baseEnv), AWS_REGION(baseEnv), baseEnv, http).apply {
-        putObject(BucketKey.of("1"), "1".byteInputStream(), emptyList())
-        putObject(BucketKey.of("2"), "2".byteInputStream(), emptyList())
-        putObject(BucketKey.of("3"), "3".byteInputStream(), emptyList())
-        putObject(BucketKey.of("4"), "4".byteInputStream(), emptyList())
-    }
-
-    // oauth client
-    val oauthCredentials = with(Cognito.Http(baseEnv, http.debug())) {
-        val poolId = createUserPool(PoolName.of("pool")).valueOrNull()!!.UserPool.Id!!
-        val userPoolClient = createUserPoolClient(poolId, ClientName.of("Hyperpyramid"), GenerateSecret = true)
-            .valueOrNull()!!.UserPoolClient
-
-        Credentials(userPoolClient.ClientId.value, userPoolClient.ClientSecret!!.value)
-    }
-
-    return baseEnv.with(
-        OAUTH_CLIENT_ID of oauthCredentials.user,
-        OAUTH_CLIENT_SECRET of oauthCredentials.password
-    )
 }
