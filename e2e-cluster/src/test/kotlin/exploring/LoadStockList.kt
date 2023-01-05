@@ -1,21 +1,14 @@
 package exploring
 
 import exploring.actors.Customer
-import org.http4k.core.HttpHandler
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import strikt.assertions.isTrue
 
-abstract class LoadStockList : TracingTest() {
-
-    abstract val services: ServiceDiscovery
-
-    protected val theInternet by lazy { TheInternet(services) }
-
-    protected abstract val http: HttpHandler
-
-    private val user by lazy { Customer(events, http, services("api-gateway"), theInternet.emailInbox) }
+interface LoadStockList {
+    val theInternet: TheInternet
+    val user: Customer
 
     @Test
     fun `can load stock list and order item`() {

@@ -3,12 +3,16 @@ package exploring.env
 import exploring.Cluster
 import exploring.LoadStockList
 import exploring.ServiceDiscovery
+import exploring.TheInternet
+import exploring.actors.Customer
 import exploring.setup.setupCloudEnvironment
 
-class AWarmUpTest : LoadStockList() {
-    override val services = ServiceDiscovery()
+class AWarmUpTest : LoadStockList {
+    private val services = ServiceDiscovery()
 
-    override val http by lazy {
-        Cluster(theInternet.setupCloudEnvironment(), services, theInternet, events)
-    }
+    override val theInternet = TheInternet(services)
+
+    private val cluster = Cluster(theInternet.setupCloudEnvironment(), services, theInternet, {})
+
+    override val user = Customer({ }, cluster, services("api-gateway"), theInternet.emailInbox)
 }
