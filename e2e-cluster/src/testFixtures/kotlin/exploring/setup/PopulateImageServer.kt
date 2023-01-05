@@ -7,7 +7,7 @@ import org.http4k.connect.amazon.s3.createBucket
 import org.http4k.connect.amazon.s3.model.BucketKey
 import org.http4k.connect.amazon.s3.putObject
 
-fun PopulateImageServer(theInternet: TheInternet): CloudSetup = {
+internal fun PopulateImageServer(theInternet: TheInternet): CloudSetup = {
     it.also {
         with(theInternet.s3) {
             s3Client().createBucket(ImageSettings.IMAGE_BUCKET(it), AWS_REGION(it))

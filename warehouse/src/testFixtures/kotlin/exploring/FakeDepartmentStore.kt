@@ -40,7 +40,8 @@ class FakeDepartmentStore : ChaoticHttpHandler() {
                     orders[orderId]
                         ?.let { Response(OK).with(orderLens of it) }
                         ?: Response(NOT_FOUND)
-                }
+                },
+                "/" bind { req: Request -> Response(OK).body("Welcome to the Hyperpyramid Store!") }
             )
         )
 }

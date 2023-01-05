@@ -11,32 +11,25 @@ import org.http4k.connect.storage.InMemory
 import org.http4k.connect.storage.Storage
 import org.http4k.core.Filter
 import org.http4k.core.Request
-import org.http4k.core.Uri
 import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.reverseProxyRouting
 
-class TheInternet(
-    urls: Map<String, Uri> = mapOf(
-        "cognito" to Uri.of("http://cognito"),
-        "dept-store" to Uri.of("http://dept-store"),
-        "email" to Uri.of("http://email"),
-        "s3" to Uri.of("http://s3")
-    )
-) : RoutingHttpHandler {
+class TheInternet(services: ServiceDiscovery) : RoutingHttpHandler {
+
+    private val emails = Storage.InMemory<List<EmailMessage>>()
 
     val cognito = FakeCognito()
     val departmentStore = FakeDepartmentStore()
+    val ses = FakeSES(emails)
     val s3 = FakeS3()
-
-    private val emails = Storage.InMemory<List<EmailMessage>>()
 
     val emailInbox = SESEmails(emails)
 
     private val http = reverseProxyRouting(
-        urls["cognito"]!!.authority to cognito,
-        urls["dept-store"]!!.authority to departmentStore,
-        urls["email"]!!.authority to FakeSES(emails),
-        urls["s3"]!!.authority to s3
+        services("cognito").authority to cognito,
+        services("dept-store").authority to departmentStore,
+        services("email").authority to ses,
+        services("s3").authority to s3
     )
 
     override fun invoke(p1: Request) = http(p1)
