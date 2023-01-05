@@ -11,7 +11,7 @@ import org.http4k.client.JavaHttpClient
 import org.junit.jupiter.api.BeforeEach
 import kotlin.random.Random.Default.nextInt
 
-class MinimalClusterTest : LoadStockList {
+class ClusterIngressOnlyTest : LoadStockList {
     private val services = LocalhostServiceDiscovery(nextInt(9000, 64000), "api-gateway", "cognito")
 
     override val theInternet = TheInternet(services)
