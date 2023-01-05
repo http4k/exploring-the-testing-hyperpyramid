@@ -2,14 +2,9 @@ package exploring.env
 
 import exploring.Cluster
 import exploring.LocalhostServiceDiscovery
-import exploring.ServiceDiscovery
 import exploring.TheInternet
 import exploring.setup.setupCloudEnvironment
 import exploring.start
-import org.http4k.client.JavaHttpClient
-import org.http4k.core.then
-import org.http4k.filter.ClientFilters.SetBaseUriFrom
-import org.http4k.routing.reverseProxy
 
 
 /**
@@ -17,6 +12,7 @@ import org.http4k.routing.reverseProxy
  */
 fun main() {
     val services = LocalhostServiceDiscovery(
+        10000,
         "api-gateway", "images", "warehouse", "website", // cluster services
         "cognito", "dept-store", "email", "s3" // external services
     )
@@ -39,13 +35,3 @@ fun main() {
         website.start(services, "website")
     }
 }
-
-fun RealHttpFor(services: ServiceDiscovery) = reverseProxy(
-    *listOf(
-        "api-gateway", "images", "warehouse", "website", // cluster services
-        "cognito", "dept-store", "email", "s3" // external services
-    )
-        .map { it to SetBaseUriFrom(services(it)).then(JavaHttpClient()) }
-        .toTypedArray()
-)
-

@@ -11,7 +11,7 @@ import exploring.start
  * is in-process.
  */
 fun main() {
-    val services = LocalhostServiceDiscovery("api-gateway", "cognito")
+    val services = LocalhostServiceDiscovery(10000, "api-gateway", "cognito")
 
     val theInternet = TheInternet(services).apply {
         cognito.start(services, "cognito")

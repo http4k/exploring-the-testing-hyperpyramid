@@ -15,10 +15,10 @@ import org.http4k.webdriver.Http4kWebDriver
 import org.openqa.selenium.By
 
 class Customer(
-    events: Events,
     rawHttp: HttpHandler,
     private val baseUri: Uri,
-    private val emailInbox: Emails
+    private val emailInbox: Emails,
+    events: Events = {}
 ) : Actor("Website User", rawHttp, events) {
 
     private val email = Email.of("joe@http4k.org")

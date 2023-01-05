@@ -15,6 +15,6 @@ class InMemoryClusterTest : TracingTest(), LoadStockList {
 
     private val cluster = Cluster(theInternet.setupCloudEnvironment(), services, theInternet, events)
 
-    override val user = Customer(events, cluster, services("api-gateway"), theInternet.emailInbox)
+    override val user = Customer(cluster, services("api-gateway"), theInternet.emailInbox, events)
 }
 

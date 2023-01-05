@@ -12,7 +12,7 @@ class AWarmUpTest : LoadStockList {
 
     override val theInternet = TheInternet(services)
 
-    private val cluster = Cluster(theInternet.setupCloudEnvironment(), services, theInternet, {})
+    private val cluster = Cluster(theInternet.setupCloudEnvironment(), services, theInternet)
 
-    override val user = Customer({ }, cluster, services("api-gateway"), theInternet.emailInbox)
+    override val user = Customer(cluster, services("api-gateway"), theInternet.emailInbox)
 }

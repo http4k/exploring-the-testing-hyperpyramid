@@ -9,8 +9,8 @@ typealias ServiceDiscovery = (String) -> Uri
 
 fun ServiceDiscovery(vararg overrides: Pair<String, Uri>) = ServiceDiscovery(overrides.toList())
 
-fun LocalhostServiceDiscovery(vararg overrides: String): ServiceDiscovery {
-    var port = 10000
+fun LocalhostServiceDiscovery(startingPort: Int, vararg overrides: String): ServiceDiscovery {
+    var port = startingPort
     return ServiceDiscovery(overrides.map { it to Uri.of("http://localhost:${port++}") }.toList())
 }
 

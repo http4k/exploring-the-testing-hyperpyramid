@@ -4,21 +4,21 @@ import exploring.Cluster
 import exploring.LoadStockList
 import exploring.LocalhostServiceDiscovery
 import exploring.TheInternet
-import exploring.TracingTest
 import exploring.actors.Customer
 import exploring.setup.setupCloudEnvironment
 import exploring.start
 import org.http4k.client.JavaHttpClient
 import org.junit.jupiter.api.BeforeEach
+import kotlin.random.Random.Default.nextInt
 
-class MinimalClusterTest : TracingTest(), LoadStockList {
-    private val services = LocalhostServiceDiscovery("api-gateway", "cognito")
+class MinimalClusterTest : LoadStockList {
+    private val services = LocalhostServiceDiscovery(nextInt(9000, 64000), "api-gateway", "cognito")
 
     override val theInternet = TheInternet(services)
 
-    private val cluster = Cluster(theInternet.setupCloudEnvironment(), services, theInternet, events)
+    private val cluster = Cluster(theInternet.setupCloudEnvironment(), services, theInternet)
 
-    override val user = Customer(events, JavaHttpClient(), services("api-gateway"), theInternet.emailInbox)
+    override val user = Customer(JavaHttpClient(), services("api-gateway"), theInternet.emailInbox)
 
     @BeforeEach
     fun start() {
