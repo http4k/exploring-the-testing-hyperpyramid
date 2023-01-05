@@ -7,10 +7,10 @@ import hyperpyramid.WarehouseTestEnv
 import hyperpyramid.actor.WarehouseClient
 import hyperpyramid.adapter.InMemory
 import hyperpyramid.port.Inventory
-import java.time.Clock
+import java.time.Clock.systemUTC
 
 abstract class WarehouseTest : TracingTest() {
-    private val clock = Clock.systemUTC()
+    private val clock = systemUTC()
 
     private val http = Warehouse(
         WarehouseTestEnv, events, clock,
