@@ -34,7 +34,6 @@ import org.http4k.connect.amazon.s3.S3
 import org.http4k.connect.amazon.s3.S3Bucket
 import org.http4k.connect.amazon.s3.createBucket
 import org.http4k.connect.amazon.s3.model.BucketKey
-import org.http4k.connect.amazon.s3.model.BucketName
 import org.http4k.connect.amazon.s3.putObject
 import org.http4k.core.Credentials
 import org.http4k.core.HttpHandler
@@ -42,6 +41,7 @@ import org.http4k.core.Request
 import org.http4k.core.Uri
 import org.http4k.core.with
 import org.http4k.events.Events
+import org.http4k.filter.debug
 import org.http4k.routing.asRouter
 import org.http4k.routing.bind
 import org.http4k.routing.reverseProxyRouting
@@ -54,11 +54,10 @@ fun Cluster(
     events: Events = ::println,
     clock: Clock = Clock.systemUTC()
 ): HttpHandler {
-    val baseEnv = customEnv overrides defaults(
+    val env = customEnv overrides defaults(
         AWS_REGION of EU_WEST_1,
         AWS_ACCESS_KEY_ID of AccessKeyId.of("access-key-id"),
         AWS_SECRET_ACCESS_KEY of SecretAccessKey.of("secret-access-key"),
-        IMAGE_BUCKET of BucketName.of("image-cache"),
         IMAGES_URL of Uri.of("http://images"),
         NOTIFICATION_EMAIL_SENDER of Email.of("orders@http4k.org"),
         STORE_URL of Uri.of("http://dept-store"),
@@ -67,8 +66,6 @@ fun Cluster(
         WAREHOUSE_URL of Uri.of("http://warehouse"),
         WEBSITE_URL of Uri.of("http://website")
     )
-
-    val env = populateCloudResources(baseEnv, theInternet)
 
     val networkAccess = NetworkAccess()
 
@@ -97,7 +94,7 @@ private fun populateCloudResources(baseEnv: Environment, http: HttpHandler): Env
     }
 
     // oauth client
-    val oauthCredentials = with(Cognito.Http(baseEnv, http)) {
+    val oauthCredentials = with(Cognito.Http(baseEnv, http.debug())) {
         val poolId = createUserPool(PoolName.of("pool")).valueOrNull()!!.UserPool.Id!!
         val userPoolClient = createUserPoolClient(poolId, ClientName.of("Hyperpyramid"), GenerateSecret = true)
             .valueOrNull()!!.UserPoolClient

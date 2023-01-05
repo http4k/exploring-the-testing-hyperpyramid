@@ -13,7 +13,16 @@ import org.http4k.server.asServer
 private const val DEBUG_FLAG = true
 
 fun main() {
-    val theInternet = TheInternet()
+    val theInternet = TheInternet(
+        mapOf(
+            "cognito" to Uri.of("http://localhost:11000"),
+            "dept-store" to Uri.of("http://dept-store"),
+            "email" to Uri.of("http://email"),
+            "s3" to Uri.of("http://s3")
+        )
+    )
+
+    Debug(DEBUG_FLAG).then(theInternet.cognito).asServer(SunHttp(11000)).start()
 
     val env = Environment.defaults(
         DEBUG of DEBUG_FLAG,
@@ -22,7 +31,6 @@ fun main() {
     )
 
     Cluster(env, theInternet).asServer(SunHttp(10000)).start()
-    Debug(DEBUG_FLAG).then(theInternet.cognito).asServer(SunHttp(11000)).start()
 
     println("Browse to ${API_GATEWAY_URL(env)}")
 }
