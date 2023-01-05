@@ -15,7 +15,7 @@ fun Inventory.Companion.InMemory(events: Events, clock: Clock): Inventory {
     val target = Inventory.Storage(Storage.InMemory())
     target.apply {
         store(InventoryItem(ItemId.of("1"), "Banana", 5))
-        store(InventoryItem(ItemId.of("2"), "Bottom", 1))
+        store(InventoryItem(ItemId.of("2"), "Bottom", 0))
         store(InventoryItem(ItemId.of("3"), "Minion Toys", 100))
         store(InventoryItem(ItemId.of("4"), "Guitar", 12))
     }

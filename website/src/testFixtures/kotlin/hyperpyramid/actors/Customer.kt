@@ -1,6 +1,6 @@
 package hyperpyramid.actors
 
-import hyperpyramid.Actor
+import hyperpyramid.actor.Actor
 import hyperpyramid.dto.Email
 import hyperpyramid.dto.ItemId
 import hyperpyramid.dto.OrderId
@@ -15,17 +15,17 @@ import org.http4k.webdriver.Http4kWebDriver
 import org.openqa.selenium.By
 
 class Customer(
-    rawHttp: HttpHandler,
+    http: HttpHandler,
     private val baseUri: Uri,
     private val emailInbox: Emails,
     events: Events = {}
-) : Actor("Website User", rawHttp, events) {
+) : Actor("Website User", http, events) {
 
     private val email = Email.of("joe@http4k.org")
 
-    private val browser = Http4kWebDriver(http)
+    private fun browser() = Http4kWebDriver(http)
 
-    fun loginAndListItems() = with(browser) {
+    fun loginAndListItems() = with(browser()) {
         navigate().to(baseUri)
         findElement(By.id("email"))!!.sendKeys(email.value)
         findElement(By.tagName("form"))!!.submit()
@@ -35,7 +35,7 @@ class Customer(
 
     fun canSeeImage(id: ItemId) = http(Request(GET, baseUri.extend(Uri.of("/img/$id")))).status == OK
 
-    fun order(id: ItemId): OrderId = with(browser) {
+    fun order(id: ItemId): OrderId = with(browser()) {
         findElement(By.id("ITEM$id"))?.submit()
         return OrderId.of(findElement(By.id("orderId"))!!.text.toInt())
     }

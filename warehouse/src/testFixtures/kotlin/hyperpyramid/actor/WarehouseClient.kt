@@ -1,0 +1,23 @@
+package hyperpyramid.actor
+
+import hyperpyramid.dto.ItemId
+import org.http4k.core.HttpHandler
+import org.http4k.core.Method.GET
+import org.http4k.core.Method.POST
+import org.http4k.core.Request
+import org.http4k.core.Uri
+import org.http4k.core.then
+import org.http4k.events.Events
+import org.http4k.filter.ClientFilters.SetBaseUriFrom
+
+class WarehouseClient(http: HttpHandler, events: Events) : Actor("client",
+        SetBaseUriFrom(Uri.of("http://warehouse")).then(http), events) {
+
+    fun listItems() = http(Request(GET, "/v1/items"))
+
+    fun dispatchA(itemId: ItemId) =
+        http(
+            Request(POST, "/v1/dispatch")
+                .body("""{"customer":"bob@http4k.org","id":"$itemId","amount":1}""")
+        )
+}

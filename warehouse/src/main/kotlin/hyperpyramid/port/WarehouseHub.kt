@@ -14,7 +14,7 @@ class WarehouseHub(
     private val inventory: Inventory,
     private val departmentStore: DepartmentStore
 ) {
-    fun items() = inventory.items()
+    fun items() = inventory.items().map { it.filter { it.stock > 0 } }
 
     fun dispatch(itemPickup: ItemPickup): Result4k<DispatchResult, Exception> =
         inventory.items()
