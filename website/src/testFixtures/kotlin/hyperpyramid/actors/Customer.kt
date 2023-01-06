@@ -25,7 +25,7 @@ class Customer(
 
     private val browser = Http4kWebDriver(http)
 
-    fun loginAndListItems() = with(browser) {
+    fun listItems() = with(browser) {
         navigate().to(baseUri)
         findElement(By.id("email"))!!.sendKeys(email.value)
         findElement(By.tagName("form"))!!.submit()

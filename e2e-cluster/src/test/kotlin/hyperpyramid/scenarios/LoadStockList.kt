@@ -14,7 +14,7 @@ interface LoadStockList {
     @Test
     fun `can load stock list and order item`() {
         with(user) {
-            val catalogue = loginAndListItems()
+            val catalogue = listItems()
 
             val itemId = catalogue.first()
             expectThat(canSeeImage(itemId)).isTrue()
