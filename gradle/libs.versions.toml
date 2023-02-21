@@ -2,9 +2,9 @@
 
 [versions]
 
-kotlin = "1.8.0"
+kotlin = "1.8.10"
 
-http4k-connect = "3.26.3.0"
+http4k-connect = "3.30.0.0"
 
 [libraries]
 
