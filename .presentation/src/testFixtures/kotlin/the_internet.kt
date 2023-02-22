@@ -10,7 +10,7 @@ import org.http4k.core.Method.GET
 import org.http4k.core.Request
 import org.http4k.routing.reverseProxy
 
-class TheInternet() : HttpHandler {
+class TheInternet: HttpHandler {
     val emails = Storage.InMemory<List<EmailMessage>>()
 
     val cognito = FakeCognito()

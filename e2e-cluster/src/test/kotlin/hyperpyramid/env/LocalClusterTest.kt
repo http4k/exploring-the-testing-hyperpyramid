@@ -12,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach
 import kotlin.random.Random.Default.nextInt
 
 
-class PortBoundServicesTest : LoadStockList {
+class LocalClusterTest : LoadStockList {
     private val services = LocalhostServiceDiscovery(
         nextInt(9000, 64000),
         "api-gateway", "images", "warehouse", "website", // cluster services

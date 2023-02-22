@@ -1,8 +1,3 @@
 dependencies {
-    rootProject.subprojects
-        .filter { it.name != project.name }
-        .forEach {
-            testFixturesApi(testFixtures(project(":" + it.name)))
-            testFixturesApi(project(":" + it.name))
-        }
+    testFixturesApi(testFixtures(project(":e2e-cluster")))
 }

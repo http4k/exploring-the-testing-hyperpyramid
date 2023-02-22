@@ -7,4 +7,5 @@ dependencies {
     api(JetBrains.exposed.jdbc)
 
     testFixturesApi(testFixtures(project(":infra")))
-    testFixturesApi(Http4k.testing.chaos)}
+    testFixturesApi(Http4k.testing.chaos)
+}

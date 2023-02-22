@@ -14,6 +14,8 @@ interface LoadStockList {
     @Test
     fun `can load stock list and order item`() {
         with(user) {
+            login()
+
             val catalogue = listItems()
 
             val itemId = catalogue.first()

@@ -25,10 +25,14 @@ class Customer(
 
     private val browser = Http4kWebDriver(http)
 
-    fun listItems() = with(browser) {
+    fun login() = with(browser) {
         navigate().to(baseUri)
         findElement(By.id("email"))!!.sendKeys(email.value)
         findElement(By.tagName("form"))!!.submit()
+    }
+
+    fun listItems() = with(browser) {
+        navigate().to(baseUri)
         (findElements(By.tagName("form")) ?: emptyList())
             .map { ItemId.of(it.getAttribute("action").substringAfterLast('/')) }
     }
@@ -36,6 +40,7 @@ class Customer(
     fun canSeeImage(id: ItemId) = http(Request(GET, baseUri.extend(Uri.of("/img/$id")))).status == OK
 
     fun order(id: ItemId): OrderId = with(browser) {
+        navigate().to(baseUri)
         findElement(By.id("ITEM$id"))?.submit()
         return OrderId.of(findElement(By.id("orderId"))!!.text.toInt())
     }

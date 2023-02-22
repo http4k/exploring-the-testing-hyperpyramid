@@ -19,7 +19,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(ApprovalTest::class)
-class ServerWarehouseTests :
+class LocalWarehouseTests :
     DispatchContract,
     ListItemContract {
 
