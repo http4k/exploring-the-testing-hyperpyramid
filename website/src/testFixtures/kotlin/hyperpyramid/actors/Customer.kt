@@ -14,10 +14,10 @@ import org.http4k.events.Events
 import org.http4k.webdriver.Http4kWebDriver
 import org.openqa.selenium.By
 
-class Customer(rawHttp: HttpHandler, private val baseUri: Uri, private val emailInbox: Emails, events: Events = {}) :
-    Actor("Website User", rawHttp, events) {
+class Customer(http: HttpHandler, private val baseUri: Uri, private val emailInbox: Emails, events: Events = {}) :
+    Actor("Website User", http, events) {
 
-    private val browser = Http4kWebDriver(http)
+    private val browser = Http4kWebDriver(this.http)
 
     fun listItems() = with(browser) {
         navigate().to(baseUri)
