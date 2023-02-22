@@ -7,6 +7,7 @@ import hyperpyramid.scenario.BrowsingContract
 import org.http4k.client.JavaHttpClient
 import org.http4k.core.Uri
 import org.http4k.core.then
+import org.http4k.events.Events
 import org.http4k.filter.ClientFilters.SetBaseUriFrom
 import org.http4k.server.Undertow
 import org.http4k.server.asServer
@@ -22,6 +23,8 @@ class LocalWebsiteTests : BrowsingContract {
         SetBaseUriFrom(Uri.of("http://localhost:${server.port()}"))
             .then(JavaHttpClient())
     }
+
+    override val events: Events = {}
 
     private val server by lazy {
         Website(WebsiteTestEnv, http = FakeWarehouse()).asServer(Undertow(0))

@@ -10,6 +10,7 @@ import hyperpyramid.scenario.ListItemContract
 import org.http4k.client.JavaHttpClient
 import org.http4k.core.Uri
 import org.http4k.core.then
+import org.http4k.events.Events
 import org.http4k.filter.ClientFilters.SetBaseUriFrom
 import org.http4k.server.Undertow
 import org.http4k.server.asServer
@@ -22,6 +23,9 @@ import org.junit.jupiter.api.extension.ExtendWith
 class LocalWarehouseTests :
     DispatchContract,
     ListItemContract {
+
+    override val events: Events = {}
+
 
     override val http by lazy {
         SetBaseUriFrom(Uri.of("http://localhost:${server.port()}"))

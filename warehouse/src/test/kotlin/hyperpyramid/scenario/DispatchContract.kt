@@ -24,5 +24,4 @@ interface DispatchContract : WarehouseContract {
     fun `no stock`() {
         expectThat(client().dispatchAn(ItemId.of("2"))).status.isEqualTo(Status.PRECONDITION_FAILED)
     }
-
 }
