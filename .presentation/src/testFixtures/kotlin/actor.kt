@@ -11,16 +11,11 @@ import org.http4k.events.Events
 import org.http4k.filter.ClientFilters.SetBaseUriFrom
 import java.time.Clock
 
-class Customer(baseUri: Uri, http: HttpHandler, clock: Clock, events: Events) {
+class Customer(events: Events, http: HttpHandler, clock: Clock, baseUri: Uri) {
     private val http = SetBaseUriFrom(baseUri)
         .then(AppOutgoingHttp(false, AppEvents("Website User", clock, events), http))
 
     fun listItems() = http(Request(GET, "/list"))
 
     fun order(id: ItemId) = http(Request(POST, "/order/$id"))
-}
-
-fun main() {
-    Customer(TODO(), TODO(), TODO(), TODO()).listItems()
-    Customer(TODO(), TODO(), TODO(), TODO()).order(ItemId.of("!23"))
 }
