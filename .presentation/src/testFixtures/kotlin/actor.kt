@@ -1,6 +1,6 @@
-import hyperpyramid.actor.Actor
+import hyperpyramid.app.AppEvents
+import hyperpyramid.app.AppOutgoingHttp
 import hyperpyramid.dto.ItemId
-import hyperpyramid.dto.OrderId
 import org.http4k.core.HttpHandler
 import org.http4k.core.Method.GET
 import org.http4k.core.Method.POST
@@ -9,18 +9,18 @@ import org.http4k.core.Uri
 import org.http4k.core.then
 import org.http4k.events.Events
 import org.http4k.filter.ClientFilters.SetBaseUriFrom
+import java.time.Clock
 
-class Customer(http: HttpHandler, private val baseUri: Uri, events: Events = {}) :
-    Actor("Website User", http, events) {
+class Customer(baseUri: Uri, http: HttpHandler, clock: Clock, events: Events) {
+    private val http = SetBaseUriFrom(baseUri)
+        .then(AppOutgoingHttp(false, AppEvents("Website User", clock, events), http))
 
-    fun listItems() = SetBaseUriFrom(baseUri).then(http)(Request(GET, "/list"))
+    fun listItems() = http(Request(GET, "/list"))
 
-    fun order(id: ItemId) =
-        SetBaseUriFrom(baseUri).then(http)(Request(POST, "/order/$id"))
-            .let { OrderId.parse(it.bodyString()) }
+    fun order(id: ItemId) = http(Request(POST, "/order/$id"))
 }
 
 fun main() {
-    Customer(TODO(), TODO(), TODO()).listItems()
-    Customer(TODO(), TODO(), TODO()).order(ItemId.of("!23"))
+    Customer(TODO(), TODO(), TODO(), TODO()).listItems()
+    Customer(TODO(), TODO(), TODO(), TODO()).order(ItemId.of("!23"))
 }
