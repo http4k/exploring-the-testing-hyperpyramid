@@ -21,6 +21,7 @@ import org.junit.jupiter.api.extension.RegisterExtension
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import java.io.File
+import java.time.Clock.systemUTC
 
 class BrowseWebsiteTest {
 
@@ -35,7 +36,7 @@ class BrowseWebsiteTest {
 
     @Test
     fun `can list items`() {
-        with(Customer(http, Uri.of("http://website"), events)) {
+        with(Customer(events, http, systemUTC(), Uri.of("http://website"))) {
             expectThat(listItems()).isEqualTo(listOf(ItemId.of("foo")))
         }
     }

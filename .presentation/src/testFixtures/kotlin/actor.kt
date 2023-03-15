@@ -1,6 +1,9 @@
 import hyperpyramid.app.AppEvents
 import hyperpyramid.app.AppOutgoingHttp
 import hyperpyramid.dto.ItemId
+import hyperpyramid.dto.OrderId
+import org.http4k.connect.amazon.cognito.CognitoMoshi.auto
+import org.http4k.core.Body
 import org.http4k.core.HttpHandler
 import org.http4k.core.Method.GET
 import org.http4k.core.Method.POST
@@ -15,7 +18,13 @@ class Customer(events: Events, http: HttpHandler, clock: Clock, baseUri: Uri) {
     private val http = SetBaseUriFrom(baseUri)
         .then(AppOutgoingHttp(false, AppEvents("Website User", clock, events), http))
 
-    fun listItems() = http(Request(GET, "/list"))
+    fun listItems(): List<ItemId> {
+        val response = http(Request(GET, "/list"))
+        return Body.auto<List<ItemId>>().toLens()(response)
+    }
 
-    fun order(id: ItemId) = http(Request(POST, "/order/$id"))
+    fun order(id: ItemId): OrderId {
+        val response = http(Request(POST, "/order/$id"))
+        return Body.auto<OrderId>().toLens()(response)
+    }
 }
