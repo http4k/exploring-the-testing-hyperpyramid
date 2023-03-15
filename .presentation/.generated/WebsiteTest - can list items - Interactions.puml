@@ -1,0 +1,12 @@
+@startuml
+title WebsiteTest - can list items
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+
+System(WebsiteUser, "Website User")
+System(website, "website")
+System(warehouse, "warehouse")    
+Rel_D(WebsiteUser, website, " ") 
+Rel_D(website, warehouse, " ")     
+@enduml

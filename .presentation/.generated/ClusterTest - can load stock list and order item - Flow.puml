@@ -1,0 +1,38 @@
+@startuml
+title ClusterTest - can load stock list and order item
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+
+Container(WebsiteUser, "Website User")
+Container(apigateway, "api-gateway")
+Container(website, "website")
+Container(warehouse, "warehouse")
+Container(cognito, "cognito")
+ContainerDb(db, "db")
+Container(deptstore, "dept-store")
+Container(emaileuwest1amazonawscom, "email.eu-west-1.amazonaws.com")
+Container(eventstream, "event-stream")    
+Rel_D(WebsiteUser, apigateway, "1 GET ")
+Rel_D(WebsiteUser, cognito, "2 GET oauth2/authorize")
+Rel_D(WebsiteUser, cognito, "3 GET oauth2/login")
+Rel_D(WebsiteUser, cognito, "4 POST oauth2/login")
+Rel_D(WebsiteUser, apigateway, "5 GET oauth/callback")
+Rel_D(apigateway, cognito, "5.1 POST oauth2/token")
+Rel_D(WebsiteUser, apigateway, "6 GET ")
+Rel_D(apigateway, website, "6.1 GET ")
+Rel_D(website, warehouse, "6.1.1 GET v1/items")
+Rel_D(warehouse, db, "6.1.1.1 items")
+Rel_D(WebsiteUser, apigateway, "7 GET ")
+Rel_D(apigateway, website, "7.1 GET ")
+Rel_D(website, warehouse, "7.1.1 GET v1/items")
+Rel_D(warehouse, db, "7.1.1.1 items")
+Rel_D(WebsiteUser, apigateway, "8 POST order/{id}")
+Rel_D(apigateway, website, "8.1 POST order/{id}")
+Rel_D(website, warehouse, "8.1.1 POST v1/dispatch")
+Rel_D(warehouse, db, "8.1.1.1 items")
+Rel_D(warehouse, db, "8.1.1.2 adjust")
+Rel_D(warehouse, deptstore, "8.1.1.3 POST v1/order")
+Rel_D(website, emaileuwest1amazonawscom, "8.1.2 POST ")
+Rel_D(website, eventstream, "8.1.3 CustomerOrder(item=1)")    
+@enduml

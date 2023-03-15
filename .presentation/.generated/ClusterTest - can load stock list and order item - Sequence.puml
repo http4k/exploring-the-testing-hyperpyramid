@@ -1,0 +1,92 @@
+@startuml
+title ClusterTest - can load stock list and order item
+participant "Website User"
+participant "api-gateway"
+participant "website"
+participant "warehouse"
+participant "cognito"
+database "db"
+participant "dept-store"
+participant "email.eu-west-1.amazonaws.com"
+participant "event-stream"
+"Website User" -> "api-gateway": GET list
+activate "api-gateway"
+
+"api-gateway" --> "Website User": 307 Temporary Redirect
+deactivate "api-gateway"
+"Website User" -> "cognito": GET oauth2/authorize
+activate "cognito"
+
+"cognito" --> "Website User": 302 Found
+deactivate "cognito"
+"Website User" -> "cognito": GET oauth2/login
+activate "cognito"
+
+"cognito" --> "Website User": 200 OK
+deactivate "cognito"
+"Website User" -> "cognito": POST oauth2/login
+activate "cognito"
+
+"cognito" --> "Website User": 303 See Other
+deactivate "cognito"
+"Website User" -> "api-gateway": GET oauth/callback
+activate "api-gateway"
+"api-gateway" -> "cognito": POST oauth2/token
+activate "cognito"
+
+"cognito" --> "api-gateway": 200 OK
+deactivate "cognito"
+"api-gateway" --> "Website User": 307 Temporary Redirect
+deactivate "api-gateway"
+"Website User" -> "api-gateway": GET list
+activate "api-gateway"
+"api-gateway" -> "website": GET  list
+activate "website"
+"website" -> "warehouse": GET v1/items
+activate "warehouse"
+"warehouse" <-> "db": items
+"warehouse" --> "website": 200 OK
+deactivate "warehouse"
+"website" --> "api-gateway": 200 OK
+deactivate "website"
+"api-gateway" --> "Website User": 200 OK
+deactivate "api-gateway"
+"Website User" -> "api-gateway": GET  list
+activate "api-gateway"
+"api-gateway" -> "website": GET list
+activate "website"
+"website" -> "warehouse": GET v1/items
+activate "warehouse"
+"warehouse" <-> "db": items
+"warehouse" --> "website": 200 OK
+deactivate "warehouse"
+"website" --> "api-gateway": 200 OK
+deactivate "website"
+"api-gateway" --> "Website User": 200 OK
+deactivate "api-gateway"
+"Website User" -> "api-gateway": POST order/{id}
+activate "api-gateway"
+"api-gateway" -> "website": POST order/{id}
+activate "website"
+"website" -> "warehouse": POST v1/dispatch
+activate "warehouse"
+"warehouse" <-> "db": items
+"warehouse" <-> "db": adjust
+"warehouse" -> "dept-store": POST v1/order
+activate "dept-store"
+
+"dept-store" --> "warehouse": 200 OK
+deactivate "dept-store"
+"warehouse" --> "website": 200 OK
+deactivate "warehouse"
+"website" -> "email.eu-west-1.amazonaws.com": POST 
+activate "email.eu-west-1.amazonaws.com"
+
+"email.eu-west-1.amazonaws.com" --> "website": 200 OK
+deactivate "email.eu-west-1.amazonaws.com"
+"website" -> "event-stream": CustomerOrder(item=1)
+"website" --> "api-gateway": 200 OK
+deactivate "website"
+"api-gateway" --> "Website User": 200 OK
+deactivate "api-gateway"
+@enduml

@@ -1,0 +1,15 @@
+@startuml
+title WebsiteTest - can list items
+participant "Website User"
+participant "website"
+participant "warehouse"
+"Website User" -> "website": GET list
+activate "website"
+"website" -> "warehouse": GET v1/items
+activate "warehouse"
+
+"warehouse" --> "website": 200 OK
+deactivate "warehouse"
+"website" --> "Website User": 200 OK
+deactivate "website"
+@enduml
