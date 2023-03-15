@@ -1,6 +1,6 @@
 package hyperpyramid.actors
 
-import hyperpyramid.actor.Actor
+import hyperpyramid.Actor
 import hyperpyramid.dto.Email
 import hyperpyramid.dto.ItemId
 import hyperpyramid.dto.OrderId

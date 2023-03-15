@@ -1,4 +1,4 @@
-package hyperpyramid.actor
+package hyperpyramid
 
 import hyperpyramid.app.AppEvents
 import hyperpyramid.app.AppOutgoingHttp
