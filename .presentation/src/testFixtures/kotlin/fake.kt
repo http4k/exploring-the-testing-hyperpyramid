@@ -16,6 +16,9 @@ import org.http4k.routing.bind
 import org.http4k.routing.routes
 import org.http4k.server.SunHttp
 import org.http4k.server.asServer
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneId
 
 fun FakeDeptStore(): RoutingHttpHandler {
     val orders = mutableMapOf<OrderId, Order>()
@@ -41,3 +44,17 @@ fun main() {
 
 private val orderLens = Body.auto<Order>().toLens()
 private val id = Path.value(OrderId).of("id")
+
+object TestClock : Clock() {
+    override fun instant(): Instant {
+        TODO("Not yet implemented")
+    }
+
+    override fun withZone(zone: ZoneId?): Clock {
+        TODO("Not yet implemented")
+    }
+
+    override fun getZone(): ZoneId {
+        TODO("Not yet implemented")
+    }
+}

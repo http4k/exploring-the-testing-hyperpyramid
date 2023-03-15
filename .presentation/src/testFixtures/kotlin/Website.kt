@@ -19,7 +19,7 @@ import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.routes
 import java.time.Clock
 
-fun Website(env: Environment, events: Events, clock: Clock, http: HttpHandler): RoutingHttpHandler {
+fun Website(env: Environment, clock: Clock, events: Events, http: HttpHandler): RoutingHttpHandler {
     val appEvents = AppEvents("Website", clock, events)
     val outgoingHttp = AppOutgoingHttp(DEBUG(env), appEvents, http)
 
@@ -37,7 +37,7 @@ fun Website(env: Environment, events: Events, clock: Clock, http: HttpHandler): 
 }
 
 fun main() {
-    Website(ENV,::println, Clock.systemUTC(), { req: Request -> Response(Status.OK) } )
+    Website(ENV, Clock.systemUTC(), ::println) { req: Request -> Response(Status.OK) }
 }
 
 fun ListAllItems(hub: WebsiteHub): RoutingHttpHandler = TODO()

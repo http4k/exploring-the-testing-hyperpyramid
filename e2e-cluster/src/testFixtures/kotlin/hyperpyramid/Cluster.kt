@@ -59,9 +59,9 @@ class Cluster(
 
     private val networkAccess = NetworkAccess()
 
-    val apiGateway = ApiGateway(env, events, clock, networkAccess)
+    val apiGateway = ApiGateway(env, clock, networkAccess, events)
     val images = Images(env, events, clock, networkAccess)
-    val warehouse = Warehouse(env, networkAccess, Inventory.InMemory(events, clock), events, clock)
+    val warehouse = Warehouse(env, clock, events, networkAccess, Inventory.InMemory(events, clock))
     val website = Website(env, events, clock, networkAccess)
 
     init {

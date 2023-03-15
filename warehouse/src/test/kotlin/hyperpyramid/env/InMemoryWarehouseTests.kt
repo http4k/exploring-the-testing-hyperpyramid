@@ -17,6 +17,6 @@ class InMemoryWarehouseTests : TracingTest(),
     ListItemContract {
 
     override val http = Warehouse(
-        WarehouseTestEnv, FakeDepartmentStore(), Inventory.InMemory(events), events
+        WarehouseTestEnv, events = events, http = FakeDepartmentStore(), inventory = Inventory.InMemory(events)
     )
 }

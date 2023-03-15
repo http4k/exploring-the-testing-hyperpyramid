@@ -1,7 +1,6 @@
 import hyperpyramid.BusinessEventTracer
 import hyperpyramid.DbTracer
 import hyperpyramid.FakeWarehouse
-import hyperpyramid.Website
 import hyperpyramid.dto.ItemId
 import org.http4k.cloudnative.env.Environment
 import org.http4k.core.HttpHandler
@@ -21,10 +20,8 @@ import org.junit.jupiter.api.extension.RegisterExtension
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import java.io.File
-import java.time.Clock.systemUTC
 
-class BrowseWebsiteTest {
-
+class WebsiteTest {
     @RegisterExtension
     val events = TracerBulletEvents(
         listOf(::HttpTracer, ::DbTracer, ::BusinessEventTracer).map { it((ActorByService)) },
@@ -32,11 +29,11 @@ class BrowseWebsiteTest {
         TraceRenderPersistence.FileSystem(File(".generated"))
     )
 
-    val http: HttpHandler = Website(WebsiteTestEnv, events, http = FakeWarehouse())
+    val http: HttpHandler = Website(WebsiteTestEnv, TestClock, events, FakeWarehouse())
 
     @Test
     fun `can list items`() {
-        with(Customer(events, http, systemUTC(), Uri.of("http://website"))) {
+        with(Customer(TestClock, events, http, Uri.of("http://website"))) {
             expectThat(listItems()).isEqualTo(listOf(ItemId.of("foo")))
         }
     }

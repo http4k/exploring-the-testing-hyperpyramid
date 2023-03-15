@@ -29,9 +29,9 @@ import java.time.Clock.systemUTC
  */
 fun ApiGateway(
     env: Environment = ENV,
-    events: Events = AutoMarshallingEvents(Json),
     clock: Clock = systemUTC(),
-    http: HttpHandler = JavaHttpClient()
+    http: HttpHandler = JavaHttpClient(),
+    events: Events = AutoMarshallingEvents(Json)
 ): HttpHandler {
     val appEvents = AppEvents("api-gateway", clock, events)
     val outgoingHttp = AppOutgoingHttp(DEBUG(env), appEvents, http)

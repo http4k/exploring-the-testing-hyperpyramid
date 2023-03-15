@@ -33,7 +33,7 @@ class LocalWarehouseTests :
     }
 
     private val server by lazy {
-        Warehouse(WarehouseTestEnv, FakeDepartmentStore(), Inventory.InMemory()).asServer(Undertow(0))
+        Warehouse(WarehouseTestEnv, http = FakeDepartmentStore(), inventory = Inventory.InMemory()).asServer(Undertow(0))
     }
 
     @BeforeEach

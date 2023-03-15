@@ -14,7 +14,7 @@ import org.http4k.events.Events
 import org.http4k.filter.ClientFilters.SetBaseUriFrom
 import java.time.Clock
     
-class Customer(events: Events, http: HttpHandler, clock: Clock, baseUri: Uri) {
+class Customer(clock: Clock, events: Events, http: HttpHandler, baseUri: Uri) {
     private val http = SetBaseUriFrom(baseUri)
         .then(AppOutgoingHttp(false, AppEvents("Website User", clock, events), http))
 
