@@ -1,60 +1,50 @@
-import hyperpyramid.dto.Order
-import hyperpyramid.dto.OrderId
+package hyperpyramid
+
+import hyperpyramid.dto.InventoryItem
+import hyperpyramid.dto.ItemId
+import hyperpyramid.util.Json.auto
 import org.http4k.core.Body
 import org.http4k.core.Method.GET
 import org.http4k.core.Method.POST
-import org.http4k.core.Request
 import org.http4k.core.Response
-import org.http4k.core.Status.Companion.NOT_FOUND
+import org.http4k.core.Status.Companion.ACCEPTED
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.with
-import org.http4k.format.Jackson.auto
-import org.http4k.lens.Path
-import org.http4k.lens.value
 import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.bind
 import org.http4k.routing.routes
 import org.http4k.server.SunHttp
 import org.http4k.server.asServer
-import java.time.Clock
-import java.time.Instant
-import java.time.ZoneId
 
-fun FakeDeptStore(): RoutingHttpHandler {
-    val orders = mutableMapOf<OrderId, Order>()
+fun FakeWarehouse(): RoutingHttpHandler {
+    val stockLevels = mutableMapOf(ItemId.of("1") to 5)
 
     return routes(
-        "/v1/order" bind POST to { req: Request ->
-            val orderId = OrderId.of(orders.size + 1)
-            orders[orderId] = orderLens(req)
-
-            Response(OK).body(orderId.toString())
+        "/v1/items" bind GET to {
+            Response(OK)
+                .with(
+                    Body.auto<List<InventoryItem>>().toLens() of
+                        stockLevels.map { (item, stock) ->
+                            InventoryItem(item, "bar", stock)
+                        }
+                )
         },
-        "/v1/order/{id}" bind GET to { req: Request ->
-            orders[id(req)]
-                ?.let { Response(OK).with(orderLens of it) }
-                ?: Response(NOT_FOUND)
+        "/v1/dispatch" bind POST to {
+            val order = Body.auto<Shipment>().toLens()(it)
+            stockLevels[order.id] = stockLevels[order.id]!! - order.amount
+            Response(ACCEPTED)
         }
     )
 }
 
 fun main() {
-    FakeDeptStore().asServer(SunHttp()).start()
+    FakeWarehouse().asServer(SunHttp()).start()
 }
 
-private val orderLens = Body.auto<Order>().toLens()
-private val id = Path.value(OrderId).of("id")
-
-object TestClock : Clock() {
-    override fun instant(): Instant {
-        TODO("Not yet implemented")
-    }
-
-    override fun withZone(zone: ZoneId?): Clock {
-        TODO("Not yet implemented")
-    }
-
-    override fun getZone(): ZoneId {
-        TODO("Not yet implemented")
-    }
+data class Shipment(
+    val customer: String,
+    val id: ItemId,
+    val amount: Int
+) {
+    operator fun minus(number: Int) = amount - number
 }

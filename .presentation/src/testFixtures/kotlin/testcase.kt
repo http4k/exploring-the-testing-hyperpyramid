@@ -33,7 +33,7 @@ class WebsiteTest {
 
     @Test
     fun `can list items`() {
-        with(Customer(TestClock, events, http, Uri.of("http://website"))) {
+        with(Customer(Uri.of("http://website"), TestClock, events, http)) {
             expectThat(listItems()).isEqualTo(listOf(ItemId.of("foo")))
         }
     }

@@ -17,3 +17,4 @@ class WarehouseClient(http: HttpHandler, events: Events = {}) : Actor("client", 
                 .body("""{"customer":"bob@http4k.org","id":"$itemId","amount":1}""")
         )
 }
+
