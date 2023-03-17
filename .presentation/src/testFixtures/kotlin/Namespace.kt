@@ -19,7 +19,7 @@ import org.http4k.routing.reverseProxyRouting
 import org.http4k.routing.routes
 import java.time.Clock
 
-class Cluster(env: Environment, clock: Clock, events: Events, theInternet: HttpHandler) : HttpHandler {
+class Namespace(env: Environment, clock: Clock, events: Events, theInternet: HttpHandler) : HttpHandler {
     private val networkAccess = NetworkAccess()
 
     private val apiGateway = ApiGateway(env, clock, networkAccess, events)
@@ -41,5 +41,5 @@ class Cluster(env: Environment, clock: Clock, events: Events, theInternet: HttpH
 }
 
 fun main() {
-    Cluster(ENV, Clock.systemUTC(), ::println) { req: Request -> Response(Status.OK) }
+    Namespace(ENV, Clock.systemUTC(), ::println) { req: Request -> Response(Status.OK) }
 }

@@ -1,4 +1,3 @@
-import hyperpyramid.BusinessEventTracer
 import hyperpyramid.DbTracer
 import hyperpyramid.FakeWarehouse
 import hyperpyramid.dto.ItemId
@@ -21,14 +20,16 @@ import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import java.io.File
 
-class WebsiteTest {
+abstract class RecordTraces {
     @RegisterExtension
     val events = TracerBulletEvents(
-        listOf(::HttpTracer, ::DbTracer, ::BusinessEventTracer).map { it((ActorByService)) },
+        listOf(::HttpTracer, ::DbTracer).map { it((ActorByService)) },
         listOf(PumlSequenceDiagram, PumlInteractionDiagram),
         TraceRenderPersistence.FileSystem(File(".generated"))
     )
+}
 
+class WebsiteTest : RecordTraces() {
     val http: HttpHandler = Website(WebsiteTestEnv, TestClock, events, FakeWarehouse())
 
     @Test
@@ -39,11 +40,30 @@ class WebsiteTest {
     }
 }
 
+class NamespaceTest : RecordTraces() {
+    val clock = TestClock
+    val theInternet = TheInternet()
+    val namespace = Namespace(ClusterTestEnv, clock, events, theInternet)
+    val user = Customer(Uri.of("http://website"), clock, events, namespace)
+
+    @Test
+    fun `can load stock list and order item`() {
+        val itemId = user.listItems().first()
+
+        val order = user.order(itemId)
+
+        expectThat(theInternet.departmentStore.orders[order]?.items)
+            .isEqualTo(listOf(itemId))
+    }
+}
+
 object ActorByService : ActorResolver {
     override fun invoke(it: MetadataEvent) = Actor(
         it.metadata["service"]!!.toString(), ActorType.System
     )
 }
 
+val ClusterTestEnv = Environment.defaults(
+)
 val WebsiteTestEnv = Environment.defaults(
 )
