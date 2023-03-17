@@ -23,7 +23,7 @@ import java.io.File
 abstract class RecordTraces {
     @RegisterExtension
     val events = TracerBulletEvents(
-        listOf(::HttpTracer, ::DbTracer).map { it((ActorByService)) },
+        listOf(::HttpTracer, ::DbTracer).map { it(ActorByService) },
         listOf(PumlSequenceDiagram, PumlInteractionDiagram),
         TraceRenderPersistence.FileSystem(File(".generated"))
     )

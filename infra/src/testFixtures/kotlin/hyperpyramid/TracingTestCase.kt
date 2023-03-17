@@ -16,7 +16,7 @@ import java.io.File
 abstract class TracingTest {
     @RegisterExtension
     val events = TracerBulletEvents(
-        listOf(::HttpTracer, ::DbTracer, ::BusinessEventTracer).map { it((ActorByService)) },
+        listOf(::HttpTracer, ::DbTracer, ::BusinessEventTracer).map { it(ActorByService) },
         listOf(PumlSequenceDiagram, PumlInteractionDiagram),
         TraceRenderPersistence.FileSystem(File(".generated"))
     )
