@@ -1,0 +1,27 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+
+System(WebsiteUser, "Customer")
+System(apigateway, "api-gateway")
+System(shop, "shop")
+System(warehouse, "warehouse")
+System(images, "images")
+System(cognito, "cognito")
+ContainerDb(db, "db")
+System(imagecaches3euwest1amazonawscom, "s3")
+System(deptstore, "dept-store")
+System(emaileuwest1amazonawscom, "ses")
+System(eventstream, "event-stream")
+Rel_D(WebsiteUser, apigateway, " ")
+Rel_D(WebsiteUser, cognito, " ")
+Rel_D(apigateway, cognito, " ")
+Rel_D(apigateway, shop, " ")
+Rel_D(shop, warehouse, " ")
+Rel_D(warehouse, db, " ")
+Rel_D(apigateway, images, " ")
+Rel_D(images, imagecaches3euwest1amazonawscom, " ")
+Rel_D(warehouse, deptstore, " ")
+Rel_D(shop, emaileuwest1amazonawscom, " ")
+Rel_D(shop, eventstream, " ")
+@enduml
