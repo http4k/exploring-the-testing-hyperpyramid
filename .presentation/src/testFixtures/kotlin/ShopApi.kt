@@ -28,10 +28,7 @@ fun ShopApi(env: Environment, clock: Clock, events: Events, http: HttpHandler): 
 
     return AppIncomingHttp(
         DEBUG(env),
-        appEvents, routes(
-            PlaceOrder(shop),
-            ListAllItems(shop)
-        )
+        appEvents, routes(PlaceOrder(shop), ListAllItems(shop))
     )
 }
 

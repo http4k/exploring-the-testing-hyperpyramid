@@ -29,7 +29,7 @@ abstract class RecordTraces {
 }
 
 class ShopApiTest : RecordTraces() {
-    val http: HttpHandler = ShopApi(WebsiteTestEnv, TestClock, events, FakeWarehouse())
+    val http: HttpHandler = ShopApi(ShopTestEnv, TestClock, events, FakeWarehouse())
 
     val customer = HttpCustomer(Uri.of("http://shop"), TestClock, events, http)
 
@@ -64,5 +64,5 @@ object ActorByService : ActorResolver {
 
 val ClusterTestEnv = Environment.defaults(
 )
-val WebsiteTestEnv = Environment.defaults(
+val ShopTestEnv = Environment.defaults(
 )
