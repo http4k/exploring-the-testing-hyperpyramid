@@ -21,7 +21,7 @@ interface Customer {
 
 class HttpCustomer(baseUri: Uri, clock: Clock, events: Events, http: HttpHandler) : Customer {
     private val http = SetBaseUriFrom(baseUri)
-        .then(AppOutgoingHttp(false, AppEvents("Website User", clock, events), http))
+        .then(AppOutgoingHttp(false, AppEvents("Customer", clock, events), http))
 
     override fun listItems(): List<ItemId> {
         val response = http(Request(GET, "/list"))
