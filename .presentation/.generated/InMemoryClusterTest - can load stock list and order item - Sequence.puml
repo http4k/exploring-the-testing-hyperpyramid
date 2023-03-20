@@ -1,8 +1,8 @@
 @startuml
 title InMemoryClusterTest - can load stock list and order item
-participant "Website User"
+participant "Customer"
 participant "api-gateway"
-participant "website"
+participant "shop"
 participant "warehouse"
 participant "images"
 participant "cognito"
@@ -11,49 +11,49 @@ participant "image-cache.s3.eu-west-1.amazonaws.com"
 participant "dept-store"
 participant "email.eu-west-1.amazonaws.com"
 participant "event-stream"
-"Website User" -> "api-gateway": GET 
+"Customer" -> "api-gateway": GET
 activate "api-gateway"
 
-"api-gateway" --> "Website User": 307 Temporary Redirect
+"api-gateway" --> "Customer": 307 Temporary Redirect
 deactivate "api-gateway"
-"Website User" -> "cognito": GET oauth2/authorize
+"Customer" -> "cognito": GET oauth2/authorize
 activate "cognito"
 
-"cognito" --> "Website User": 302 Found
+"cognito" --> "Customer": 302 Found
 deactivate "cognito"
-"Website User" -> "cognito": GET oauth2/login
+"Customer" -> "cognito": GET oauth2/login
 activate "cognito"
 
-"cognito" --> "Website User": 200 OK
+"cognito" --> "Customer": 200 OK
 deactivate "cognito"
-"Website User" -> "cognito": POST oauth2/login
+"Customer" -> "cognito": POST oauth2/login
 activate "cognito"
 
-"cognito" --> "Website User": 303 See Other
+"cognito" --> "Customer": 303 See Other
 deactivate "cognito"
-"Website User" -> "api-gateway": GET oauth/callback
+"Customer" -> "api-gateway": GET oauth/callback
 activate "api-gateway"
 "api-gateway" -> "cognito": POST oauth2/token
 activate "cognito"
 
 "cognito" --> "api-gateway": 200 OK
 deactivate "cognito"
-"api-gateway" --> "Website User": 307 Temporary Redirect
+"api-gateway" --> "Customer": 307 Temporary Redirect
 deactivate "api-gateway"
-"Website User" -> "api-gateway": GET 
+"Customer" -> "api-gateway": GET
 activate "api-gateway"
-"api-gateway" -> "website": GET 
-activate "website"
-"website" -> "warehouse": GET v1/items
+"api-gateway" -> "shop": GET
+activate "shop"
+"shop" -> "warehouse": GET v1/items
 activate "warehouse"
 "warehouse" <-> "db": items
-"warehouse" --> "website": 200 OK
+"warehouse" --> "shop": 200 OK
 deactivate "warehouse"
-"website" --> "api-gateway": 200 OK
-deactivate "website"
-"api-gateway" --> "Website User": 200 OK
+"shop" --> "api-gateway": 200 OK
+deactivate "shop"
+"api-gateway" --> "Customer": 200 OK
 deactivate "api-gateway"
-"Website User" -> "api-gateway": GET img/{.+}
+"Customer" -> "api-gateway": GET img/{.+}
 activate "api-gateway"
 "api-gateway" -> "images": GET img/{id}
 activate "images"
@@ -64,13 +64,13 @@ activate "image-cache.s3.eu-west-1.amazonaws.com"
 deactivate "image-cache.s3.eu-west-1.amazonaws.com"
 "images" --> "api-gateway": 200 OK
 deactivate "images"
-"api-gateway" --> "Website User": 200 OK
+"api-gateway" --> "Customer": 200 OK
 deactivate "api-gateway"
-"Website User" -> "api-gateway": POST order/{id}
+"Customer" -> "api-gateway": POST order/{id}
 activate "api-gateway"
-"api-gateway" -> "website": POST order/{id}
-activate "website"
-"website" -> "warehouse": POST v1/dispatch
+"api-gateway" -> "shop": POST order/{id}
+activate "shop"
+"shop" -> "warehouse": POST v1/dispatch
 activate "warehouse"
 "warehouse" <-> "db": items
 "warehouse" <-> "db": adjust
@@ -79,16 +79,16 @@ activate "dept-store"
 
 "dept-store" --> "warehouse": 200 OK
 deactivate "dept-store"
-"warehouse" --> "website": 202 Accepted
+"warehouse" --> "shop": 202 Accepted
 deactivate "warehouse"
-"website" -> "email.eu-west-1.amazonaws.com": POST 
+"shop" -> "email.eu-west-1.amazonaws.com": POST
 activate "email.eu-west-1.amazonaws.com"
 
-"email.eu-west-1.amazonaws.com" --> "website": 200 OK
+"email.eu-west-1.amazonaws.com" --> "shop": 200 OK
 deactivate "email.eu-west-1.amazonaws.com"
-"website" -> "event-stream": CustomerOrder(item=1)
-"website" --> "api-gateway": 200 OK
-deactivate "website"
-"api-gateway" --> "Website User": 200 OK
+"shop" -> "event-stream": CustomerOrder(item=1)
+"shop" --> "api-gateway": 200 OK
+deactivate "shop"
+"api-gateway" --> "Customer": 200 OK
 deactivate "api-gateway"
 @enduml

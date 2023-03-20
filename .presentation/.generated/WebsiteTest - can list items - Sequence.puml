@@ -1,15 +1,15 @@
 @startuml
-title WebsiteTest - can list items
-participant "Website User"
-participant "website"
+title ShopTest - can list items
+participant "Customer"
+participant "shop"
 participant "warehouse"
-"Website User" -> "website": GET list
-activate "website"
-"website" -> "warehouse": GET v1/items
+"Customer" -> "shop": GET list
+activate "shop"
+"shop" -> "warehouse": GET v1/items
 activate "warehouse"
 
-"warehouse" --> "website": 200 OK
+"warehouse" --> "shop": 200 OK
 deactivate "warehouse"
-"website" --> "Website User": 200 OK
-deactivate "website"
+"shop" --> "Customer": 200 OK
+deactivate "shop"
 @enduml

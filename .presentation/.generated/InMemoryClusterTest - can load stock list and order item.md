@@ -2,9 +2,9 @@
 ```mermaid
 sequenceDiagram
     title InMemoryClusterTest - can load stock list and order item - Sequence
-    participant Website User
+    participant Shop User
 	participant api_gateway
-	participant website
+	participant shop
 	participant warehouse
 	participant images
 	participant cognito
@@ -14,35 +14,35 @@ sequenceDiagram
 	participant email_eu_west_1_amazonaws_com
 	participant event_stream
 
-    Website User->>api_gateway: GET 
+    Shop User->>api_gateway: GET 
     activate api_gateway
     
-    api_gateway->>Website User: 307 Temporary Redirect
+    api_gateway->>Shop User: 307 Temporary Redirect
     deactivate api_gateway
     
 	
-    Website User->>cognito: GET oauth2/authorize
+    Shop User->>cognito: GET oauth2/authorize
     activate cognito
     
-    cognito->>Website User: 302 Found
+    cognito->>Shop User: 302 Found
     deactivate cognito
     
 	
-    Website User->>cognito: GET oauth2/login
+    Shop User->>cognito: GET oauth2/login
     activate cognito
     
-    cognito->>Website User: 200 OK
+    cognito->>Shop User: 200 OK
     deactivate cognito
     
 	
-    Website User->>cognito: POST oauth2/login
+    Shop User->>cognito: POST oauth2/login
     activate cognito
     
-    cognito->>Website User: 303 See Other
+    cognito->>Shop User: 303 See Other
     deactivate cognito
     
 	
-    Website User->>api_gateway: GET oauth/callback
+    Shop User->>api_gateway: GET oauth/callback
     activate api_gateway
     
     api_gateway->>cognito: POST oauth2/token
@@ -51,34 +51,34 @@ sequenceDiagram
     cognito->>api_gateway: 200 OK
     deactivate cognito
     
-    api_gateway->>Website User: 307 Temporary Redirect
+    api_gateway->>Shop User: 307 Temporary Redirect
     deactivate api_gateway
     
 	
-    Website User->>api_gateway: GET 
+    Shop User->>api_gateway: GET 
     activate api_gateway
     
-    api_gateway->>website: GET 
-    activate website
+    api_gateway->>shop: GET 
+    activate shop
     
-    website->>warehouse: GET v1/items
+    shop->>warehouse: GET v1/items
     activate warehouse
     
     warehouse->>db: items
     
     db->>warehouse: 
     
-    warehouse->>website: 200 OK
+    warehouse->>shop: 200 OK
     deactivate warehouse
     
-    website->>api_gateway: 200 OK
-    deactivate website
+    shop->>api_gateway: 200 OK
+    deactivate shop
     
-    api_gateway->>Website User: 200 OK
+    api_gateway->>Shop User: 200 OK
     deactivate api_gateway
     
 	
-    Website User->>api_gateway: GET img/{.+}
+    Shop User->>api_gateway: GET img/{.+}
     activate api_gateway
     
     api_gateway->>images: GET img/{id}
@@ -93,17 +93,17 @@ sequenceDiagram
     images->>api_gateway: 200 OK
     deactivate images
     
-    api_gateway->>Website User: 200 OK
+    api_gateway->>Shop User: 200 OK
     deactivate api_gateway
     
 	
-    Website User->>api_gateway: POST order/{id}
+    Shop User->>api_gateway: POST order/{id}
     activate api_gateway
     
-    api_gateway->>website: POST order/{id}
-    activate website
+    api_gateway->>shop: POST order/{id}
+    activate shop
     
-    website->>warehouse: POST v1/dispatch
+    shop->>warehouse: POST v1/dispatch
     activate warehouse
     
     warehouse->>db: items
@@ -122,24 +122,24 @@ sequenceDiagram
     dept_store->>warehouse: 200 OK
     deactivate dept_store
     
-    warehouse->>website: 202 Accepted
+    warehouse->>shop: 202 Accepted
     deactivate warehouse
     
 	
-    website->>email_eu_west_1_amazonaws_com: POST 
+    shop->>email_eu_west_1_amazonaws_com: POST 
     activate email_eu_west_1_amazonaws_com
     
-    email_eu_west_1_amazonaws_com->>website: 200 OK
+    email_eu_west_1_amazonaws_com->>shop: 200 OK
     deactivate email_eu_west_1_amazonaws_com
     
 	
-    website-)event_stream: CustomerOrder(item=1)
+    shop-)event_stream: CustomerOrder(item=1)
     
     
-    website->>api_gateway: 200 OK
-    deactivate website
+    shop->>api_gateway: 200 OK
+    deactivate shop
     
-    api_gateway->>Website User: 200 OK
+    api_gateway->>Shop User: 200 OK
     deactivate api_gateway
     
 ```
@@ -148,9 +148,9 @@ sequenceDiagram
 C4Context
 title InMemoryClusterTest - can load stock list and order item
 
-System(WebsiteUser, "Website User")
+System(customer, "Customer")
 System(apigateway, "api-gateway")
-System(website, "website")
+System(shop, "shop")
 System(warehouse, "warehouse")
 System(images, "images")
 System(cognito, "cognito")
@@ -159,17 +159,17 @@ System(imagecaches3euwest1amazonawscom, "image-cache.s3.eu-west-1.amazonaws.com"
 System(deptstore, "dept-store")
 System(emaileuwest1amazonawscom, "email.eu-west-1.amazonaws.com")
 System(eventstream, "event-stream")    
-Rel_D(WebsiteUser, apigateway, " ") 
-Rel_D(WebsiteUser, cognito, " ") 
+Rel_D(customer, apigateway, " ") 
+Rel_D(customer, cognito, " ") 
 Rel_D(apigateway, cognito, " ") 
-Rel_D(apigateway, website, " ") 
-Rel_D(website, warehouse, " ") 
+Rel_D(apigateway, shop, " ") 
+Rel_D(shop, warehouse, " ") 
 Rel_D(warehouse, db, " ") 
 Rel_D(apigateway, images, " ") 
 Rel_D(images, imagecaches3euwest1amazonawscom, " ") 
 Rel_D(warehouse, deptstore, " ") 
-Rel_D(website, emaileuwest1amazonawscom, " ") 
-Rel_D(website, eventstream, " ")     
+Rel_D(shop, emaileuwest1amazonawscom, " ") 
+Rel_D(shop, eventstream, " ")     
 ```
 
 
@@ -177,25 +177,25 @@ Rel_D(website, eventstream, " ")
 
 | Origin | Target | Request |  Max Depth  |
 |:------:|:------:|:-------:|:-----------:|
-|	Website User	|	api-gateway	|	GET 	|	4	|
-|	Website User	|	api-gateway	|	POST order/{id}	|	4	|
-|	Website User	|	api-gateway	|	GET img/{.+}	|	3	|
-|	Website User	|	api-gateway	|	GET oauth/callback	|	2	|
-|	Website User	|	api-gateway	|	GET 	|	1	|
-|	Website User	|	cognito	|	GET oauth2/authorize	|	1	|
-|	Website User	|	cognito	|	GET oauth2/login	|	1	|
-|	Website User	|	cognito	|	POST oauth2/login	|	1	|
+|	Shop User	|	api-gateway	|	GET 	|	4	|
+|	Shop User	|	api-gateway	|	POST order/{id}	|	4	|
+|	Shop User	|	api-gateway	|	GET img/{.+}	|	3	|
+|	Shop User	|	api-gateway	|	GET oauth/callback	|	2	|
+|	Shop User	|	api-gateway	|	GET 	|	1	|
+|	Shop User	|	cognito	|	GET oauth2/authorize	|	1	|
+|	Shop User	|	cognito	|	GET oauth2/login	|	1	|
+|	Shop User	|	cognito	|	POST oauth2/login	|	1	|
 
 
 ## InMemoryClusterTest - can load stock list and order item - Trace Step Counts
 
 | Origin | Target | Request |  Steps  |
 |:------:|:------:|:-------:|:-------:|
-|	Website User	|	api-gateway	|	POST order/{id}	|	8	|
-|	Website User	|	api-gateway	|	GET 	|	4	|
-|	Website User	|	api-gateway	|	GET img/{.+}	|	3	|
-|	Website User	|	api-gateway	|	GET oauth/callback	|	2	|
-|	Website User	|	api-gateway	|	GET 	|	1	|
-|	Website User	|	cognito	|	GET oauth2/authorize	|	1	|
-|	Website User	|	cognito	|	GET oauth2/login	|	1	|
-|	Website User	|	cognito	|	POST oauth2/login	|	1	|
+|	Shop User	|	api-gateway	|	POST order/{id}	|	8	|
+|	Shop User	|	api-gateway	|	GET 	|	4	|
+|	Shop User	|	api-gateway	|	GET img/{.+}	|	3	|
+|	Shop User	|	api-gateway	|	GET oauth/callback	|	2	|
+|	Shop User	|	api-gateway	|	GET 	|	1	|
+|	Shop User	|	cognito	|	GET oauth2/authorize	|	1	|
+|	Shop User	|	cognito	|	GET oauth2/login	|	1	|
+|	Shop User	|	cognito	|	POST oauth2/login	|	1	|
