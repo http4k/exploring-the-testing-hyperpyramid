@@ -1,5 +1,3 @@
-package hyperpyramid
-
 import hyperpyramid.dto.InventoryItem
 import hyperpyramid.dto.ItemId
 import hyperpyramid.util.Json.auto

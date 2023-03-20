@@ -1,7 +1,6 @@
+import ApiGatewaySettings.API_GATEWAY_URL
+import ApiGatewaySettings.SHOP_URL
 import hyperpyramid.ApiGateway
-import hyperpyramid.ApiGatewaySettings.API_GATEWAY_URL
-import hyperpyramid.ApiGatewaySettings.WEBSITE_URL
-import hyperpyramid.Warehouse
 import hyperpyramid.WebsiteSettings.WAREHOUSE_URL
 import hyperpyramid.adapter.InMemory
 import hyperpyramid.http.NetworkAccess
@@ -23,14 +22,14 @@ class Namespace(env: Environment, clock: Clock, events: Events, theInternet: Htt
     private val networkAccess = NetworkAccess()
 
     private val apiGateway = ApiGateway(env, clock, networkAccess, events)
-    private val warehouse = Warehouse(env, clock, events, networkAccess, Inventory.InMemory(events, clock))
-    private val website = Website(env, clock, events, networkAccess)
+    private val warehouse = WarehouseApi(env, clock, events, networkAccess, Inventory.InMemory(events, clock))
+    private val shop = ShopApi(env, clock, events, networkAccess)
 
     init {
         networkAccess.http = routes(
             reverseProxyRouting(
                 API_GATEWAY_URL(env).authority to apiGateway,
-                WEBSITE_URL(env).authority to website,
+                SHOP_URL(env).authority to shop,
                 WAREHOUSE_URL(env).authority to warehouse
             ),
             Router.orElse bind theInternet,
