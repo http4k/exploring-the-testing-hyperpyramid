@@ -31,11 +31,11 @@ abstract class RecordTraces {
 class ShopApiTest : RecordTraces() {
     val http: HttpHandler = ShopApi(WebsiteTestEnv, TestClock, events, FakeWarehouse())
 
+    val customer = HttpCustomer(Uri.of("http://shop"), TestClock, events, http)
+
     @Test
     fun `can list items`() {
-        with(Customer(Uri.of("http://shop"), TestClock, events, http)) {
-            expectThat(listItems()).isEqualTo(listOf(ItemId.of("foo")))
-        }
+        expectThat(customer.listItems()).isEqualTo(listOf(ItemId.of("foo")))
     }
 }
 
@@ -43,13 +43,13 @@ class NamespaceTest : RecordTraces() {
     val clock = TestClock
     val theInternet = TheInternet()
     val namespace = Namespace(ClusterTestEnv, clock, events, theInternet)
-    val user = Customer(Uri.of("http://shop"), clock, events, namespace)
+    val customer = HttpCustomer(Uri.of("http://shop"), clock, events, namespace)
 
     @Test
     fun `can load stock list and order item`() {
-        val itemId = user.listItems().first()
+        val itemId = customer.listItems().first()
 
-        val order = user.order(itemId)
+        val order = customer.order(itemId)
 
         expectThat(theInternet.departmentStore.orders[order]?.items)
             .isEqualTo(listOf(itemId))
