@@ -18,7 +18,7 @@ import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.routes
 import java.time.Clock
 
-fun ShopApi(env: Environment, clock: Clock, events: Events, http: HttpHandler): RoutingHttpHandler {
+fun ShopApi(env: Environment, clock: Clock, events: Events, http: HttpHandler): HttpHandler {
     val appEvents = AppEvents("Shop", clock, events)
     val outgoingHttp = AppOutgoingHttp(DEBUG(env), appEvents, http)
 

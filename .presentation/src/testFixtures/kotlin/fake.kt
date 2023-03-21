@@ -8,13 +8,12 @@ import org.http4k.core.Response
 import org.http4k.core.Status.Companion.ACCEPTED
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.with
-import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.bind
 import org.http4k.routing.routes
 import org.http4k.server.SunHttp
 import org.http4k.server.asServer
 
-fun FakeWarehouse(): RoutingHttpHandler {
+fun FakeWarehouse(): HttpHandler {
     val stockLevels = mutableMapOf(ItemId.of("1") to 5)
 
     return routes(
