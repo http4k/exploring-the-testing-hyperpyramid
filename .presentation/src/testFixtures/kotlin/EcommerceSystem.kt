@@ -18,7 +18,7 @@ import org.http4k.routing.reverseProxyRouting
 import org.http4k.routing.routes
 import java.time.Clock
 
-class Namespace(env: Environment, clock: Clock, events: Events, theInternet: HttpHandler) : HttpHandler {
+class EcommerceSystem(env: Environment, clock: Clock, events: Events, theInternet: HttpHandler) : HttpHandler {
     private val networkAccess = NetworkAccess()
 
     private val apiGateway = ApiGateway(env, clock, networkAccess, events)
@@ -40,5 +40,5 @@ class Namespace(env: Environment, clock: Clock, events: Events, theInternet: Htt
 }
 
 fun main() {
-    Namespace(ENV, Clock.systemUTC(), ::println) { req: Request -> Response(Status.OK) }
+    EcommerceSystem(ENV, Clock.systemUTC(), ::println) { req: Request -> Response(Status.OK) }
 }

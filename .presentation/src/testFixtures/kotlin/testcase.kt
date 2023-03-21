@@ -39,11 +39,11 @@ class ShopApiTest : RecordTraces() {
     }
 }
 
-class NamespaceTest : RecordTraces() {
+class EcommerceSystemTest : RecordTraces() {
     val clock = TestClock
     val theInternet = TheInternet()
-    val namespace = Namespace(ClusterTestEnv, clock, events, theInternet)
-    val customer = HttpCustomer(Uri.of("http://shop"), clock, events, namespace)
+    val system = EcommerceSystem(ClusterTestEnv, clock, events, theInternet)
+    val customer = HttpCustomer(Uri.of("http://shop"), clock, events, system)
 
     @Test
     fun `can load stock list and order item`() {
