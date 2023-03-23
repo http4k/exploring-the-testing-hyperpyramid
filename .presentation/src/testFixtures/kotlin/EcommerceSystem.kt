@@ -28,9 +28,9 @@ class EcommerceSystem(env: Environment, clock: Clock, events: Events, theInterne
     init {
         networkAccess.http = routes(
             reverseProxyRouting(
-                API_GATEWAY_URL(env).authority to apiGateway,
-                SHOP_URL(env).authority to shop,
-                WAREHOUSE_URL(env).authority to warehouse
+                env[API_GATEWAY_URL].authority to apiGateway,
+                env[SHOP_URL].authority to shop,
+                env[WAREHOUSE_URL].authority to warehouse
             ),
             Router.orElse bind theInternet,
         )

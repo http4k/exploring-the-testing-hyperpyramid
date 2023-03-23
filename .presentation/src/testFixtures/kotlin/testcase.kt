@@ -1,3 +1,4 @@
+import ApiGatewaySettings.SHOP_URL
 import hyperpyramid.DbTracer
 import hyperpyramid.dto.ItemId
 import org.http4k.cloudnative.env.Environment
@@ -42,8 +43,9 @@ class ShopApiTest : RecordTraces() {
 class EcommerceSystemTest : RecordTraces() {
     val clock = TestClock
     val theInternet = TheInternet()
-    val system = EcommerceSystem(ClusterTestEnv, clock, events, theInternet)
-    val customer = HttpCustomer(Uri.of("http://shop"), clock, events, system)
+    val env = ClusterTestEnv
+    val system = EcommerceSystem(env, clock, events, theInternet)
+    val customer = HttpCustomer(env[SHOP_URL], clock, events, system)
 
     @Test
     fun `can load stock list and order item`() {
@@ -63,6 +65,7 @@ object ActorByService : ActorResolver {
 }
 
 val ClusterTestEnv = Environment.defaults(
+
 )
 val ShopTestEnv = Environment.defaults(
 )

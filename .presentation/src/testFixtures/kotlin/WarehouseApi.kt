@@ -33,18 +33,18 @@ fun WarehouseApi(
     inventory: Inventory = Inventory.Database(env)
 ): RoutingHttpHandler {
     val appEvents = AppEvents("warehouse", clock, events)
-    val outgoingHttp = AppOutgoingHttp(DEBUG(env), appEvents, http)
+    val outgoingHttp = AppOutgoingHttp(env[DEBUG], appEvents, http)
 
     val hub = WarehouseHub(
         inventory,
         DepartmentStore.Http(
-            Credentials(STORE_API_USER(env), STORE_API_PASSWORD(env)), STORE_URL(env),
+            Credentials(env[STORE_API_USER], env[STORE_API_PASSWORD]), env[STORE_URL],
             outgoingHttp
         )
     )
 
     return AppIncomingHttp(
-        DEBUG(env),
+        env[DEBUG],
         appEvents, routes(
             ListItems(hub),
             DispatchItems(hub)

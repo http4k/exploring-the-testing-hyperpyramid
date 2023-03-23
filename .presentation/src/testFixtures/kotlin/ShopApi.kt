@@ -20,14 +20,14 @@ import java.time.Clock
 
 fun ShopApi(env: Environment, clock: Clock, events: Events, http: HttpHandler): HttpHandler {
     val appEvents = AppEvents("Shop", clock, events)
-    val outgoingHttp = AppOutgoingHttp(DEBUG(env), appEvents, http)
+    val outgoingHttp = AppOutgoingHttp(env[DEBUG], appEvents, http)
 
     val shop = Shop(appEvents,
-        Warehouse.Http(WAREHOUSE_URL(env), outgoingHttp),
+        Warehouse.Http(env[WAREHOUSE_URL], outgoingHttp),
         Notifications.SES(env, outgoingHttp))
 
     return AppIncomingHttp(
-        DEBUG(env),
+        env[DEBUG],
         appEvents, routes(PlaceOrder(shop), ListAllItems(shop))
     )
 }
