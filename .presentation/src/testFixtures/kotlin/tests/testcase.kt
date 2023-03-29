@@ -4,6 +4,7 @@ import apigateway.ApiGatewaySettings.SHOP_URL
 import env.TestClock
 import env.TheInternet
 import hyperpyramid.DbTracer
+import hyperpyramid.PumlSequenceDiagram
 import hyperpyramid.dto.ItemId
 import org.http4k.cloudnative.env.Environment
 import org.http4k.core.HttpHandler
@@ -16,7 +17,6 @@ import org.http4k.tracing.TraceRenderPersistence
 import org.http4k.tracing.junit.TracerBulletEvents
 import org.http4k.tracing.persistence.FileSystem
 import org.http4k.tracing.renderer.PumlInteractionDiagram
-import org.http4k.tracing.renderer.PumlSequenceDiagram
 import org.http4k.tracing.tracer.HttpTracer
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension

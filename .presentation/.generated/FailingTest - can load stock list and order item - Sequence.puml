@@ -69,10 +69,10 @@ activate "images"
 "images" -> "image-cache.s3.eu-west-1.amazonaws.com": GET {bucketKey:.+}
 activate "image-cache.s3.eu-west-1.amazonaws.com"
 
-"image-cache.s3.eu-west-1.amazonaws.com" --> "images": 500 Internal Server Error
+"image-cache.s3.eu-west-1.amazonaws.com" X[#red]--> "images": 500 Internal Server Error
 deactivate "image-cache.s3.eu-west-1.amazonaws.com"
-"images" --> "api-gateway": 503 Service Unavailable
+"images" X[#red]--> "api-gateway": 503 Service Unavailable
 deactivate "images"
-"api-gateway" --> "Customer": 503 Service Unavailable
+"api-gateway" X[#red]--> "Customer": 503 Service Unavailable
 deactivate "api-gateway"
 @enduml
