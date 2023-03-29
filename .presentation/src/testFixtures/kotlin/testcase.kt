@@ -29,18 +29,21 @@ abstract class RecordTraces {
     )
 }
 
-class ShopApiTest : RecordTraces() {
-    val http: HttpHandler = ShopApi(ShopTestEnv, TestClock, events, FakeWarehouse())
-
-    val customer = HttpCustomer(Uri.of("http://shop"), TestClock, events, http)
-
+interface ListItemsScenario {
+    val customer: Customer
     @Test
     fun `can list items`() {
         expectThat(customer.listItems()).isEqualTo(listOf(ItemId.of("foo")))
     }
 }
 
-class EcommerceSystemTest : RecordTraces() {
+class ShopApiTest : RecordTraces(), ListItemsScenario {
+    val http: HttpHandler = ShopApi(ShopTestEnv, TestClock, events, FakeWarehouse())
+
+    override val customer = HttpCustomer(Uri.of("http://shop"), TestClock, events, http)
+}
+
+class UniverseTest : RecordTraces() {
     val clock = TestClock
     val theInternet = TheInternet()
     val env = ClusterTestEnv
