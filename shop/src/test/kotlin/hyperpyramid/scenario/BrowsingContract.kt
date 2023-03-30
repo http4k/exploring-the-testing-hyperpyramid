@@ -8,7 +8,7 @@ import strikt.assertions.isEqualTo
 interface BrowsingContract : ShopContract {
     @Test
     fun `can list items`() {
-        with(client()) {
+        with(customer()) {
             expectThat(listItems()).isEqualTo(listOf(ItemId.of("1")))
         }
     }
