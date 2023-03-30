@@ -1,6 +1,6 @@
 package hyperpyramid.env
 
-import hyperpyramid.Cluster
+import hyperpyramid.EcommerceSystem
 import hyperpyramid.TheInternet
 import hyperpyramid.http.LocalhostServiceDiscovery
 import hyperpyramid.http.start
@@ -19,7 +19,7 @@ fun main() {
 
     val env = theInternet.setupCloudEnvironment()
 
-    Cluster(env, services, theInternet).apply {
+    EcommerceSystem(env, services, theInternet).apply {
         apiGateway.start(services, "api-gateway")
     }
 }

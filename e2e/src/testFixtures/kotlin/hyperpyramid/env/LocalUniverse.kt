@@ -1,6 +1,6 @@
 package hyperpyramid.env
 
-import hyperpyramid.Cluster
+import hyperpyramid.EcommerceSystem
 import hyperpyramid.TheInternet
 import hyperpyramid.http.LocalhostServiceDiscovery
 import hyperpyramid.http.ProxyCallToLiveServerFor
@@ -29,7 +29,7 @@ fun main() {
 
     val http = ProxyCallToLiveServerFor(services)
 
-    Cluster(env, services, http).apply {
+    EcommerceSystem(env, services, http).apply {
         apiGateway.start(services, "api-gateway")
         images.start(services, "images")
         warehouse.start(services, "warehouse")

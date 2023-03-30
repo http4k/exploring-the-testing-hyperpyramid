@@ -1,6 +1,6 @@
 package hyperpyramid.env
 
-import hyperpyramid.Cluster
+import hyperpyramid.EcommerceSystem
 import hyperpyramid.TheInternet
 import hyperpyramid.actors.Customer
 import hyperpyramid.http.LocalhostServiceDiscovery
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach
 import kotlin.random.Random.Default.nextInt
 
 
-class LocalClusterTest : LoadStockList {
+class LocalEcommerceSystemTest : LoadStockList {
     private val services = LocalhostServiceDiscovery(
         nextInt(9000, 64000),
         "api-gateway", "images", "warehouse", "website", // cluster services
@@ -23,7 +23,7 @@ class LocalClusterTest : LoadStockList {
 
     private val http = ProxyCallToLiveServerFor(services)
 
-    private val cluster = Cluster(theInternet.setupCloudEnvironment(), services, http)
+    private val ecommerceSystem = EcommerceSystem(theInternet.setupCloudEnvironment(), services, http)
 
     override val user = Customer(http, services("api-gateway"), theInternet.emailInbox)
 
@@ -36,7 +36,7 @@ class LocalClusterTest : LoadStockList {
             s3.start(services, "s3")
         }
 
-        with(cluster) {
+        with(ecommerceSystem) {
             apiGateway.start(services, "api-gateway")
             images.start(services, "images")
             warehouse.start(services, "warehouse")

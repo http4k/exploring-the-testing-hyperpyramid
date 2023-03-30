@@ -33,7 +33,7 @@ import org.http4k.routing.reverseProxyRouting
 import org.http4k.routing.routes
 import java.time.Clock
 
-class Cluster(
+class EcommerceSystem(
     customEnv: Environment,
     services: ServiceDiscovery,
     theInternet: HttpHandler,

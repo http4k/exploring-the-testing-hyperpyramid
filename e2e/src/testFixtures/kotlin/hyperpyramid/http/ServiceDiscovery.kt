@@ -6,7 +6,7 @@ import org.http4k.server.Undertow
 import org.http4k.server.asServer
 
 /**
- * Provider
+ * Service Discovery looks up A URL for a system name
  */
 fun interface ServiceDiscovery : (String) -> Uri
 

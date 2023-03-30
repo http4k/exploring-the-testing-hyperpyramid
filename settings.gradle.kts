@@ -3,7 +3,7 @@ plugins {
 }
 
 include("api-gateway")
-include("e2e-cluster")
+include("e2e")
 include("images")
 include("infra")
 include("warehouse")

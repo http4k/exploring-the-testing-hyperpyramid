@@ -1,7 +1,8 @@
 package hyperpyramid.setup
 
 import dev.forkhandles.result4k.valueOrNull
-import hyperpyramid.ApiGatewaySettings
+import hyperpyramid.ApiGatewaySettings.OAUTH_CLIENT_ID
+import hyperpyramid.ApiGatewaySettings.OAUTH_CLIENT_SECRET
 import hyperpyramid.TheInternet
 import org.http4k.connect.amazon.cognito.createUserPool
 import org.http4k.connect.amazon.cognito.createUserPoolClient
@@ -25,7 +26,7 @@ internal fun SetupOAuthClient(theInternet: TheInternet): CloudSetup = {
     }
 
     it.with(
-        ApiGatewaySettings.OAUTH_CLIENT_ID of creds.user,
-        ApiGatewaySettings.OAUTH_CLIENT_SECRET of creds.password
+        OAUTH_CLIENT_ID of creds.user,
+        OAUTH_CLIENT_SECRET of creds.password
     )
 }
