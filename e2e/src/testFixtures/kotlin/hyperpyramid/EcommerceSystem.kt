@@ -66,10 +66,10 @@ class EcommerceSystem(
     init {
         networkAccess.http = routes(
             reverseProxyRouting(
-                API_GATEWAY_URL(env).authority to apiGateway,
-                IMAGES_URL(env).authority to images,
-                WAREHOUSE_URL(env).authority to warehouse,
-                WEBSITE_URL(env).authority to website
+                env[API_GATEWAY_URL].authority to apiGateway,
+                env[IMAGES_URL].authority to images,
+                env[WAREHOUSE_URL].authority to warehouse,
+                env[WEBSITE_URL].authority to website
             ),
             { _: Request -> true }.asRouter() bind theInternet,
         )

@@ -18,13 +18,13 @@ fun ApiGatewayOAuthProvider(
     outgoingHttp: HttpHandler
 ) = OAuthProvider(
     OAuthProviderConfig(
-        OAUTH_URL(env),
+        env[OAUTH_URL],
         "/oauth2/authorize",
         "/oauth2/token",
-        Credentials(OAUTH_CLIENT_ID(env), OAUTH_CLIENT_SECRET(env))
+        Credentials(env[OAUTH_CLIENT_ID], env[OAUTH_CLIENT_SECRET])
     ),
     outgoingHttp,
-    API_GATEWAY_URL(env).extend(Uri.of("/oauth/callback")),
+    env[API_GATEWAY_URL].extend(Uri.of("/oauth/callback")),
     emptyList(),
     InsecureCookieBasedOAuthPersistence("")
 )

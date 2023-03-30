@@ -24,7 +24,7 @@ fun SESNotifications(env: Environment, outgoingHttp: HttpHandler) = object : Not
     override fun collectOrder(user: Email, orderId: OrderId): Result4k<Unit, Exception> =
         sns(
             SendEmail(
-                EmailAddress.of(NOTIFICATION_EMAIL_SENDER(env).value),
+                EmailAddress.of(env[NOTIFICATION_EMAIL_SENDER].value),
                 Destination(setOf(EmailAddress.of(user.value))),
                 Message(
                     Subject.of("Your order $orderId"),

@@ -12,12 +12,11 @@ import org.http4k.cloudnative.env.Environment
 import org.http4k.cloudnative.env.Environment.Companion.ENV
 import org.http4k.core.HttpHandler
 import org.http4k.core.Method.GET
-import org.http4k.core.Request
 import org.http4k.core.then
 import org.http4k.events.AutoMarshallingEvents
 import org.http4k.events.Events
 import org.http4k.filter.ClientFilters.SetHostFrom
-import org.http4k.routing.asRouter
+import org.http4k.routing.Router.Companion.orElse
 import org.http4k.routing.bind
 import org.http4k.routing.routes
 import java.time.Clock
@@ -34,18 +33,18 @@ fun ApiGateway(
     events: Events = AutoMarshallingEvents(Json)
 ): HttpHandler {
     val appEvents = AppEvents("api-gateway", clock, events)
-    val outgoingHttp = AppOutgoingHttp(DEBUG(env), appEvents, http)
+    val outgoingHttp = AppOutgoingHttp(env[DEBUG], appEvents, http)
 
     val oAuthProvider = ApiGatewayOAuthProvider(env, outgoingHttp)
 
     return AppIncomingHttp(
-        DEBUG(env),
+        env[DEBUG],
         appEvents, routes(
             "/oauth/callback" bind GET to oAuthProvider.callback,
-            "/img/{.+}" bind SetHostFrom(IMAGES_URL(env)).then(outgoingHttp),
-            { _: Request -> true }.asRouter() bind
+            "/img/{.+}" bind SetHostFrom(env[IMAGES_URL]).then(outgoingHttp),
+            orElse bind
                 oAuthProvider.authFilter
-                    .then(SetHostFrom(WEBSITE_URL(env)))
+                    .then(SetHostFrom(env[WEBSITE_URL]))
                     .then(outgoingHttp)
         )
     )

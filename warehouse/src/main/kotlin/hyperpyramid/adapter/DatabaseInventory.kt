@@ -15,8 +15,8 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 fun DatabaseInventory(env: Environment): Inventory {
     val ds = HikariDataSource(HikariConfig().apply {
-        driverClassName = DATABASE_DRIVER(env)
-        jdbcUrl = DATABASE_URL(env)
+        driverClassName = env[DATABASE_DRIVER]
+        jdbcUrl = env[DATABASE_URL]
     })
 
     transaction(Database.connect(ds)) { create(StorageTable("InventoryItem")) }
