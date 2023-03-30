@@ -1,5 +1,5 @@
 @startuml
-participant "Customer"
+    participant "Customer"
 participant "api-gateway"
 participant "shop"
 participant "warehouse"
@@ -10,31 +10,31 @@ participant "image-cache.s3.eu-west-1.amazonaws.com"
 "Customer" -> "api-gateway": GET
 activate "api-gateway"
 
-"api-gateway" -[#DarkBlue]> "Customer": 307 Temporary Redirect
+"api-gateway" -[#DarkBlue]> "Customer": <color:DarkBlue> 307 Temporary Redirect
 deactivate "api-gateway"
 "Customer" -> "cognito": GET oauth2/authorize
 activate "cognito"
 
-"cognito" -[#DarkBlue]> "Customer": 302 Found
+"cognito" -[#DarkBlue]> "Customer": <color:DarkBlue> 302 Found
 deactivate "cognito"
 "Customer" -> "cognito": GET oauth2/login
 activate "cognito"
 
-"cognito" -[#DarkGreen]> "Customer": 200 OK
+"cognito" -[#DarkGreen]> "Customer": <color:DarkGreen> 200 OK
 deactivate "cognito"
 "Customer" -> "cognito": POST oauth2/login
 activate "cognito"
 
-"cognito" -[#DarkBlue]> "Customer": 303 See Other
+"cognito" -[#DarkBlue]> "Customer": <color:DarkBlue> 303 See Other
 deactivate "cognito"
 "Customer" -> "api-gateway": GET oauth/callback
 activate "api-gateway"
 "api-gateway" -> "cognito": POST oauth2/token
 activate "cognito"
 
-"cognito" -[#DarkGreen]> "api-gateway": 200 OK
+"cognito" -[#DarkGreen]> "api-gateway": <color:DarkGreen> 200 OK
 deactivate "cognito"
-"api-gateway" -[#DarkBlue]> "Customer": 307 Temporary Redirect
+"api-gateway" -[#DarkBlue]> "Customer": <color:DarkBlue> 307 Temporary Redirect
 deactivate "api-gateway"
 "Customer" -> "api-gateway": GET
 activate "api-gateway"
@@ -43,11 +43,11 @@ activate "shop"
 "shop" -> "warehouse": GET v1/items
 activate "warehouse"
 "warehouse" <-> "db": items
-"warehouse" -[#DarkGreen]> "shop": 200 OK
+"warehouse" -[#DarkGreen]> "shop": <color:DarkGreen> 200 OK
 deactivate "warehouse"
-"shop" -[#DarkGreen]> "api-gateway": 200 OK
+"shop" -[#DarkGreen]> "api-gateway": <color:DarkGreen> 200 OK
 deactivate "shop"
-"api-gateway" -[#DarkGreen]> "Customer": 200 OK
+"api-gateway" -[#DarkGreen]> "Customer": <color:DarkGreen> 200 OK
 deactivate "api-gateway"
 "Customer" -> "api-gateway": GET
 activate "api-gateway"
@@ -56,11 +56,11 @@ activate "shop"
 "shop" -> "warehouse": GET v1/items
 activate "warehouse"
 "warehouse" <-> "db": items
-"warehouse" -[#DarkGreen]> "shop": 200 OK
+"warehouse" -[#DarkGreen]> "shop": <color:DarkGreen> 200 OK
 deactivate "warehouse"
-"shop" -[#DarkGreen]> "api-gateway": 200 OK
+"shop" -[#DarkGreen]> "api-gateway": <color:DarkGreen> 200 OK
 deactivate "shop"
-"api-gateway" -[#DarkGreen]> "Customer": 200 OK
+"api-gateway" -[#DarkGreen]> "Customer": <color:DarkGreen> 200 OK
 deactivate "api-gateway"
 "Customer" -> "api-gateway": GET img/{.+}
 activate "api-gateway"
@@ -69,10 +69,10 @@ activate "images"
 "images" -> "image-cache.s3.eu-west-1.amazonaws.com": GET {bucketKey:.+}
 activate "image-cache.s3.eu-west-1.amazonaws.com"
 
-"image-cache.s3.eu-west-1.amazonaws.com" X-[#FireBrick]> "images": 500 Internal Server Error
+"image-cache.s3.eu-west-1.amazonaws.com" X-[#FireBrick]> "images": <color:FireBrick> 500 Internal Server Error
 deactivate "image-cache.s3.eu-west-1.amazonaws.com"
-"images" X-[#FireBrick]> "api-gateway": 503 Service Unavailable
+"images" X-[#FireBrick]> "api-gateway": <color:FireBrick> 503 Service Unavailable
 deactivate "images"
-"api-gateway" X-[#FireBrick]> "Customer": 503 Service Unavailable
+"api-gateway" X-[#FireBrick]> "Customer": <color:FireBrick> 503 Service Unavailable
 deactivate "api-gateway"
 @enduml
