@@ -3,8 +3,9 @@
 [versions]
 
 kotlin = "1.8.10"
+##  ⬆ = "1.8.20"
 
-http4k-connect = "3.30.0.0"
+http4k-connect = "3.36.0.0"
 
 [libraries]
 
