@@ -5,13 +5,12 @@ import dev.forkhandles.result4k.orThrow
 import hyperpyramid.dto.InventoryItem
 import hyperpyramid.port.Shop
 import org.http4k.core.Method.GET
-import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.bind
 import org.http4k.template.TemplateRenderer
 import org.http4k.template.ViewModel
 import org.http4k.template.renderToResponse
 
-fun ListAllItems(shop: Shop, templates: TemplateRenderer): RoutingHttpHandler = "/" bind GET to {
+fun ListAllItems(shop: Shop, templates: TemplateRenderer) = "/" bind GET to {
     shop.items()
         .map(::Items)
         .map(templates::renderToResponse)

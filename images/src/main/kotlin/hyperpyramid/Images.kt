@@ -17,7 +17,6 @@ import org.http4k.connect.amazon.s3.S3Bucket
 import org.http4k.core.HttpHandler
 import org.http4k.events.AutoMarshallingEvents
 import org.http4k.events.Events
-import org.http4k.routing.RoutingHttpHandler
 import java.time.Clock
 import java.time.Clock.systemUTC
 
@@ -26,7 +25,7 @@ fun ImagesApi(
     events: Events = AutoMarshallingEvents(Json),
     clock: Clock = systemUTC(),
     http: HttpHandler = JavaHttpClient()
-): RoutingHttpHandler {
+): HttpHandler {
     val appEvents = AppEvents("images", clock, events)
     val outgoingHttp = AppOutgoingHttp(env[DEBUG], appEvents, http)
 

@@ -17,7 +17,6 @@ import org.http4k.cloudnative.env.Environment.Companion.ENV
 import org.http4k.core.HttpHandler
 import org.http4k.events.AutoMarshallingEvents
 import org.http4k.events.Events
-import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.routes
 import org.http4k.template.HandlebarsTemplates
 import java.time.Clock
@@ -28,7 +27,7 @@ fun ShopApi(
     events: Events = AutoMarshallingEvents(Json),
     clock: Clock = systemUTC(),
     http: HttpHandler = JavaHttpClient()
-): RoutingHttpHandler {
+): HttpHandler {
     val appEvents = AppEvents("shop", clock, events)
     val outgoingHttp = AppOutgoingHttp(env[DEBUG], appEvents, http)
 

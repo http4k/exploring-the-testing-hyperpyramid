@@ -21,7 +21,6 @@ import org.http4k.core.Credentials
 import org.http4k.core.HttpHandler
 import org.http4k.events.AutoMarshallingEvents
 import org.http4k.events.Events
-import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.routes
 import java.time.Clock
 import java.time.Clock.systemUTC
@@ -32,7 +31,7 @@ fun WarehouseApi(
     events: Events = AutoMarshallingEvents(Json),
     http: HttpHandler = JavaHttpClient(),
     inventory: Inventory = DatabaseInventory(env)
-): RoutingHttpHandler {
+): HttpHandler {
     val appEvents = AppEvents("warehouse", clock, events)
     val outgoingHttp = AppOutgoingHttp(env[DEBUG], appEvents, http)
 
