@@ -9,7 +9,7 @@ interface BrowsingContract : WebsiteContract {
     @Test
     fun `can list items`() {
         with(client()) {
-            expectThat(listItems()).isEqualTo(listOf(ItemId.of("foo")))
+            expectThat(listItems()).isEqualTo(listOf(ItemId.of("1")))
         }
     }
 }
