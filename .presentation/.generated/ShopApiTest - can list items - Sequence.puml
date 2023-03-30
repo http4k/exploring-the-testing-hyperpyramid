@@ -1,5 +1,4 @@
 @startuml
-title ShopTest - can list items
 participant "Customer"
 participant "shop"
 participant "warehouse"
