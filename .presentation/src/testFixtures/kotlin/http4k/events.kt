@@ -1,5 +1,8 @@
+package http4k
+
 import hyperpyramid.dto.ItemId
 import org.http4k.core.Uri
+import tests.HttpCustomer
 
 interface Event
 

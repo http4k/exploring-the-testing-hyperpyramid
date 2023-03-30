@@ -1,10 +1,11 @@
-import ApiGatewaySettings.API_GATEWAY_URL
-import ApiGatewaySettings.SHOP_URL
+package tests
+
+import apigateway.ApiGatewaySettings.API_GATEWAY_URL
+import apigateway.ApiGatewaySettings.SHOP_URL
 import hyperpyramid.ApiGateway
 import hyperpyramid.ShopApiSettings.WAREHOUSE_URL
-import hyperpyramid.adapter.InMemory
+import hyperpyramid.adapter.InMemoryInventory
 import hyperpyramid.http.NetworkAccess
-import hyperpyramid.port.Inventory
 import org.http4k.cloudnative.env.Environment
 import org.http4k.cloudnative.env.Environment.Companion.ENV
 import org.http4k.core.HttpHandler
@@ -16,13 +17,15 @@ import org.http4k.routing.Router
 import org.http4k.routing.bind
 import org.http4k.routing.reverseProxyRouting
 import org.http4k.routing.routes
+import shop.ShopApi
+import warehouse.WarehouseApi
 import java.time.Clock
 
 class EcommerceSystem(env: Environment, clock: Clock, events: Events, theInternet: HttpHandler) : HttpHandler {
     private val networkAccess = NetworkAccess()
 
     private val apiGateway = ApiGateway(env, clock, networkAccess, events)
-    private val warehouse = WarehouseApi(env, clock, events, networkAccess, Inventory.InMemory(events, clock))
+    private val warehouse = WarehouseApi(env, clock, events, networkAccess, InMemoryInventory(events, clock))
     private val shop = ShopApi(env, clock, events, networkAccess)
 
     init {

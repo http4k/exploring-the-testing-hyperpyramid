@@ -1,16 +1,18 @@
-package hyperpyramid.port
+package hyperpyramid.domain
 
 import dev.forkhandles.result4k.Result4k
 import dev.forkhandles.result4k.Success
 import dev.forkhandles.result4k.flatMap
 import dev.forkhandles.result4k.map
+import hyperpyramid.domain.DispatchResult.NoStock
+import hyperpyramid.domain.DispatchResult.NotFound
+import hyperpyramid.domain.DispatchResult.Sent
 import hyperpyramid.dto.ItemPickup
 import hyperpyramid.dto.OrderId
-import hyperpyramid.port.DispatchResult.NoStock
-import hyperpyramid.port.DispatchResult.NotFound
-import hyperpyramid.port.DispatchResult.Sent
+import hyperpyramid.port.DepartmentStore
+import hyperpyramid.port.Inventory
 
-class WarehouseHub(
+class Warehouse(
     private val inventory: Inventory,
     private val departmentStore: DepartmentStore
 ) {

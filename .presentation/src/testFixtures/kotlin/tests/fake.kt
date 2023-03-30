@@ -1,3 +1,6 @@
+package tests
+
+import http4k.HttpHandler
 import hyperpyramid.dto.InventoryItem
 import hyperpyramid.dto.ItemId
 import hyperpyramid.util.Json.auto

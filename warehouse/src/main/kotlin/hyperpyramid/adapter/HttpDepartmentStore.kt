@@ -22,7 +22,7 @@ import org.http4k.core.with
 import org.http4k.filter.ClientFilters.BasicAuth
 import org.http4k.filter.ClientFilters.SetHostFrom
 
-fun DepartmentStore.Companion.Http(
+fun HttpDepartmentStore(
     credentials: Credentials,
     base: Uri,
     rawHttp: HttpHandler

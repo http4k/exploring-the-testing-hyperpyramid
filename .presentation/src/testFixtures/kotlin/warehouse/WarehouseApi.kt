@@ -1,17 +1,18 @@
+package warehouse
+
 import hyperpyramid.WarehouseSettings.DEBUG
 import hyperpyramid.WarehouseSettings.STORE_API_PASSWORD
 import hyperpyramid.WarehouseSettings.STORE_API_USER
 import hyperpyramid.WarehouseSettings.STORE_URL
-import hyperpyramid.adapter.Database
-import hyperpyramid.adapter.Http
+import hyperpyramid.adapter.DatabaseInventory
+import hyperpyramid.adapter.HttpDepartmentStore
 import hyperpyramid.app.AppEvents
 import hyperpyramid.app.AppIncomingHttp
 import hyperpyramid.app.AppOutgoingHttp
+import hyperpyramid.domain.Warehouse
 import hyperpyramid.endpoint.DispatchItems
 import hyperpyramid.endpoint.ListItems
-import hyperpyramid.port.DepartmentStore
 import hyperpyramid.port.Inventory
-import hyperpyramid.port.WarehouseHub
 import hyperpyramid.util.Json
 import org.http4k.client.JavaHttpClient
 import org.http4k.cloudnative.env.Environment
@@ -30,14 +31,14 @@ fun WarehouseApi(
     clock: Clock = systemUTC(),
     events: Events = AutoMarshallingEvents(Json),
     http: HttpHandler = JavaHttpClient(),
-    inventory: Inventory = Inventory.Database(env)
+    inventory: Inventory = DatabaseInventory(env)
 ): RoutingHttpHandler {
     val appEvents = AppEvents("warehouse", clock, events)
     val outgoingHttp = AppOutgoingHttp(env[DEBUG], appEvents, http)
 
-    val hub = WarehouseHub(
+    val hub = Warehouse(
         inventory,
-        DepartmentStore.Http(
+        HttpDepartmentStore(
             Credentials(env[STORE_API_USER], env[STORE_API_PASSWORD]), env[STORE_URL],
             outgoingHttp
         )

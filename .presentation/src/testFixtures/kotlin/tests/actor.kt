@@ -1,3 +1,5 @@
+package tests
+
 import hyperpyramid.app.AppEvents
 import hyperpyramid.app.AppOutgoingHttp
 import hyperpyramid.dto.ItemId

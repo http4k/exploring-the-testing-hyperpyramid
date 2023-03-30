@@ -1,3 +1,5 @@
+package shop
+
 import hyperpyramid.ShopApiSettings.DEBUG
 import hyperpyramid.ShopApiSettings.WAREHOUSE_URL
 import hyperpyramid.adapter.HttpWarehouse

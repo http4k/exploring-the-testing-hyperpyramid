@@ -4,7 +4,6 @@ import dev.forkhandles.result4k.failureOrNull
 import hyperpyramid.FakeDepartmentStore
 import hyperpyramid.dto.Email
 import hyperpyramid.dto.ItemId
-import hyperpyramid.port.DepartmentStore
 import hyperpyramid.port.DepartmentStoreContract
 import org.http4k.chaos.ChaosBehaviours.ReturnStatus
 import org.http4k.core.Credentials
@@ -16,7 +15,7 @@ import strikt.assertions.isEqualTo
 
 class FakeDepartmentStoreTest : DepartmentStoreContract {
     private val fake = FakeDepartmentStore()
-    override val departmentStore = DepartmentStore.Http(
+    override val departmentStore = HttpDepartmentStore(
         Credentials("user", "password"),
         Uri.of("http://store"), fake
     )

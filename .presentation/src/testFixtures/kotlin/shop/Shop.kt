@@ -1,3 +1,5 @@
+package shop
+
 import dev.forkhandles.result4k.flatMap
 import dev.forkhandles.result4k.map
 import hyperpyramid.app.CustomerOrder
@@ -7,9 +9,10 @@ import hyperpyramid.port.Notifications
 import hyperpyramid.port.Warehouse
 import org.http4k.events.Events
 
-class Shop(private val events: Events,
-           private val warehouse: Warehouse,
-           private val notifications: Notifications
+class Shop(
+    private val events: Events,
+    private val warehouse: Warehouse,
+    private val notifications: Notifications
 ) {
     fun items() = warehouse.items()
 

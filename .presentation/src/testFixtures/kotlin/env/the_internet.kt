@@ -1,3 +1,5 @@
+package env
+
 import hyperpyramid.FakeDepartmentStore
 import org.http4k.connect.amazon.cognito.FakeCognito
 import org.http4k.connect.amazon.s3.FakeS3

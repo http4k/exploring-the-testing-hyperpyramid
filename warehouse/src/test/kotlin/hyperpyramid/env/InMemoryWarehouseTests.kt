@@ -2,10 +2,9 @@ package hyperpyramid.env
 
 import hyperpyramid.FakeDepartmentStore
 import hyperpyramid.TracingTest
-import hyperpyramid.Warehouse
+import hyperpyramid.WarehouseApi
 import hyperpyramid.WarehouseTestEnv
-import hyperpyramid.adapter.InMemory
-import hyperpyramid.port.Inventory
+import hyperpyramid.adapter.InMemoryInventory
 import hyperpyramid.scenario.DispatchContract
 import hyperpyramid.scenario.ListItemContract
 import org.http4k.testing.ApprovalTest
@@ -16,7 +15,7 @@ class InMemoryWarehouseTests : TracingTest(),
     DispatchContract,
     ListItemContract {
 
-    override val http = Warehouse(
-        WarehouseTestEnv, events = events, http = FakeDepartmentStore(), inventory = Inventory.InMemory(events)
+    override val http = WarehouseApi(
+        WarehouseTestEnv, events = events, http = FakeDepartmentStore(), inventory = InMemoryInventory(events)
     )
 }

@@ -1,10 +1,9 @@
 package hyperpyramid.env
 
 import hyperpyramid.FakeDepartmentStore
-import hyperpyramid.Warehouse
+import hyperpyramid.WarehouseApi
 import hyperpyramid.WarehouseTestEnv
-import hyperpyramid.adapter.InMemory
-import hyperpyramid.port.Inventory
+import hyperpyramid.adapter.InMemoryInventory
 import hyperpyramid.scenario.DispatchContract
 import hyperpyramid.scenario.ListItemContract
 import org.http4k.client.JavaHttpClient
@@ -33,7 +32,7 @@ class LocalWarehouseTests :
     }
 
     private val server by lazy {
-        Warehouse(WarehouseTestEnv, http = FakeDepartmentStore(), inventory = Inventory.InMemory()).asServer(Undertow(0))
+        WarehouseApi(WarehouseTestEnv, http = FakeDepartmentStore(), inventory = InMemoryInventory()).asServer(Undertow(0))
     }
 
     @BeforeEach

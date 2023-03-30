@@ -6,7 +6,7 @@ import hyperpyramid.dto.ItemId
 import hyperpyramid.port.Inventory
 import org.http4k.connect.storage.Storage
 
-fun Inventory.Companion.Storage(storage: Storage<InventoryItem>) = object : Inventory {
+fun StorageInventory(storage: Storage<InventoryItem>) = object : Inventory {
     override fun items() = resultFrom { storage.keySet("").map { storage[it]!! } }
 
     override fun store(item: InventoryItem) = resultFrom { storage[item.id.value] = item }

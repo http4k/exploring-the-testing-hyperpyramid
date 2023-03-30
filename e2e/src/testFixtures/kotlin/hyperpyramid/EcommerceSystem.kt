@@ -9,11 +9,10 @@ import hyperpyramid.ShopApiSettings.WAREHOUSE_URL
 import hyperpyramid.WarehouseSettings.STORE_API_PASSWORD
 import hyperpyramid.WarehouseSettings.STORE_API_USER
 import hyperpyramid.WarehouseSettings.STORE_URL
-import hyperpyramid.adapter.InMemory
+import hyperpyramid.adapter.InMemoryInventory
 import hyperpyramid.dto.Email
 import hyperpyramid.http.NetworkAccess
 import hyperpyramid.http.ServiceDiscovery
-import hyperpyramid.port.Inventory
 import hyperpyramid.util.Json
 import org.http4k.cloudnative.env.Environment
 import org.http4k.cloudnative.env.Environment.Companion.defaults
@@ -61,7 +60,7 @@ class EcommerceSystem(
 
     val apiGateway = ApiGateway(env, clock, networkAccess, events)
     val images = ImagesApi(env, events, clock, networkAccess)
-    val warehouse = Warehouse(env, clock, events, networkAccess, Inventory.InMemory(events, clock))
+    val warehouse = WarehouseApi(env, clock, events, networkAccess, InMemoryInventory(events, clock))
     val website = ShopApi(env, events, clock, networkAccess)
 
     init {

@@ -13,7 +13,7 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils.create
 import org.jetbrains.exposed.sql.transactions.transaction
 
-fun Inventory.Companion.Database(env: Environment): Inventory {
+fun DatabaseInventory(env: Environment): Inventory {
     val ds = HikariDataSource(HikariConfig().apply {
         driverClassName = DATABASE_DRIVER(env)
         jdbcUrl = DATABASE_URL(env)
@@ -21,6 +21,6 @@ fun Inventory.Companion.Database(env: Environment): Inventory {
 
     transaction(Database.connect(ds)) { create(StorageTable("InventoryItem")) }
 
-    return Inventory.Storage(Storage.Jdbc(ds))
+    return StorageInventory(Storage.Jdbc(ds))
 }
 
