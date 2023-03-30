@@ -1,5 +1,5 @@
 @startuml
-participant "Website User"
+participant "Customer"
 participant "api-gateway"
 participant "shop"
 participant "warehouse"
@@ -7,36 +7,36 @@ participant "images"
 participant "cognito"
 database "db"
 participant "image-cache.s3.eu-west-1.amazonaws.com"
-"Website User" -> "api-gateway": GET 
+"Customer" -> "api-gateway": GET
 activate "api-gateway"
 
-"api-gateway" --> "Website User": 307 Temporary Redirect
+"api-gateway" --> "Customer": 307 Temporary Redirect
 deactivate "api-gateway"
-"Website User" -> "cognito": GET oauth2/authorize
+"Customer" -> "cognito": GET oauth2/authorize
 activate "cognito"
 
-"cognito" --> "Website User": 302 Found
+"cognito" --> "Customer": 302 Found
 deactivate "cognito"
-"Website User" -> "cognito": GET oauth2/login
+"Customer" -> "cognito": GET oauth2/login
 activate "cognito"
 
-"cognito" --> "Website User": 200 OK
+"cognito" --> "Customer": 200 OK
 deactivate "cognito"
-"Website User" -> "cognito": POST oauth2/login
+"Customer" -> "cognito": POST oauth2/login
 activate "cognito"
 
-"cognito" --> "Website User": 303 See Other
+"cognito" --> "Customer": 303 See Other
 deactivate "cognito"
-"Website User" -> "api-gateway": GET oauth/callback
+"Customer" -> "api-gateway": GET oauth/callback
 activate "api-gateway"
 "api-gateway" -> "cognito": POST oauth2/token
 activate "cognito"
 
 "cognito" --> "api-gateway": 200 OK
 deactivate "cognito"
-"api-gateway" --> "Website User": 307 Temporary Redirect
+"api-gateway" --> "Customer": 307 Temporary Redirect
 deactivate "api-gateway"
-"Website User" -> "api-gateway": GET 
+"Customer" -> "api-gateway": GET
 activate "api-gateway"
 "api-gateway" -> "shop": GET 
 activate "shop"
@@ -47,9 +47,9 @@ activate "warehouse"
 deactivate "warehouse"
 "shop" --> "api-gateway": 200 OK
 deactivate "shop"
-"api-gateway" --> "Website User": 200 OK
+"api-gateway" --> "Customer": 200 OK
 deactivate "api-gateway"
-"Website User" -> "api-gateway": GET 
+"Customer" -> "api-gateway": GET
 activate "api-gateway"
 "api-gateway" -> "shop": GET 
 activate "shop"
@@ -60,9 +60,9 @@ activate "warehouse"
 deactivate "warehouse"
 "shop" --> "api-gateway": 200 OK
 deactivate "shop"
-"api-gateway" --> "Website User": 200 OK
+"api-gateway" --> "Customer": 200 OK
 deactivate "api-gateway"
-"Website User" -> "api-gateway": GET img/{.+}
+"Customer" -> "api-gateway": GET img/{.+}
 activate "api-gateway"
 "api-gateway" -> "images": GET img/{id}
 activate "images"
@@ -73,6 +73,6 @@ activate "image-cache.s3.eu-west-1.amazonaws.com"
 deactivate "image-cache.s3.eu-west-1.amazonaws.com"
 "images" --> "api-gateway": 503 Service Unavailable
 deactivate "images"
-"api-gateway" --> "Website User": 503 Service Unavailable
+"api-gateway" --> "Customer": 503 Service Unavailable
 deactivate "api-gateway"
 @enduml

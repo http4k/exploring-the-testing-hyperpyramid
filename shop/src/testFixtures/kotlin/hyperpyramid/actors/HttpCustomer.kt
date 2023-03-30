@@ -15,7 +15,7 @@ import org.http4k.webdriver.Http4kWebDriver
 import org.openqa.selenium.By
 
 class HttpCustomer(http: HttpHandler, private val baseUri: Uri, private val emailInbox: Emails, events: Events = {}) :
-    Actor("Website User", http, events), Customer {
+    Actor("Customer", http, events), Customer {
 
     private val browser = Http4kWebDriver(this.http)
 
