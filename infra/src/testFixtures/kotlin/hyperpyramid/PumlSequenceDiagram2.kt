@@ -15,7 +15,7 @@ import org.http4k.tracing.TraceRenderer
 import org.http4k.tracing.TraceStep
 import org.http4k.tracing.renderer.chronologicalActors
 
-object PumlSequenceDiagram : TraceRenderer {
+object PumlSequenceDiagram2 : TraceRenderer {
     override fun render(scenarioName: String, steps: List<TraceStep>): TraceRender {
         val actors = steps.filterIsInstance<Trace>().chronologicalActors()
 

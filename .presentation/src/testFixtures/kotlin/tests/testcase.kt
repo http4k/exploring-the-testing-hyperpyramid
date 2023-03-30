@@ -4,7 +4,7 @@ import apigateway.ApiGatewaySettings.SHOP_URL
 import env.TestClock
 import env.TheInternet
 import hyperpyramid.DbTracer
-import hyperpyramid.PumlSequenceDiagram
+import hyperpyramid.PumlSequenceDiagram2
 import hyperpyramid.dto.ItemId
 import org.http4k.cloudnative.env.Environment
 import org.http4k.core.HttpHandler
@@ -29,7 +29,7 @@ abstract class RecordTraces {
     @RegisterExtension
     val events = TracerBulletEvents(
         listOf(::HttpTracer, ::DbTracer).map { it(ActorByService) },
-        listOf(PumlSequenceDiagram, PumlInteractionDiagram),
+        listOf(PumlSequenceDiagram2, PumlInteractionDiagram),
         TraceRenderPersistence.FileSystem(File(".generated"))
     )
 }
