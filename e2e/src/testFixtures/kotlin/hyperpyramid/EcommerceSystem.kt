@@ -4,11 +4,11 @@ import hyperpyramid.ApiGatewaySettings.API_GATEWAY_URL
 import hyperpyramid.ApiGatewaySettings.IMAGES_URL
 import hyperpyramid.ApiGatewaySettings.OAUTH_URL
 import hyperpyramid.ApiGatewaySettings.WEBSITE_URL
+import hyperpyramid.ShopApiSettings.NOTIFICATION_EMAIL_SENDER
+import hyperpyramid.ShopApiSettings.WAREHOUSE_URL
 import hyperpyramid.WarehouseSettings.STORE_API_PASSWORD
 import hyperpyramid.WarehouseSettings.STORE_API_USER
 import hyperpyramid.WarehouseSettings.STORE_URL
-import hyperpyramid.WebsiteSettings.NOTIFICATION_EMAIL_SENDER
-import hyperpyramid.WebsiteSettings.WAREHOUSE_URL
 import hyperpyramid.adapter.InMemory
 import hyperpyramid.dto.Email
 import hyperpyramid.http.NetworkAccess
@@ -60,9 +60,9 @@ class EcommerceSystem(
     private val networkAccess = NetworkAccess()
 
     val apiGateway = ApiGateway(env, clock, networkAccess, events)
-    val images = Images(env, events, clock, networkAccess)
+    val images = ImagesApi(env, events, clock, networkAccess)
     val warehouse = Warehouse(env, clock, events, networkAccess, Inventory.InMemory(events, clock))
-    val website = Website(env, events, clock, networkAccess)
+    val website = ShopApi(env, events, clock, networkAccess)
 
     init {
         networkAccess.http = routes(

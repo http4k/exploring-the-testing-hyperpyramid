@@ -3,7 +3,7 @@ package hyperpyramid.adapter
 import dev.forkhandles.result4k.Result4k
 import dev.forkhandles.result4k.map
 import dev.forkhandles.result4k.mapFailure
-import hyperpyramid.WebsiteSettings.NOTIFICATION_EMAIL_SENDER
+import hyperpyramid.ShopApiSettings.NOTIFICATION_EMAIL_SENDER
 import hyperpyramid.dto.Email
 import hyperpyramid.dto.OrderId
 import hyperpyramid.port.Notifications
@@ -18,7 +18,7 @@ import org.http4k.connect.amazon.ses.model.Message
 import org.http4k.connect.amazon.ses.model.Subject
 import org.http4k.core.HttpHandler
 
-fun Notifications.Companion.SES(env: Environment, outgoingHttp: HttpHandler) = object : Notifications {
+fun SESNotifications(env: Environment, outgoingHttp: HttpHandler) = object : Notifications {
     private val sns = SES.Http(env, outgoingHttp)
 
     override fun collectOrder(user: Email, orderId: OrderId): Result4k<Unit, Exception> =
@@ -26,8 +26,9 @@ fun Notifications.Companion.SES(env: Environment, outgoingHttp: HttpHandler) = o
             SendEmail(
                 EmailAddress.of(NOTIFICATION_EMAIL_SENDER(env).value),
                 Destination(setOf(EmailAddress.of(user.value))),
-                Message(Subject.of("Your order $orderId"),
-                    Body( "Please collect your order using the code: $orderId")
+                Message(
+                    Subject.of("Your order $orderId"),
+                    Body("Please collect your order using the code: $orderId")
                 )
             )
         )

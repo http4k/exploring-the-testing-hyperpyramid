@@ -1,13 +1,13 @@
 package hyperpyramid.scenario
 
-import hyperpyramid.actors.Customer
+import hyperpyramid.actors.HttpCustomer
 import org.http4k.core.HttpHandler
 import org.http4k.core.Uri
 import org.http4k.events.Events
 
-interface WebsiteContract {
+interface ShopContract {
     val http: HttpHandler
     val events: Events
 
-    fun client() = Customer(http, Uri.of("http://website"), { emptyList() }, events)
+    fun client() = HttpCustomer(http, Uri.of("http://website"), { emptyList() }, events)
 }

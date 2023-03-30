@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
-interface BrowsingContract : WebsiteContract {
+interface BrowsingContract : ShopContract {
     @Test
     fun `can list items`() {
         with(client()) {

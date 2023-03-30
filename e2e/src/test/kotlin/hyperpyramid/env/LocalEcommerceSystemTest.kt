@@ -2,7 +2,7 @@ package hyperpyramid.env
 
 import hyperpyramid.EcommerceSystem
 import hyperpyramid.TheInternet
-import hyperpyramid.actors.Customer
+import hyperpyramid.actors.HttpCustomer
 import hyperpyramid.http.LocalhostServiceDiscovery
 import hyperpyramid.http.ProxyCallToLiveServerFor
 import hyperpyramid.http.start
@@ -25,7 +25,7 @@ class LocalEcommerceSystemTest : LoadStockList {
 
     private val ecommerceSystem = EcommerceSystem(theInternet.setupCloudEnvironment(), services, http)
 
-    override val user = Customer(http, services("api-gateway"), theInternet.emailInbox)
+    override val user = HttpCustomer(http, services("api-gateway"), theInternet.emailInbox)
 
     @BeforeEach
     fun start() {

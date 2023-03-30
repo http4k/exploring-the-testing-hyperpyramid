@@ -4,6 +4,6 @@ import org.http4k.server.Undertow
 import org.http4k.server.asServer
 
 fun main() {
-    Images().asServer(Undertow(8000)).start()
+    ImagesApi().asServer(Undertow(8000)).start()
 }
 

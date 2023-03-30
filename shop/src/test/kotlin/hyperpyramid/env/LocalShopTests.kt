@@ -1,7 +1,7 @@
 package hyperpyramid.env
 
 import hyperpyramid.FakeWarehouse
-import hyperpyramid.Website
+import hyperpyramid.ShopApi
 import hyperpyramid.WebsiteTestEnv
 import hyperpyramid.scenario.BrowsingContract
 import org.http4k.client.JavaHttpClient
@@ -17,7 +17,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(ApprovalTest::class)
-class LocalWebsiteTests : BrowsingContract {
+class LocalShopTests : BrowsingContract {
 
     override val http by lazy {
         SetBaseUriFrom(Uri.of("http://localhost:${server.port()}"))
@@ -27,7 +27,7 @@ class LocalWebsiteTests : BrowsingContract {
     override val events: Events = {}
 
     private val server by lazy {
-        Website(WebsiteTestEnv, http = FakeWarehouse()).asServer(Undertow(0))
+        ShopApi(WebsiteTestEnv, http = FakeWarehouse()).asServer(Undertow(0))
     }
 
     @BeforeEach

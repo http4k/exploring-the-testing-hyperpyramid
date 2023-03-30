@@ -1,12 +1,10 @@
-import hyperpyramid.WebsiteSettings.DEBUG
-import hyperpyramid.WebsiteSettings.WAREHOUSE_URL
-import hyperpyramid.adapter.Http
-import hyperpyramid.adapter.SES
+import hyperpyramid.ShopApiSettings.DEBUG
+import hyperpyramid.ShopApiSettings.WAREHOUSE_URL
+import hyperpyramid.adapter.HttpWarehouse
+import hyperpyramid.adapter.SESNotifications
 import hyperpyramid.app.AppEvents
 import hyperpyramid.app.AppIncomingHttp
 import hyperpyramid.app.AppOutgoingHttp
-import hyperpyramid.port.Notifications
-import hyperpyramid.port.Warehouse
 import org.http4k.cloudnative.env.Environment
 import org.http4k.cloudnative.env.Environment.Companion.ENV
 import org.http4k.core.HttpHandler
@@ -23,8 +21,8 @@ fun ShopApi(env: Environment, clock: Clock, events: Events, http: HttpHandler): 
     val outgoingHttp = AppOutgoingHttp(env[DEBUG], appEvents, http)
 
     val shop = Shop(appEvents,
-        Warehouse.Http(env[WAREHOUSE_URL], outgoingHttp),
-        Notifications.SES(env, outgoingHttp))
+        HttpWarehouse(env[WAREHOUSE_URL], outgoingHttp),
+        SESNotifications(env, outgoingHttp))
 
     return AppIncomingHttp(
         env[DEBUG],
@@ -36,5 +34,5 @@ fun main() {
     ShopApi(ENV, Clock.systemUTC(), ::println) { req: Request -> Response(Status.OK) }
 }
 
-fun ListAllItems(hub: Shop): RoutingHttpHandler = TODO()
-fun PlaceOrder(hub: Shop): RoutingHttpHandler = TODO()
+fun ListAllItems(shop: Shop): RoutingHttpHandler = TODO()
+fun PlaceOrder(shop: Shop): RoutingHttpHandler = TODO()

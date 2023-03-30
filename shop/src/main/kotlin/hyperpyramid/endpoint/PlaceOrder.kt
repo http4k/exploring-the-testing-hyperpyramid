@@ -5,7 +5,7 @@ import dev.forkhandles.result4k.orThrow
 import hyperpyramid.dto.Email
 import hyperpyramid.dto.ItemId
 import hyperpyramid.dto.OrderId
-import hyperpyramid.port.WebsiteHub
+import hyperpyramid.port.Shop
 import hyperpyramid.util.Json
 import org.http4k.base64Decoded
 import org.http4k.core.Method.POST
@@ -17,9 +17,10 @@ import org.http4k.template.TemplateRenderer
 import org.http4k.template.ViewModel
 import org.http4k.template.renderToResponse
 
-fun PlaceOrder(hub: WebsiteHub, templates: TemplateRenderer) = "/order/{id}" bind POST to {
-    hub.order(emailClaimFromJwt(it), itemId(it))
-        .map { templates.renderToResponse(OrderPlaced(it)) }
+fun PlaceOrder(shop: Shop, templates: TemplateRenderer) = "/order/{id}" bind POST to {
+    shop.order(emailClaimFromJwt(it), itemId(it))
+        .map(::OrderPlaced)
+        .map(templates::renderToResponse)
         .orThrow()
 }
 

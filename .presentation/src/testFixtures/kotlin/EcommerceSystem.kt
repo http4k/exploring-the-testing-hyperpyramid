@@ -1,7 +1,7 @@
 import ApiGatewaySettings.API_GATEWAY_URL
 import ApiGatewaySettings.SHOP_URL
 import hyperpyramid.ApiGateway
-import hyperpyramid.WebsiteSettings.WAREHOUSE_URL
+import hyperpyramid.ShopApiSettings.WAREHOUSE_URL
 import hyperpyramid.adapter.InMemory
 import hyperpyramid.http.NetworkAccess
 import hyperpyramid.port.Inventory

@@ -6,7 +6,7 @@ import hyperpyramid.app.AppEvents
 import hyperpyramid.app.AppIncomingHttp
 import hyperpyramid.app.AppOutgoingHttp
 import hyperpyramid.endpoint.GetImage
-import hyperpyramid.port.ImagesHub
+import hyperpyramid.port.Images
 import hyperpyramid.util.Json
 import org.http4k.client.JavaHttpClient
 import org.http4k.cloudnative.env.Environment
@@ -21,19 +21,19 @@ import org.http4k.routing.RoutingHttpHandler
 import java.time.Clock
 import java.time.Clock.systemUTC
 
-fun Images(
+fun ImagesApi(
     env: Environment = ENV,
     events: Events = AutoMarshallingEvents(Json),
     clock: Clock = systemUTC(),
     http: HttpHandler = JavaHttpClient()
 ): RoutingHttpHandler {
     val appEvents = AppEvents("images", clock, events)
-    val outgoingHttp = AppOutgoingHttp(DEBUG(env), appEvents, http)
+    val outgoingHttp = AppOutgoingHttp(env[DEBUG], appEvents, http)
 
     return AppIncomingHttp(
-        DEBUG(env),
+        env[DEBUG],
         appEvents,
-        GetImage(ImagesHub(S3Bucket.Http(IMAGE_BUCKET(env), AWS_REGION(env), env, outgoingHttp)))
+        GetImage(Images(S3Bucket.Http(env[IMAGE_BUCKET], env[AWS_REGION], env, outgoingHttp)))
     )
 }
 

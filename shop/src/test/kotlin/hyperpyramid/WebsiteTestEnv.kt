@@ -1,7 +1,7 @@
 package hyperpyramid
 
-import hyperpyramid.WebsiteSettings.NOTIFICATION_EMAIL_SENDER
-import hyperpyramid.WebsiteSettings.WAREHOUSE_URL
+import hyperpyramid.ShopApiSettings.NOTIFICATION_EMAIL_SENDER
+import hyperpyramid.ShopApiSettings.WAREHOUSE_URL
 import hyperpyramid.dto.Email
 import org.http4k.cloudnative.env.Environment.Companion.defaults
 import org.http4k.connect.amazon.AWS_ACCESS_KEY_ID
