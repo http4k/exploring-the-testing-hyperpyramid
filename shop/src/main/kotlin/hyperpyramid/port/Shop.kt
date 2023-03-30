@@ -10,11 +10,12 @@ import org.http4k.events.Events
 class Shop(private val events: Events,
            private val warehouse: Warehouse,
            private val notifications: Notifications) {
+
     fun items() = warehouse.items()
 
-    fun order(user: Email, item: ItemId) = warehouse.dispatch(user, item)
+    fun order(email: Email, item: ItemId) = warehouse.dispatch(email, item)
         .flatMap { orderId ->
-            notifications.collectOrder(user, orderId)
+            notifications.collectOrder(email, orderId)
                 .map { orderId }
                 .also { events(CustomerOrder(item)) }
         }
