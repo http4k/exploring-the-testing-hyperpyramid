@@ -12,7 +12,7 @@ import org.http4k.tracing.tracer.HttpTracer
 import org.junit.jupiter.api.extension.RegisterExtension
 import java.io.File
 
-abstract class TracingTest {
+abstract class RecordTraces {
     @RegisterExtension
     val events = TracerBulletEvents(
         listOf(::HttpTracer, ::DbTracer, ::BusinessEventTracer).map { it(ActorByService) },

@@ -1,7 +1,7 @@
 package hyperpyramid.env
 
 import hyperpyramid.FakeDepartmentStore
-import hyperpyramid.TracingTest
+import hyperpyramid.RecordTraces
 import hyperpyramid.WarehouseApi
 import hyperpyramid.WarehouseTestEnv
 import hyperpyramid.adapter.InMemoryInventory
@@ -11,7 +11,7 @@ import org.http4k.testing.ApprovalTest
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(ApprovalTest::class)
-class InMemoryWarehouseTests : TracingTest(),
+class InMemoryWarehouseTests : RecordTraces(),
     DispatchContract,
     ListItemContract {
 
