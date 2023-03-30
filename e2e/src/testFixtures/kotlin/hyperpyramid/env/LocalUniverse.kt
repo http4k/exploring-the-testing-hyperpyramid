@@ -14,7 +14,7 @@ import hyperpyramid.setup.setupCloudEnvironment
 fun main() {
     val services = LocalhostServiceDiscovery(
         10000,
-        "api-gateway", "images", "warehouse", "website", // cluster services
+        "api-gateway", "images", "warehouse", "shop", // cluster services
         "cognito", "dept-store", "email", "s3" // external services
     )
 
@@ -33,6 +33,6 @@ fun main() {
         apiGateway.start(services, "api-gateway")
         images.start(services, "images")
         warehouse.start(services, "warehouse")
-        website.start(services, "website")
+        shop.start(services, "shop")
     }
 }

@@ -29,7 +29,7 @@ fun ShopApi(
     clock: Clock = systemUTC(),
     http: HttpHandler = JavaHttpClient()
 ): RoutingHttpHandler {
-    val appEvents = AppEvents("website", clock, events)
+    val appEvents = AppEvents("shop", clock, events)
     val outgoingHttp = AppOutgoingHttp(env[DEBUG], appEvents, http)
 
     val templateRenderer = HandlebarsTemplates().CachingClasspath()

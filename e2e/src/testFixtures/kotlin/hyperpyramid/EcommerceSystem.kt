@@ -3,7 +3,7 @@ package hyperpyramid
 import hyperpyramid.ApiGatewaySettings.API_GATEWAY_URL
 import hyperpyramid.ApiGatewaySettings.IMAGES_URL
 import hyperpyramid.ApiGatewaySettings.OAUTH_URL
-import hyperpyramid.ApiGatewaySettings.WEBSITE_URL
+import hyperpyramid.ApiGatewaySettings.SHOP_URL
 import hyperpyramid.ShopApiSettings.NOTIFICATION_EMAIL_SENDER
 import hyperpyramid.ShopApiSettings.WAREHOUSE_URL
 import hyperpyramid.WarehouseSettings.STORE_API_PASSWORD
@@ -53,7 +53,7 @@ class EcommerceSystem(
         OAUTH_URL of services("cognito"),
         STORE_URL of services("dept-store"),
         WAREHOUSE_URL of services("warehouse"),
-        WEBSITE_URL of services("website")
+        SHOP_URL of services("shop")
     )
 
     private val networkAccess = NetworkAccess()
@@ -61,7 +61,7 @@ class EcommerceSystem(
     val apiGateway = ApiGateway(env, clock, networkAccess, events)
     val images = ImagesApi(env, events, clock, networkAccess)
     val warehouse = WarehouseApi(env, clock, events, networkAccess, InMemoryInventory(events, clock))
-    val website = ShopApi(env, events, clock, networkAccess)
+    val shop = ShopApi(env, events, clock, networkAccess)
 
     init {
         networkAccess.http = routes(
@@ -69,7 +69,7 @@ class EcommerceSystem(
                 env[API_GATEWAY_URL].authority to apiGateway,
                 env[IMAGES_URL].authority to images,
                 env[WAREHOUSE_URL].authority to warehouse,
-                env[WEBSITE_URL].authority to website
+                env[SHOP_URL].authority to shop
             ),
             { _: Request -> true }.asRouter() bind theInternet,
         )

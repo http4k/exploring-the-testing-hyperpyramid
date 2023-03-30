@@ -2,7 +2,7 @@ package hyperpyramid
 
 import hyperpyramid.ApiGatewaySettings.DEBUG
 import hyperpyramid.ApiGatewaySettings.IMAGES_URL
-import hyperpyramid.ApiGatewaySettings.WEBSITE_URL
+import hyperpyramid.ApiGatewaySettings.SHOP_URL
 import hyperpyramid.app.AppEvents
 import hyperpyramid.app.AppIncomingHttp
 import hyperpyramid.app.AppOutgoingHttp
@@ -44,7 +44,7 @@ fun ApiGateway(
             "/img/{.+}" bind SetHostFrom(env[IMAGES_URL]).then(outgoingHttp),
             orElse bind
                 oAuthProvider.authFilter
-                    .then(SetHostFrom(env[WEBSITE_URL]))
+                    .then(SetHostFrom(env[SHOP_URL]))
                     .then(outgoingHttp)
         )
     )

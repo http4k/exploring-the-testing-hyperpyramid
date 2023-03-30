@@ -2,7 +2,7 @@ package hyperpyramid.env
 
 import hyperpyramid.FakeWarehouse
 import hyperpyramid.ShopApi
-import hyperpyramid.WebsiteTestEnv
+import hyperpyramid.ShopTestEnv
 import hyperpyramid.scenario.BrowsingContract
 import org.http4k.client.JavaHttpClient
 import org.http4k.core.Uri
@@ -27,7 +27,7 @@ class LocalShopTests : BrowsingContract {
     override val events: Events = {}
 
     private val server by lazy {
-        ShopApi(WebsiteTestEnv, http = FakeWarehouse()).asServer(Undertow(0))
+        ShopApi(ShopTestEnv, http = FakeWarehouse()).asServer(Undertow(0))
     }
 
     @BeforeEach

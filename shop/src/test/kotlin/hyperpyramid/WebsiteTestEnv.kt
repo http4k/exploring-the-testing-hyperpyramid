@@ -12,7 +12,7 @@ import org.http4k.connect.amazon.core.model.Region.Companion.EU_WEST_1
 import org.http4k.connect.amazon.core.model.SecretAccessKey
 import org.http4k.core.Uri
 
-val WebsiteTestEnv = defaults(
+val ShopTestEnv = defaults(
     AWS_REGION of EU_WEST_1,
     AWS_ACCESS_KEY_ID of AccessKeyId.of("access-key-id"),
     AWS_SECRET_ACCESS_KEY of SecretAccessKey.of("secret-access-key"),

@@ -15,7 +15,7 @@ import kotlin.random.Random.Default.nextInt
 class LocalEcommerceSystemTest : LoadStockList {
     private val services = LocalhostServiceDiscovery(
         nextInt(9000, 64000),
-        "api-gateway", "images", "warehouse", "website", // cluster services
+        "api-gateway", "images", "warehouse", "shop", // cluster services
         "cognito", "dept-store", "email", "s3" // external services
     )
 
@@ -40,7 +40,7 @@ class LocalEcommerceSystemTest : LoadStockList {
             apiGateway.start(services, "api-gateway")
             images.start(services, "images")
             warehouse.start(services, "warehouse")
-            website.start(services, "website")
+            shop.start(services, "shop")
         }
     }
 }
