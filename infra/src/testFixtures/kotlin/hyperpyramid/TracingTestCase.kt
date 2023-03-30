@@ -16,7 +16,7 @@ abstract class TracingTest {
     @RegisterExtension
     val events = TracerBulletEvents(
         listOf(::HttpTracer, ::DbTracer, ::BusinessEventTracer).map { it(ActorByService) },
-        listOf(PumlSequenceDiagram, PumlInteractionDiagram),
+        listOf(PumlSequenceDiagram2, PumlInteractionDiagram),
         TraceRenderPersistence.FileSystem(File(".generated"))
     )
 }

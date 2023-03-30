@@ -7,7 +7,10 @@ participant "images"
 participant "cognito"
 database "db"
 participant "image-cache.s3.eu-west-1.amazonaws.com"
-"Customer" -> "api-gateway": GET
+participant "dept-store"
+participant "email.eu-west-1.amazonaws.com"
+participant "event-stream"
+"Customer" -> "api-gateway": GET 
 activate "api-gateway"
 
 "api-gateway" -[#DarkBlue]> "Customer": 307 Temporary Redirect
@@ -36,9 +39,9 @@ activate "cognito"
 deactivate "cognito"
 "api-gateway" -[#DarkBlue]> "Customer": 307 Temporary Redirect
 deactivate "api-gateway"
-"Customer" -> "api-gateway": GET
+"Customer" -> "api-gateway": GET 
 activate "api-gateway"
-"api-gateway" -> "shop": GET
+"api-gateway" -> "shop": GET 
 activate "shop"
 "shop" -> "warehouse": GET v1/items
 activate "warehouse"
@@ -49,9 +52,9 @@ deactivate "warehouse"
 deactivate "shop"
 "api-gateway" -[#DarkGreen]> "Customer": 200 OK
 deactivate "api-gateway"
-"Customer" -> "api-gateway": GET
+"Customer" -> "api-gateway": GET 
 activate "api-gateway"
-"api-gateway" -> "shop": GET
+"api-gateway" -> "shop": GET 
 activate "shop"
 "shop" -> "warehouse": GET v1/items
 activate "warehouse"
@@ -69,10 +72,48 @@ activate "images"
 "images" -> "image-cache.s3.eu-west-1.amazonaws.com": GET {bucketKey:.+}
 activate "image-cache.s3.eu-west-1.amazonaws.com"
 
-"image-cache.s3.eu-west-1.amazonaws.com" X-[#FireBrick]> "images": 500 Internal Server Error
+"image-cache.s3.eu-west-1.amazonaws.com" -[#DarkGreen]> "images": 200 OK
 deactivate "image-cache.s3.eu-west-1.amazonaws.com"
-"images" X-[#FireBrick]> "api-gateway": 503 Service Unavailable
+"images" -[#DarkGreen]> "api-gateway": 200 OK
 deactivate "images"
-"api-gateway" X-[#FireBrick]> "Customer": 503 Service Unavailable
+"api-gateway" -[#DarkGreen]> "Customer": 200 OK
+deactivate "api-gateway"
+"Customer" -> "api-gateway": GET 
+activate "api-gateway"
+"api-gateway" -> "shop": GET 
+activate "shop"
+"shop" -> "warehouse": GET v1/items
+activate "warehouse"
+"warehouse" <-> "db": items
+"warehouse" -[#DarkGreen]> "shop": 200 OK
+deactivate "warehouse"
+"shop" -[#DarkGreen]> "api-gateway": 200 OK
+deactivate "shop"
+"api-gateway" -[#DarkGreen]> "Customer": 200 OK
+deactivate "api-gateway"
+"Customer" -> "api-gateway": POST order/{id}
+activate "api-gateway"
+"api-gateway" -> "shop": POST order/{id}
+activate "shop"
+"shop" -> "warehouse": POST v1/dispatch
+activate "warehouse"
+"warehouse" <-> "db": items
+"warehouse" <-> "db": adjust
+"warehouse" -> "dept-store": POST v1/order
+activate "dept-store"
+
+"dept-store" -[#DarkGreen]> "warehouse": 200 OK
+deactivate "dept-store"
+"warehouse" -[#DarkGreen]> "shop": 202 Accepted
+deactivate "warehouse"
+"shop" -> "email.eu-west-1.amazonaws.com": POST 
+activate "email.eu-west-1.amazonaws.com"
+
+"email.eu-west-1.amazonaws.com" -[#DarkGreen]> "shop": 200 OK
+deactivate "email.eu-west-1.amazonaws.com"
+"shop" -> "event-stream": CustomerOrder(item=1)
+"shop" -[#DarkGreen]> "api-gateway": 200 OK
+deactivate "shop"
+"api-gateway" -[#DarkGreen]> "Customer": 200 OK
 deactivate "api-gateway"
 @enduml

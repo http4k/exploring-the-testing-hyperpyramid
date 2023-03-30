@@ -2,7 +2,7 @@ package hyperpyramid
 
 import org.http4k.core.Status
 import org.http4k.tracing.Actor
-import org.http4k.tracing.ActorType
+import org.http4k.tracing.ActorType.Database
 import org.http4k.tracing.BiDirectional
 import org.http4k.tracing.FireAndForget
 import org.http4k.tracing.RequestResponse
@@ -42,7 +42,7 @@ object PumlSequenceDiagram : TraceRenderer {
     private fun Iterable<Actor>.toActor() =
         fold(emptyList<String>()) { acc, next ->
             val nextVal = when (next.type) {
-                ActorType.Database -> "database"
+                Database -> "database"
                 else -> "participant"
             } + " \"${next.name}\""
             if (acc.contains(nextVal)) acc else acc + nextVal
@@ -78,14 +78,13 @@ object PumlSequenceDiagram : TraceRenderer {
 
 private fun String.toArrow(): String =
     try {
-        println(this)
-        with(Status(split(" ").last().toInt(), "")) {
+        with(Status(split(" ").first().toInt(), split(" ").last())) {
             when {
-                successful -> "-[#DarkGreen]->"
-                redirection -> "-[#DarkBlue]->"
-                clientError -> "X-[#DarkOrange]->"
-                serverError -> "X-[#FireBrick]->"
-                else -> "-->"
+                successful -> "-[#DarkGreen]>"
+                redirection -> "-[#DarkBlue]>"
+                clientError -> "X-[#DarkOrange]>"
+                serverError -> "X-[#FireBrick]>"
+                else -> "->"
             }
         }
     } catch (e: Exception) {
