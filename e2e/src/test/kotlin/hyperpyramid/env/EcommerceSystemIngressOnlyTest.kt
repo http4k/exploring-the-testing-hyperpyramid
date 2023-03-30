@@ -18,7 +18,7 @@ class EcommerceSystemIngressOnlyTest : LoadStockList {
 
     private val ecommerceSystem = EcommerceSystem(theInternet.setupCloudEnvironment(), services, theInternet)
 
-    override val user = HttpCustomer(JavaHttpClient(), services("api-gateway"), theInternet.emailInbox)
+    override val customer = HttpCustomer(JavaHttpClient(), services("api-gateway"), theInternet.emailInbox)
 
     @BeforeEach
     fun start() {

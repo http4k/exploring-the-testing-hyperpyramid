@@ -15,6 +15,6 @@ class InMemoryEcommerceSystemTest : TracingTest(), LoadStockList {
 
     private val ecommerceSystem = EcommerceSystem(theInternet.setupCloudEnvironment(), services, theInternet, events)
 
-    override val user = HttpCustomer(ecommerceSystem, services("api-gateway"), theInternet.emailInbox, events)
+    override val customer = HttpCustomer(ecommerceSystem, services("api-gateway"), theInternet.emailInbox, events)
 }
 

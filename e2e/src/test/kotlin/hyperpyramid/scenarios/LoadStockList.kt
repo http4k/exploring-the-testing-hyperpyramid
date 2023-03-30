@@ -9,11 +9,11 @@ import strikt.assertions.isTrue
 
 interface LoadStockList {
     val theInternet: TheInternet
-    val user: HttpCustomer
+    val customer: HttpCustomer
 
     @Test
     fun `can load stock list and order item`() {
-        with(user) {
+        with(customer) {
             login()
 
             val catalogue = listItems()
@@ -24,7 +24,7 @@ interface LoadStockList {
             val orderId = order(itemId)
             expectThat(theInternet.departmentStore.orders[orderId]?.items).isEqualTo(listOf(itemId))
 
-            expectThat(user.hasEmailFor(orderId)).isTrue()
+            expectThat(customer.hasEmailFor(orderId)).isTrue()
         }
     }
 }

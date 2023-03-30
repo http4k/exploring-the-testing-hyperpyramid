@@ -25,7 +25,7 @@ class LocalEcommerceSystemTest : LoadStockList {
 
     private val ecommerceSystem = EcommerceSystem(theInternet.setupCloudEnvironment(), services, http)
 
-    override val user = HttpCustomer(http, services("api-gateway"), theInternet.emailInbox)
+    override val customer = HttpCustomer(http, services("api-gateway"), theInternet.emailInbox)
 
     @BeforeEach
     fun start() {
