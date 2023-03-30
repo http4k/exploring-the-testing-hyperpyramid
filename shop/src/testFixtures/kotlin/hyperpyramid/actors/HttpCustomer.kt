@@ -34,7 +34,6 @@ class HttpCustomer(http: HttpHandler, private val baseUri: Uri, private val emai
     override fun canSeeImage(id: ItemId) = http(Request(GET, baseUri.extend(Uri.of("/img/$id")))).status == OK
 
     override fun order(id: ItemId): OrderId = with(browser) {
-        navigate().to(baseUri)
         findElement(By.id("ITEM$id"))?.submit()
         return OrderId.of(findElement(By.id("orderId"))!!.text.toInt())
     }

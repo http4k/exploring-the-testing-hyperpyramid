@@ -38,20 +38,6 @@ activate "cognito"
 "cognito" -[#DarkGreen]> "api-gateway": <color:DarkGreen> 200 OK
 deactivate "cognito"
 "api-gateway" -[#DarkBlue]> "Customer": <color:DarkBlue> 307 Temporary Redirect
-deactivate "api-gateway"
-"Customer" -> "api-gateway": GET
-activate "api-gateway"
-"api-gateway" -> "shop": GET
-activate "shop"
-"shop" -> "warehouse": GET v1/items
-activate "warehouse"
-"warehouse" <-> "db": items
-"warehouse" -[#DarkGreen]> "shop": <color:DarkGreen> 200 OK
-deactivate "warehouse"
-"shop" -[#DarkGreen]> "api-gateway": <color:DarkGreen> 200 OK
-deactivate "shop"
-"api-gateway" -[#DarkGreen]> "Customer": <color:DarkGreen> 200 OK
-deactivate "api-gateway"
 "Customer" -> "api-gateway": GET
 activate "api-gateway"
 "api-gateway" -> "shop": GET
@@ -76,19 +62,6 @@ activate "image-cache.s3.eu-west-1.amazonaws.com"
 deactivate "image-cache.s3.eu-west-1.amazonaws.com"
 "images" -[#DarkGreen]> "api-gateway": <color:DarkGreen> 200 OK
 deactivate "images"
-"api-gateway" -[#DarkGreen]> "Customer": <color:DarkGreen> 200 OK
-deactivate "api-gateway"
-"Customer" -> "api-gateway": GET
-activate "api-gateway"
-"api-gateway" -> "shop": GET
-activate "shop"
-"shop" -> "warehouse": GET v1/items
-activate "warehouse"
-"warehouse" <-> "db": items
-"warehouse" -[#DarkGreen]> "shop": <color:DarkGreen> 200 OK
-deactivate "warehouse"
-"shop" -[#DarkGreen]> "api-gateway": <color:DarkGreen> 200 OK
-deactivate "shop"
 "api-gateway" -[#DarkGreen]> "Customer": <color:DarkGreen> 200 OK
 deactivate "api-gateway"
 "Customer" -> "api-gateway": POST order/{id}

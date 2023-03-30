@@ -49,19 +49,6 @@ deactivate "warehouse"
 deactivate "shop"
 "api-gateway" -[#DarkGreen]> "Customer": <color:DarkGreen> 200 OK
 deactivate "api-gateway"
-"Customer" -> "api-gateway": GET
-activate "api-gateway"
-"api-gateway" -> "shop": GET
-activate "shop"
-"shop" -> "warehouse": GET v1/items
-activate "warehouse"
-"warehouse" <-> "db": items
-"warehouse" -[#DarkGreen]> "shop": <color:DarkGreen> 200 OK
-deactivate "warehouse"
-"shop" -[#DarkGreen]> "api-gateway": <color:DarkGreen> 200 OK
-deactivate "shop"
-"api-gateway" -[#DarkGreen]> "Customer": <color:DarkGreen> 200 OK
-deactivate "api-gateway"
 "Customer" -> "api-gateway": GET img/{.+}
 activate "api-gateway"
 "api-gateway" -> "images": GET img/{id}
