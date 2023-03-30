@@ -36,7 +36,7 @@ fun WarehouseApi(
     val appEvents = AppEvents("warehouse", clock, events)
     val outgoingHttp = AppOutgoingHttp(env[DEBUG], appEvents, http)
 
-    val hub = Warehouse(
+    val warehouse = Warehouse(
         inventory,
         HttpDepartmentStore(
             Credentials(env[STORE_API_USER], env[STORE_API_PASSWORD]), env[STORE_URL],
@@ -47,8 +47,8 @@ fun WarehouseApi(
     return AppIncomingHttp(
         env[DEBUG],
         appEvents, routes(
-            ListItems(hub),
-            DispatchItems(hub)
+            ListItems(warehouse),
+            DispatchItems(warehouse)
         )
     )
 }

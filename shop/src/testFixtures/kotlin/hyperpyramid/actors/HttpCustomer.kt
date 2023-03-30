@@ -14,14 +14,6 @@ import org.http4k.events.Events
 import org.http4k.webdriver.Http4kWebDriver
 import org.openqa.selenium.By
 
-interface Customer {
-    fun login()
-    fun listItems(): List<ItemId>
-    fun canSeeImage(id: ItemId): Boolean
-    fun order(id: ItemId): OrderId
-    fun hasEmailFor(orderId: OrderId): Boolean
-}
-
 class HttpCustomer(http: HttpHandler, private val baseUri: Uri, private val emailInbox: Emails, events: Events = {}) :
     Actor("Website User", http, events), Customer {
 

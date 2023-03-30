@@ -33,13 +33,13 @@ fun ShopApi(
     val outgoingHttp = AppOutgoingHttp(env[DEBUG], appEvents, http)
 
     val templateRenderer = HandlebarsTemplates().CachingClasspath()
-    val hub = Shop(appEvents, HttpWarehouse(env[WAREHOUSE_URL], outgoingHttp), SESNotifications(env, outgoingHttp))
+    val shop = Shop(appEvents, HttpWarehouse(env[WAREHOUSE_URL], outgoingHttp), SESNotifications(env, outgoingHttp))
 
     return AppIncomingHttp(
         env[DEBUG],
         appEvents, routes(
-            PlaceOrder(hub, templateRenderer),
-            ListAllItems(hub, templateRenderer)
+            PlaceOrder(shop, templateRenderer),
+            ListAllItems(shop, templateRenderer)
         )
     )
 }
