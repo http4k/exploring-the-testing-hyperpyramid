@@ -1,15 +1,15 @@
 package hyperpyramid.scenarios
 
 import hyperpyramid.TheInternet
-import hyperpyramid.actors.HttpCustomer
+import hyperpyramid.actors.Customer
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import strikt.assertions.isTrue
 
-interface LoadStockList {
+interface ItemTransactionScenario {
     val theInternet: TheInternet
-    val customer: HttpCustomer
+    val customer: Customer
 
     @Test
     fun `can load stock list and order item`() {

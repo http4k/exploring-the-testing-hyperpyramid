@@ -5,10 +5,10 @@ import hyperpyramid.TheInternet
 import hyperpyramid.TracingTest
 import hyperpyramid.actors.HttpCustomer
 import hyperpyramid.http.ServiceDiscovery
-import hyperpyramid.scenarios.LoadStockList
+import hyperpyramid.scenarios.ItemTransactionScenario
 import hyperpyramid.setup.setupCloudEnvironment
 
-class InMemoryEcommerceSystemTest : TracingTest(), LoadStockList {
+class InMemoryEcommerceSystemTest : TracingTest(), ItemTransactionScenario {
     private val services = ServiceDiscovery()
 
     override val theInternet = TheInternet(services)

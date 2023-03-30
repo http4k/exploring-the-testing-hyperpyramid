@@ -5,13 +5,13 @@ import hyperpyramid.TheInternet
 import hyperpyramid.actors.HttpCustomer
 import hyperpyramid.http.LocalhostServiceDiscovery
 import hyperpyramid.http.start
-import hyperpyramid.scenarios.LoadStockList
+import hyperpyramid.scenarios.ItemTransactionScenario
 import hyperpyramid.setup.setupCloudEnvironment
 import org.http4k.client.JavaHttpClient
 import org.junit.jupiter.api.BeforeEach
 import kotlin.random.Random.Default.nextInt
 
-class EcommerceSystemIngressOnlyTest : LoadStockList {
+class EcommerceSystemIngressOnlyTest : ItemTransactionScenario {
     private val services = LocalhostServiceDiscovery(nextInt(9000, 64000), "api-gateway", "cognito")
 
     override val theInternet = TheInternet(services)

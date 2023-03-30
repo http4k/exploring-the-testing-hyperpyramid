@@ -6,13 +6,13 @@ import hyperpyramid.actors.HttpCustomer
 import hyperpyramid.http.LocalhostServiceDiscovery
 import hyperpyramid.http.ProxyCallToLiveServerFor
 import hyperpyramid.http.start
-import hyperpyramid.scenarios.LoadStockList
+import hyperpyramid.scenarios.ItemTransactionScenario
 import hyperpyramid.setup.setupCloudEnvironment
 import org.junit.jupiter.api.BeforeEach
 import kotlin.random.Random.Default.nextInt
 
 
-class LocalEcommerceSystemTest : LoadStockList {
+class LocalEcommerceSystemTest : ItemTransactionScenario {
     private val services = LocalhostServiceDiscovery(
         nextInt(9000, 64000),
         "api-gateway", "images", "warehouse", "shop", // cluster services
