@@ -10,12 +10,11 @@ import org.http4k.connect.amazon.ses.FakeSES
 import org.http4k.connect.amazon.ses.model.EmailAddress
 import org.http4k.connect.storage.InMemory
 import org.http4k.connect.storage.Storage
-import org.http4k.core.Filter
+import org.http4k.core.HttpHandler
 import org.http4k.core.Request
-import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.reverseProxyRouting
 
-class TheInternet(services: ServiceDiscovery) : RoutingHttpHandler {
+class TheInternet(services: ServiceDiscovery) : HttpHandler {
 
     private val emails = Storage.InMemory<List<EmailMessage>>()
 
@@ -34,9 +33,6 @@ class TheInternet(services: ServiceDiscovery) : RoutingHttpHandler {
     )
 
     override fun invoke(p1: Request) = http(p1)
-    override fun match(request: Request) = http.match(request)
-    override fun withBasePath(new: String) = http.withBasePath(new)
-    override fun withFilter(new: Filter) = http.withFilter(new)
 }
 
 private fun SESEmails(emails: Storage<List<EmailMessage>>) = Emails { email ->
