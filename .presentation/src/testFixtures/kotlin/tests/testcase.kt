@@ -63,9 +63,9 @@ interface CustomerBuysItemScenario {
 }
 
 class UniverseTests : RecordTraces(), CustomerBuysItemScenario {
+    val env = ClusterTestEnv
     val clock = TestClock
     val theInternet = TheInternet()
-    val env = ClusterTestEnv
     val system = EcommerceSystem(env, clock, events, theInternet)
 
     override val customer = HttpCustomer(env[SHOP_URL], clock, events, system)
