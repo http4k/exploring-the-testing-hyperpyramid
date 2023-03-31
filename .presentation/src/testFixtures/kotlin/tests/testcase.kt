@@ -36,34 +36,39 @@ abstract class RecordTraces {
 
 interface ListItemsScenario {
     val customer: Customer
+
     @Test
     fun `can list items`() {
         expectThat(customer.listItems()).isEqualTo(listOf(ItemId.of("foo")))
     }
 }
 
-class ShopApiTest : RecordTraces(), ListItemsScenario {
+class ShopApiTests : RecordTraces(), ListItemsScenario {
     val http: HttpHandler = ShopApi(ShopTestEnv, TestClock, events, FakeWarehouse())
 
     override val customer = HttpCustomer(Uri.of("http://shop"), TestClock, events, http)
 }
 
-class UniverseTest : RecordTraces() {
-    val clock = TestClock
-    val theInternet = TheInternet()
-    val env = ClusterTestEnv
-    val system = EcommerceSystem(env, clock, events, theInternet)
-    val customer = HttpCustomer(env[SHOP_URL], clock, events, system)
+interface CustomerBuysItemScenario {
+    val customer: Customer
+    val theInternet: TheInternet
 
     @Test
     fun `can load stock list and order item`() {
         val itemId = customer.listItems().first()
-
         val order = customer.order(itemId)
 
         expectThat(theInternet.departmentStore.orders[order]?.items)
             .isEqualTo(listOf(itemId))
     }
+}
+
+class UniverseTests : RecordTraces(), CustomerBuysItemScenario {
+    val clock = TestClock
+    override val theInternet = TheInternet()
+    val env = ClusterTestEnv
+    val system = EcommerceSystem(env, clock, events, theInternet)
+    override val customer = HttpCustomer(env[SHOP_URL], clock, events, system)
 }
 
 object ActorByService : ActorResolver {
