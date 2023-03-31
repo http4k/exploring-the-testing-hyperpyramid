@@ -1,5 +1,6 @@
 package tests
 
+import env.TheInternet
 import hyperpyramid.app.AppEvents
 import hyperpyramid.app.AppOutgoingHttp
 import hyperpyramid.dto.ItemId
@@ -34,4 +35,12 @@ class HttpCustomer(baseUri: Uri, clock: Clock, events: Events, http: HttpHandler
         val response = http(Request(POST, "/order/$id"))
         return Body.auto<OrderId>().toLens()(response)
     }
+}
+
+interface StoreManager {
+    fun hasOrderItems(orderId: OrderId): List<ItemId>?
+}
+
+fun InternetStoreManager(theInternet: TheInternet) = object : StoreManager {
+    override fun hasOrderItems(orderId: OrderId) = theInternet.departmentStore.orders[orderId]?.items
 }

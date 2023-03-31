@@ -51,24 +51,25 @@ class ShopApiTests : RecordTraces(), ListItemsScenario {
 
 interface CustomerBuysItemScenario {
     val customer: Customer
-    val theInternet: TheInternet
+    val storeManager: StoreManager
 
     @Test
-    fun `can load stock list and order item`() {
+    fun `can order item to store`() {
         val itemId = customer.listItems().first()
         val order = customer.order(itemId)
 
-        expectThat(theInternet.departmentStore.orders[order]?.items)
-            .isEqualTo(listOf(itemId))
+        expectThat(storeManager.hasOrderItems(order)).isEqualTo(listOf(itemId))
     }
 }
 
 class UniverseTests : RecordTraces(), CustomerBuysItemScenario {
     val clock = TestClock
-    override val theInternet = TheInternet()
+    val theInternet = TheInternet()
     val env = ClusterTestEnv
     val system = EcommerceSystem(env, clock, events, theInternet)
+
     override val customer = HttpCustomer(env[SHOP_URL], clock, events, system)
+    override val storeManager = InternetStoreManager(theInternet)
 }
 
 object ActorByService : ActorResolver {
