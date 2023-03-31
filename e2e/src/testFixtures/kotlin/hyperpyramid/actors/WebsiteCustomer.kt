@@ -8,3 +8,5 @@ interface WebsiteCustomer : Customer {
     fun canSeeImage(id: ItemId): Boolean
     fun hasEmailFor(orderId: OrderId): Boolean
 }
+
+

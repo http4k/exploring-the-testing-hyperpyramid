@@ -3,6 +3,7 @@ package hyperpyramid.env
 import hyperpyramid.EcommerceSystem
 import hyperpyramid.TheInternet
 import hyperpyramid.actors.HttpWebsiteCustomer
+import hyperpyramid.actors.InternetStoreManager
 import hyperpyramid.http.LocalhostServiceDiscovery
 import hyperpyramid.http.start
 import hyperpyramid.scenarios.ItemTransactionScenario
@@ -14,11 +15,13 @@ import kotlin.random.Random.Default.nextInt
 class EcommerceSystemIngressOnlyTest : ItemTransactionScenario {
     private val services = LocalhostServiceDiscovery(nextInt(9000, 64000), "api-gateway", "cognito")
 
-    override val theInternet = TheInternet(services)
+    private val theInternet = TheInternet(services)
 
     private val ecommerceSystem = EcommerceSystem(theInternet.setupCloudEnvironment(), services, theInternet)
 
     override val customer = HttpWebsiteCustomer(JavaHttpClient(), services("api-gateway"), theInternet.emailInbox)
+
+    override val storeManager = InternetStoreManager(theInternet)
 
     @BeforeEach
     fun start() {

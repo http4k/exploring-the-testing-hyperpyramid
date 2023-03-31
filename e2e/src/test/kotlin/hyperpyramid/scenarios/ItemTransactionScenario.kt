@@ -1,6 +1,6 @@
 package hyperpyramid.scenarios
 
-import hyperpyramid.TheInternet
+import hyperpyramid.actors.StoreManager
 import hyperpyramid.actors.WebsiteCustomer
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
@@ -8,7 +8,7 @@ import strikt.assertions.isEqualTo
 import strikt.assertions.isTrue
 
 interface ItemTransactionScenario {
-    val theInternet: TheInternet
+    val storeManager: StoreManager
     val customer: WebsiteCustomer
 
     @Test
@@ -22,7 +22,7 @@ interface ItemTransactionScenario {
             expectThat(canSeeImage(itemId)).isTrue()
 
             val orderId = order(itemId)
-            expectThat(theInternet.departmentStore.orders[orderId]?.items).isEqualTo(listOf(itemId))
+            expectThat(storeManager.hasOrderItems(orderId)).isEqualTo(listOf(itemId))
 
             expectThat(customer.hasEmailFor(orderId)).isTrue()
         }
