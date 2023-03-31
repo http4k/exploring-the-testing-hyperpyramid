@@ -9,5 +9,5 @@ interface ShopContract {
     val http: HttpHandler
     val events: Events
 
-    fun customer() = HttpCustomer(http, Uri.of("http://shop"), { emptyList() }, events)
+    fun customer() = HttpCustomer(http, Uri.of("http://shop"), events)
 }
