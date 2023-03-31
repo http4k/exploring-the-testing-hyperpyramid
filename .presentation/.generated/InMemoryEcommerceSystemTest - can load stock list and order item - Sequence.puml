@@ -4,43 +4,14 @@ participant "api-gateway"
 participant "shop"
 participant "warehouse"
 participant "images"
-participant "cognito"
 database "db"
 participant "image-cache.s3.eu-west-1.amazonaws.com"
 participant "dept-store"
 participant "email.eu-west-1.amazonaws.com"
 participant "event-stream"
-"Customer" -> "api-gateway": GET
+"Customer" -> "api-gateway": GET 
 activate "api-gateway"
-
-"api-gateway" -[#DarkBlue]> "Customer": <color:DarkBlue> 307 Temporary Redirect
-deactivate "api-gateway"
-"Customer" -> "cognito": GET oauth2/authorize
-activate "cognito"
-
-"cognito" -[#DarkBlue]> "Customer": <color:DarkBlue> 302 Found
-deactivate "cognito"
-"Customer" -> "cognito": GET oauth2/login
-activate "cognito"
-
-"cognito" -[#DarkGreen]> "Customer": <color:DarkGreen> 200 OK
-deactivate "cognito"
-"Customer" -> "cognito": POST oauth2/login
-activate "cognito"
-
-"cognito" -[#DarkBlue]> "Customer": <color:DarkBlue> 303 See Other
-deactivate "cognito"
-"Customer" -> "api-gateway": GET oauth/callback
-activate "api-gateway"
-"api-gateway" -> "cognito": POST oauth2/token
-activate "cognito"
-
-"cognito" -[#DarkGreen]> "api-gateway": <color:DarkGreen> 200 OK
-deactivate "cognito"
-"api-gateway" -[#DarkBlue]> "Customer": <color:DarkBlue> 307 Temporary Redirect
-"Customer" -> "api-gateway": GET
-activate "api-gateway"
-"api-gateway" -> "shop": GET
+"api-gateway" -> "shop": GET 
 activate "shop"
 "shop" -> "warehouse": GET v1/items
 activate "warehouse"
@@ -79,7 +50,7 @@ activate "dept-store"
 deactivate "dept-store"
 "warehouse" -[#DarkGreen]> "shop": <color:DarkGreen> 202 Accepted
 deactivate "warehouse"
-"shop" -> "email.eu-west-1.amazonaws.com": POST
+"shop" -> "email.eu-west-1.amazonaws.com": POST 
 activate "email.eu-west-1.amazonaws.com"
 
 "email.eu-west-1.amazonaws.com" -[#DarkGreen]> "shop": <color:DarkGreen> 200 OK
