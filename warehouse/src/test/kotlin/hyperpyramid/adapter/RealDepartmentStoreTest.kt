@@ -7,7 +7,7 @@ import org.http4k.core.Uri
 import org.junit.jupiter.api.Disabled
 import java.lang.System.getProperty
 
-@Disabled
+@Disabled("Not a real running server!")
 class RealDepartmentStoreTest : DepartmentStoreContract {
     override val departmentStore = HttpDepartmentStore(
         Credentials(getProperty("USER"), getProperty("PASSWORD")),

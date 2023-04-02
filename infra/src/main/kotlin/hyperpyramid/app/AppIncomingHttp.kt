@@ -7,9 +7,8 @@ import org.http4k.filter.ResponseFilters.ReportHttpTransaction
 import org.http4k.filter.ServerFilters.RequestTracing
 import org.http4k.routing.RoutingHttpHandler
 
-fun AppIncomingHttp(debug: Boolean, events: Events, base: RoutingHttpHandler) =
-    Debug(debug)
-        .then(HandleError(events))
+fun AppIncomingHttp(events: Events, base: RoutingHttpHandler) =
+    HandleError(events)
         .then(RequestTracing())
         .then(ReportHttpTransaction { events(Incoming(it)) })
         .then(base)

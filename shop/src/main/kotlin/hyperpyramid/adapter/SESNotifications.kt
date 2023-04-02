@@ -19,10 +19,10 @@ import org.http4k.connect.amazon.ses.model.Subject
 import org.http4k.core.HttpHandler
 
 fun SESNotifications(env: Environment, outgoingHttp: HttpHandler) = object : Notifications {
-    private val sns = SES.Http(env, outgoingHttp)
+    private val ses = SES.Http(env, outgoingHttp)
 
     override fun collectOrder(user: Email, orderId: OrderId): Result4k<Unit, Exception> =
-        sns(
+        ses(
             SendEmail(
                 EmailAddress.of(env[NOTIFICATION_EMAIL_SENDER].value),
                 Destination(setOf(EmailAddress.of(user.value))),

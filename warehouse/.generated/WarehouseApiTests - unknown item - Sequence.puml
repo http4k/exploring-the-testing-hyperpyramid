@@ -1,0 +1,11 @@
+@startuml
+title WarehouseApiTests - unknown item
+participant "client"
+participant "warehouse"
+database "db"
+"client" -> "warehouse": POST v1/dispatch
+activate "warehouse"
+"warehouse" <-> "db": items
+"warehouse" X-[#DarkOrange]> "client": <color:DarkOrange> 404 Not Found
+deactivate "warehouse"
+@enduml

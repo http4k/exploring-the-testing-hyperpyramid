@@ -8,7 +8,4 @@ object ApiGatewaySettings : Settings() {
     val API_GATEWAY_URL by EnvironmentKey.uri().of().required()
     val IMAGES_URL by EnvironmentKey.uri().of().required()
     val SHOP_URL by EnvironmentKey.uri().of().required()
-    val OAUTH_URL by EnvironmentKey.uri().of().required()
-    val OAUTH_CLIENT_ID by EnvironmentKey.of().required()
-    val OAUTH_CLIENT_SECRET by EnvironmentKey.of().required()
 }

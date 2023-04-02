@@ -1,4 +1,4 @@
-package hyperpyramid
+    package hyperpyramid
 
 import hyperpyramid.ShopApiSettings.NOTIFICATION_EMAIL_SENDER
 import hyperpyramid.ShopApiSettings.WAREHOUSE_URL
@@ -16,6 +16,6 @@ val ShopTestEnv = defaults(
     AWS_REGION of EU_WEST_1,
     AWS_ACCESS_KEY_ID of AccessKeyId.of("access-key-id"),
     AWS_SECRET_ACCESS_KEY of SecretAccessKey.of("secret-access-key"),
-    NOTIFICATION_EMAIL_SENDER of Email.of("bob@http4k.org"),
+    NOTIFICATION_EMAIL_SENDER of Email.of("orders@http4k.org"),
     WAREHOUSE_URL of Uri.of("http://warehouse")
 )

@@ -8,7 +8,3 @@ include("images")
 include("infra")
 include("warehouse")
 include("shop")
-
-include("presentation")
-project(":presentation").projectDir = File(".presentation")
-

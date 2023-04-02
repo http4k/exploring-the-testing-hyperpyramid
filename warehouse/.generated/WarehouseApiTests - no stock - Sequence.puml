@@ -1,0 +1,11 @@
+@startuml
+title WarehouseApiTests - no stock
+participant "client"
+participant "warehouse"
+database "db"
+"client" -> "warehouse": POST v1/dispatch
+activate "warehouse"
+"warehouse" <-> "db": items
+"warehouse" X-[#DarkOrange]> "client": <color:DarkOrange> 412 Precondition Failed
+deactivate "warehouse"
+@enduml

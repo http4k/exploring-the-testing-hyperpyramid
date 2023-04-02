@@ -7,8 +7,7 @@ import org.http4k.events.HttpEvent.Outgoing
 import org.http4k.filter.ClientFilters.RequestTracing
 import org.http4k.filter.ResponseFilters.ReportHttpTransaction
 
-fun AppOutgoingHttp(debug: Boolean, events: Events, http: HttpHandler) =
-    Debug(debug)
-        .then(RequestTracing())
+fun AppOutgoingHttp(events: Events, http: HttpHandler) =
+    RequestTracing()
         .then(ReportHttpTransaction { events(Outgoing(it)) })
         .then(http)

@@ -17,7 +17,7 @@ class FakeDepartmentStoreTest : DepartmentStoreContract {
     private val fake = FakeDepartmentStore()
     override val departmentStore = HttpDepartmentStore(
         Credentials("user", "password"),
-        Uri.of("http://store"), fake
+        Uri.of("http://dept-store"), fake
     )
 
     @Test

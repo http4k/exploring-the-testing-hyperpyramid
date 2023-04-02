@@ -7,7 +7,7 @@ import org.http4k.cloudnative.env.Environment.Companion.defaults
 import org.http4k.core.Uri
 
 val WarehouseTestEnv = defaults(
-    STORE_URL of Uri.of("http://store"),
+    STORE_URL of Uri.of("http://dept-store"),
     STORE_API_USER of "User",
     STORE_API_PASSWORD of "Password"
 )

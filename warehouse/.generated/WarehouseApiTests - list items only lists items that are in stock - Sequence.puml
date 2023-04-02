@@ -1,0 +1,11 @@
+@startuml
+title WarehouseApiTests - list items only lists items that are in stock
+participant "client"
+participant "warehouse"
+database "db"
+"client" -> "warehouse": GET v1/items
+activate "warehouse"
+"warehouse" <-> "db": items
+"warehouse" -[#DarkGreen]> "client": <color:DarkGreen> 200 OK
+deactivate "warehouse"
+@enduml
