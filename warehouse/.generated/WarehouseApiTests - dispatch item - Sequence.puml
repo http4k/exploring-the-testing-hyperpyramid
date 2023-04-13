@@ -1,0 +1,18 @@
+@startuml
+title WarehouseApiTests - dispatch item
+participant "client"
+participant "warehouse"
+database "db"
+participant "dept-store"
+"client" -> "warehouse": POST v1/dispatch
+activate "warehouse"
+"warehouse" <-> "db": items
+"warehouse" <-> "db": adjust
+"warehouse" -> "dept-store": POST v1/order
+activate "dept-store"
+
+"dept-store" -[#DarkGreen]> "warehouse": <color:DarkGreen> 200 OK
+deactivate "dept-store"
+"warehouse" -[#DarkGreen]> "client": <color:DarkGreen> 202 Accepted
+deactivate "warehouse"
+@enduml

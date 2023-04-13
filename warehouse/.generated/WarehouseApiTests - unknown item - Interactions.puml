@@ -1,0 +1,12 @@
+@startuml
+title WarehouseApiTests - unknown item
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+
+System(client, "client")
+System(warehouse, "warehouse")
+ContainerDb(db, "db")    
+Rel_D(client, warehouse, " ") 
+Rel_D(warehouse, db, " ")     
+@enduml

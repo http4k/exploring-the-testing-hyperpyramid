@@ -1,0 +1,15 @@
+@startuml
+title ShopApiTests - can list items
+participant "Customer"
+participant "shop"
+participant "warehouse"
+"Customer" -> "shop": GET list
+activate "shop"
+"shop" -> "warehouse": GET v1/items
+activate "warehouse"
+
+"warehouse" -[#DarkGreen]> "shop": <color:DarkGreen> 200 OK
+deactivate "warehouse"
+"shop" -[#DarkGreen]> "Customer": <color:DarkGreen> 200 OK
+deactivate "shop"
+@enduml
