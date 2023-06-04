@@ -7,8 +7,8 @@ import org.http4k.tracing.ActorType.Database
 import org.http4k.tracing.BiDirectional
 import org.http4k.tracing.Tracer
 
-fun DbTracer(actorResolver: ActorResolver) = Tracer { parent, _, _ ->
-    parent
+fun DbTracer(actorResolver: ActorResolver) = Tracer { node, _ ->
+    node.event
         .takeIf { it.event is DbCall }
         ?.let {
             BiDirectional(

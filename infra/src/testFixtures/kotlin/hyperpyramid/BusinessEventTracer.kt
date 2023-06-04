@@ -7,8 +7,8 @@ import org.http4k.tracing.ActorType.Queue
 import org.http4k.tracing.FireAndForget
 import org.http4k.tracing.Tracer
 
-fun BusinessEventTracer(actorResolver: ActorResolver) = Tracer { parent, _, _ ->
-    parent
+fun BusinessEventTracer(actorResolver: ActorResolver) = Tracer { node, _ ->
+    node.event
         .takeIf { it.event is BusinessEvent }
         ?.let {
             FireAndForget(
