@@ -8,6 +8,8 @@ import hyperpyramid.port.Inventory
 import org.http4k.connect.storage.InMemory
 import org.http4k.connect.storage.Storage
 import org.http4k.events.Events
+import org.http4k.filter.ZipkinTracesStorage.Companion.THREAD_LOCAL
+import org.http4k.filter.inChildSpan
 import java.lang.reflect.Proxy.newProxyInstance
 import java.time.Clock
 
@@ -21,9 +23,10 @@ fun InMemoryInventory(events: Events = {}, clock: Clock = Clock.systemUTC()): In
     }
 
     return newProxyInstance(Inventory::class.java.classLoader, arrayOf(Inventory::class.java)) { _, m, args ->
-        DbCall(m.name)
-        AppEvents("warehouse", clock, events)(DbCall(m.name))
-        m(target, *args ?: arrayOf())
+        THREAD_LOCAL.inChildSpan {
+            AppEvents("warehouse", clock, events)(DbCall(m.name))
+            m(target, *args ?: arrayOf())
+        }
     } as Inventory
 }
 

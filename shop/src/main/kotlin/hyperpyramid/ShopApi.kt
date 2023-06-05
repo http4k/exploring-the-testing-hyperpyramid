@@ -1,6 +1,7 @@
 package hyperpyramid
 
 import hyperpyramid.ShopApiSettings.WAREHOUSE_URL
+import hyperpyramid.adapter.EventsBasedEventStream
 import hyperpyramid.adapter.HttpWarehouse
 import hyperpyramid.adapter.SESNotifications
 import hyperpyramid.app.AppEvents
@@ -25,9 +26,9 @@ fun ShopApi(
     val outgoingHttp = AppOutgoingHttp(appEvents, http)
 
     val shop = Shop(
-        appEvents,
+        EventsBasedEventStream(appEvents),
         HttpWarehouse(env[WAREHOUSE_URL], outgoingHttp),
-        SESNotifications(env, outgoingHttp)
+        SESNotifications(env, outgoingHttp),
     )
 
     return AppIncomingHttp(
@@ -35,3 +36,4 @@ fun ShopApi(
         routes(PlaceOrder(shop), ListAllItems(shop))
     )
 }
+
