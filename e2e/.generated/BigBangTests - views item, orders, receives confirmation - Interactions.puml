@@ -1,0 +1,22 @@
+@startuml
+title BigBangTests - views item, orders, receives confirmation
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+
+System(Customer, "Customer")
+System(apigateway, "api-gateway")
+System(warehouse, "warehouse")
+System(shop, "shop")
+System(images, "images")
+ContainerDb(db, "db")
+System(imagecaches3euwest1amazonawscom, "image-cache.s3.eu-west-1.amazonaws.com")
+System(deptstore, "dept-store")    
+Rel_D(Customer, apigateway, " ") 
+Rel_D(apigateway, shop, " ") 
+Rel_D(warehouse, db, " ") 
+Rel_D(shop, warehouse, " ") 
+Rel_D(apigateway, images, " ") 
+Rel_D(images, imagecaches3euwest1amazonawscom, " ") 
+Rel_D(warehouse, deptstore, " ")     
+@enduml
