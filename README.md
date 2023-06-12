@@ -3,7 +3,7 @@ Code repo for the [KotlinConf 2023](https://kotlinconf.com/speakers/) talk by @d
 
 ### http4k v5 
 
-Coming April 2023. (Warning: Contains Loom)
+Coming soon in 2023. (Warning: Contains Loom)
 
 Stay tuned at [http4k.org](https://http4k.org).
 
