@@ -24,9 +24,6 @@ subprojects {
         mavenCentral()
     }
 
-    dependencies {
-    }
-
     tasks {
         withType<KotlinCompile> {
             kotlinOptions.jvmTarget = "11"

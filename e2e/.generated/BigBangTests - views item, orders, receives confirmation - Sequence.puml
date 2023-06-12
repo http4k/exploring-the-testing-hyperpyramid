@@ -2,8 +2,8 @@
 title BigBangTests - views item, orders, receives confirmation
 participant "Customer"
 participant "api-gateway"
-participant "warehouse"
 participant "shop"
+participant "warehouse"
 participant "images"
 database "db"
 participant "image-cache.s3.eu-west-1.amazonaws.com"
@@ -12,10 +12,9 @@ participant "dept-store"
 activate "api-gateway"
 "api-gateway" -> "shop": GET list
 activate "shop"
-"warehouse" <-> "db": items
 "shop" -> "warehouse": GET v1/items
 activate "warehouse"
-
+"warehouse" <-> "db": items
 "warehouse" -[#DarkGreen]> "shop": <color:DarkGreen> 200 OK
 deactivate "warehouse"
 "shop" -[#DarkGreen]> "api-gateway": <color:DarkGreen> 200 OK
@@ -39,10 +38,10 @@ deactivate "api-gateway"
 activate "api-gateway"
 "api-gateway" -> "shop": POST order/{id}
 activate "shop"
-"warehouse" <-> "db": items
-"warehouse" <-> "db": adjust
 "shop" -> "warehouse": POST v1/dispatch
 activate "warehouse"
+"warehouse" <-> "db": items
+"warehouse" <-> "db": adjust
 "warehouse" -> "dept-store": POST v1/order
 activate "dept-store"
 
