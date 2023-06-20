@@ -1,5 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+plugins {
+    kotlin("jvm") version "1.8.22"
+    idea
+    `java-test-fixtures`
+}
+
 buildscript {
     repositories {
         mavenCentral()
@@ -11,13 +17,14 @@ buildscript {
         classpath(libs.gradle.test.logger.plugin)
     }
 }
-
-plugins {
-    `java-test-fixtures`
+repositories {
+    mavenCentral()
 }
 
 subprojects {
+    apply(plugin = "java")
     apply(plugin = "kotlin")
+    apply(plugin = "idea")
     apply(plugin = "java-test-fixtures")
 
     repositories {
@@ -26,7 +33,14 @@ subprojects {
 
     tasks {
         withType<KotlinCompile> {
-            kotlinOptions.jvmTarget = "11"
+            kotlinOptions {
+                jvmTarget = "11"
+            }
+        }
+
+        java {
+            sourceCompatibility = JavaVersion.VERSION_11
+            targetCompatibility = JavaVersion.VERSION_11
         }
 
         withType<Test> {
