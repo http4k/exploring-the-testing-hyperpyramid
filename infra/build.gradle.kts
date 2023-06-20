@@ -12,7 +12,7 @@ dependencies {
     testFixturesApi(Testing.junit.jupiter.api)
     testFixturesApi(Testing.junit.jupiter.engine)
 
-    testFixturesApi(Http4k.incubator)
+    testFixturesApi("org.http4k:http4k-testing-tracerbullet")
     testFixturesApi(Http4k.testing.strikt)
     testFixturesApi(Http4k.testing.approval)
 }
