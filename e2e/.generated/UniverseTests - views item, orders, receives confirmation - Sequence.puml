@@ -9,7 +9,7 @@ database "db"
 participant "image-cache.s3.eu-west-1.amazonaws.com"
 participant "dept-store"
 participant "email.eu-west-1.amazonaws.com"
-participant "event-stream"
+queue "event-stream"
 "Customer" -> "api-gateway": GET list
 activate "api-gateway"
 "api-gateway" -> "shop": GET list
@@ -51,7 +51,7 @@ activate "dept-store"
 deactivate "dept-store"
 "warehouse" -[#DarkGreen]> "shop": <color:DarkGreen> 202 Accepted
 deactivate "warehouse"
-"shop" -> "email.eu-west-1.amazonaws.com": POST 
+"shop" -> "email.eu-west-1.amazonaws.com": POST v2/email/outbound-emails
 activate "email.eu-west-1.amazonaws.com"
 
 "email.eu-west-1.amazonaws.com" -[#DarkGreen]> "shop": <color:DarkGreen> 200 OK

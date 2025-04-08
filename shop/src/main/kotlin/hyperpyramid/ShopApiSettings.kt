@@ -1,7 +1,7 @@
 package hyperpyramid
 
 import hyperpyramid.dto.Email
-import org.http4k.cloudnative.env.EnvironmentKey
+import org.http4k.config.EnvironmentKey
 import org.http4k.lens.of
 import org.http4k.lens.uri
 import org.http4k.lens.value

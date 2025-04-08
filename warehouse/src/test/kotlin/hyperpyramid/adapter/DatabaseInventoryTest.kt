@@ -3,7 +3,7 @@ package hyperpyramid.adapter
 import hyperpyramid.WarehouseSettings.DATABASE_DRIVER
 import hyperpyramid.WarehouseSettings.DATABASE_URL
 import org.h2.Driver
-import org.http4k.cloudnative.env.Environment.Companion.defaults
+import org.http4k.config.Environment.Companion.defaults
 
 class DatabaseInventoryTest : InventoryContract {
     override val inventory = DatabaseInventory(

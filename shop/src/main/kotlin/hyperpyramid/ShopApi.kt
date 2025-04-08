@@ -10,7 +10,7 @@ import hyperpyramid.app.AppOutgoingHttp
 import hyperpyramid.endpoint.ListAllItems
 import hyperpyramid.endpoint.PlaceOrder
 import hyperpyramid.port.Shop
-import org.http4k.cloudnative.env.Environment
+import org.http4k.config.Environment
 import org.http4k.core.HttpHandler
 import org.http4k.events.Events
 import org.http4k.routing.routes

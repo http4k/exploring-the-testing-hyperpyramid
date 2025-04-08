@@ -3,7 +3,7 @@ package hyperpyramid
 import hyperpyramid.adapter.DatabaseInventory
 import hyperpyramid.util.Json
 import org.http4k.client.JavaHttpClient
-import org.http4k.cloudnative.env.Environment.Companion.ENV
+import org.http4k.config.Environment.Companion.ENV
 import org.http4k.events.AutoMarshallingEvents
 import org.http4k.server.Undertow
 import org.http4k.server.asServer

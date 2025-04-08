@@ -1,5 +1,5 @@
 package hyperpyramid.setup
 
-import org.http4k.cloudnative.env.Environment
+import org.http4k.config.Environment
 
 typealias CloudInfraSetup = (Environment) -> Environment

@@ -1,7 +1,7 @@
 package hyperpyramid.setup
 
 import hyperpyramid.TheInternet
-import org.http4k.cloudnative.env.Environment
+import org.http4k.config.Environment
 
 /**
  * Apply all setup functions to the cloud environment.

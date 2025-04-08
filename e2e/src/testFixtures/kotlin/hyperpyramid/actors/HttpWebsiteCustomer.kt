@@ -27,7 +27,7 @@ class HttpWebsiteCustomer(
     override fun hasEmailFor(orderId: OrderId, email: String): Boolean {
         return sentEmails.keySet()
             .flatMap { sentEmails[it] ?: emptyList() }
-            .filter { it.to.contains(EmailAddress.of(email)) }
-            .any { it.message.html?.value == "Please collect your order using the code: $orderId" }
+            .filter { it.destination.toAddresses!!.contains(EmailAddress.of(email)) }
+            .any { it.message?.body?.text?.data == "Please collect your order using the code: $orderId" }
     }
 }

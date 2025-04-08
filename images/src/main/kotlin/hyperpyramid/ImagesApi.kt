@@ -6,7 +6,7 @@ import hyperpyramid.app.AppIncomingHttp
 import hyperpyramid.app.AppOutgoingHttp
 import hyperpyramid.endpoint.GetImage
 import hyperpyramid.port.Images
-import org.http4k.cloudnative.env.Environment
+import org.http4k.config.Environment
 import org.http4k.connect.amazon.AWS_REGION
 import org.http4k.connect.amazon.s3.Http
 import org.http4k.connect.amazon.s3.S3Bucket

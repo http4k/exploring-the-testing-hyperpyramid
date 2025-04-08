@@ -9,7 +9,7 @@ import hyperpyramid.WarehouseSettings.STORE_API_PASSWORD
 import hyperpyramid.WarehouseSettings.STORE_API_USER
 import hyperpyramid.WarehouseSettings.STORE_URL
 import hyperpyramid.dto.Email
-import org.http4k.cloudnative.env.Environment
+import org.http4k.config.Environment
 import org.http4k.connect.amazon.AWS_ACCESS_KEY_ID
 import org.http4k.connect.amazon.AWS_REGION
 import org.http4k.connect.amazon.AWS_SECRET_ACCESS_KEY

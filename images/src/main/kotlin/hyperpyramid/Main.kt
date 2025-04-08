@@ -2,7 +2,7 @@ package hyperpyramid
 
 import hyperpyramid.util.Json
 import org.http4k.client.JavaHttpClient
-import org.http4k.cloudnative.env.Environment
+import org.http4k.config.Environment
 import org.http4k.events.AutoMarshallingEvents
 import org.http4k.server.Undertow
 import org.http4k.server.asServer

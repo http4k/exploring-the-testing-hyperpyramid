@@ -5,7 +5,7 @@ import com.zaxxer.hikari.HikariDataSource
 import hyperpyramid.WarehouseSettings.DATABASE_DRIVER
 import hyperpyramid.WarehouseSettings.DATABASE_URL
 import hyperpyramid.port.Inventory
-import org.http4k.cloudnative.env.Environment
+import org.http4k.config.Environment
 import org.http4k.connect.storage.Jdbc
 import org.http4k.connect.storage.Storage
 import org.http4k.connect.storage.StorageTable

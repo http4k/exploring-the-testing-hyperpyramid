@@ -11,7 +11,7 @@ import hyperpyramid.domain.Warehouse
 import hyperpyramid.endpoint.DispatchItems
 import hyperpyramid.endpoint.ListItems
 import hyperpyramid.port.Inventory
-import org.http4k.cloudnative.env.Environment
+import org.http4k.config.Environment
 import org.http4k.core.Credentials
 import org.http4k.core.HttpHandler
 import org.http4k.events.Events

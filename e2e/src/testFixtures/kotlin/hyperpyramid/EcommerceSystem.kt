@@ -6,12 +6,12 @@ import hyperpyramid.ApiGatewaySettings.SHOP_URL
 import hyperpyramid.ShopApiSettings.WAREHOUSE_URL
 import hyperpyramid.adapter.InMemoryInventory
 import hyperpyramid.http.NetworkAccess
-import org.http4k.cloudnative.env.Environment
+import org.http4k.config.Environment
 import org.http4k.core.HttpHandler
 import org.http4k.core.Request
 import org.http4k.events.Events
-import org.http4k.routing.Router.Companion.orElse
 import org.http4k.routing.bind
+import org.http4k.routing.orElse
 import org.http4k.routing.reverseProxyRouting
 import org.http4k.routing.routes
 import java.time.Clock

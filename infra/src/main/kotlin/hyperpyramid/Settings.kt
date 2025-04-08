@@ -1,6 +1,6 @@
 package hyperpyramid
 
-import org.http4k.cloudnative.env.EnvironmentKey
+import org.http4k.config.EnvironmentKey
 import org.http4k.lens.boolean
 import org.http4k.lens.of
 

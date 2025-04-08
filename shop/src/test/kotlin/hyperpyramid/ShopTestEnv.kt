@@ -3,7 +3,7 @@
 import hyperpyramid.ShopApiSettings.NOTIFICATION_EMAIL_SENDER
 import hyperpyramid.ShopApiSettings.WAREHOUSE_URL
 import hyperpyramid.dto.Email
-import org.http4k.cloudnative.env.Environment.Companion.defaults
+import org.http4k.config.Environment.Companion.defaults
 import org.http4k.connect.amazon.AWS_ACCESS_KEY_ID
 import org.http4k.connect.amazon.AWS_REGION
 import org.http4k.connect.amazon.AWS_SECRET_ACCESS_KEY
